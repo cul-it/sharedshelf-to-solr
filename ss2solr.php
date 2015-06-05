@@ -63,6 +63,19 @@ function ss_get($url, $cookiejar) {
   return $output;
 }
 
+function ss_get_url($url, $cookiejar) {
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar);
+  /* make sure you provide FULL PATH to cookie files*/
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  $output = curl_exec ($ch);
+  $url_out = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
+  curl_close($ch);
+  return $url_out;
+}
+
 function ss_post($url, $data) {
   $data2 = array('add' => array( 'doc' => $data, 'commitWithin' => 1000,),);
   $data_string = json_encode($data2);
