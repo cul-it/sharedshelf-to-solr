@@ -113,66 +113,96 @@ foreach ($out['items'] as $project) {
   $collections["$id"] = $project['name'];
 }
 
-echo "\n\n";
-if (isset($vars['project'])) {
-  $project_id = $id = $vars['project'];
-  $assets = ss_get("$ss_url/projects/$id/assets", $cookiejar);
-  $total = $assets['total'];
-  $per_page = 10;
-
-  // if fields are not set list all fields
-  if (empty($vars['fields'])) {
-    $fields = array();
-    for ($i = 0; $i < $total; $i += $per_page) {
-      $args = "start=$i&limit=$per_page&with_meta=true";
-      $assets = ss_get("$ss_url/projects/$id/assets?$args", $cookiejar);
-      foreach($assets['assets'] as $asset) {
-        foreach($asset as $k => $v) {
-          if (!is_array($v)) {
-            $fields["$k"] = $k;
-          }
-        }
-      }
-    foreach ($fields as $field) {
-      echo "fields[$field] = \"$field\"\n";
-    }
-    die("add fields to ss2solr.ini and make second name a solr field name");
-    }
-  }
-  $fields = $vars['fields'];
-
-  for ($i = 0; $i < $total; $i += $per_page) {
-    echo "batch starting with $i\n";
-    $args = "start=$i&limit=$per_page&with_meta=true";
-    $assets = ss_get("$ss_url/projects/$id/assets?$args", $cookiejar);
-    foreach($assets['assets'] as $asset) {
-      $filtered = array();
-      foreach($asset as $k => $v) {
-        if (!empty($fields["$k"]) && !empty($v)) {
-          $filtered["$fields[$k]"] = $v;
-        }
-        else {
-          //echo "$k\n";
-        }
-      }
-      //print_r($filtered);
-      echo $filtered['id'] . "\n";
-      //print_r($filtered);
-      $filtered['Collection_s'] = $collections["$project_id"];
-      $result = ss_post($solr_url, $filtered);
-      print_r($result);
-      //die('quitting now');
-    }
-    // print_r($asset);
-    // $asset_id = $asset['id'];
-    // echo "representations for asset $asset_id: \n";
-    // for ($size = 0; $size < 5; $size++) {
-    //   $rep = ss_get("$ss_url/representation/$asset_id/size/$size", $cookiejar);
-    //   //$rep = ss_get("$ss_url/assets/$asset_id/representation", $cookiejar);
-    //   print_r($rep);
-    // }
-    // exit;
-  }
-
+if (!isset($vars['project'])) {
+  die("Select a project.\n");
 }
+
+echo "\n\n";
+$project_id = $id = $vars['project'];
+$assets = ss_get("$ss_url/projects/$id/assets", $cookiejar);
+$total = $assets['total'];
+$per_page = 10;
+
+echo "checking fields...\n";
+
+// just list all fields each time
+// just use first page full of records to generate list - TODO - check all?
+$field_check_limit = $per_page;
+$asset_example = false;
+$fields = array();
+for ($i = 0; $i < $field_check_limit; $i += $per_page) {
+  $args = "start=$i&limit=$per_page&with_meta=true&extjs=true";
+  $assets = ss_get("$ss_url/projects/$id/assets?$args", $cookiejar);
+  foreach($assets['assets'] as $asset) {
+    if ($asset_example === false) {
+      $asset_example = $asset;
+    }
+    foreach($asset as $k => $v) {
+      if (!is_array($v)) {
+        $fields["$k"] = $k;
+      }
+    }
+  }
+}
+foreach ($fields as $field) {
+  echo "fields[$field] = \"$field\"\n";
+}
+if (empty($vars['fields'])) {
+  die("add fields to ss2solr.ini and make second name a solr field name");
+  }
+
+$check = array_diff_key($fields, $vars['fields']);
+if (!empty($check)) {
+  print_r($check);
+  die("Not all fields are present in the .ini file!\n");
+}
+$fields = $vars['fields'];
+
+if (empty($vars['copy_field'])) {
+  print_r($asset_example);
+  die('set up your copy_fields - see README.md' . "\n");
+}
+
+if (empty($vars['set_solr_field'])) {
+  die('set up your set_solr_field - see README.md' . "\n");
+}
+
+for ($i = 0; $i < $total; $i += $per_page) {
+  echo "batch starting with $i\n";
+  $args = "start=$i&limit=$per_page&with_meta=true";
+  $assets = ss_get("$ss_url/projects/$id/assets?$args", $cookiejar);
+  foreach($assets['assets'] as $asset) {
+    $filtered = array();
+    foreach($asset as $k => $v) {
+      if (!empty($fields["$k"]) && !empty($v)) {
+        $filtered["$fields[$k]"] = $v;
+      }
+      else {
+        //echo "$k\n";
+      }
+    }
+    foreach($vars['copy_field'] as $ss_solr_key => $solr_key) {
+      $filtered["$solr_key"] = $filtered["$ss_solr_key"];
+    }
+    foreach($vars['set_solr_field'] as $solr_key => $value) {
+      $filtered["$solr_key"] = $value;
+    }
+    echo $filtered['id'] . "\n";
+    //print_r($filtered);
+    $filtered['Collection_s'] = $collections["$project_id"];
+    $result = ss_post($solr_url, $filtered);
+    print_r($result);
+    die('quitting now');
+  }
+  // print_r($asset);
+  // $asset_id = $asset['id'];
+  // echo "representations for asset $asset_id: \n";
+  // for ($size = 0; $size < 5; $size++) {
+  //   $rep = ss_get("$ss_url/representation/$asset_id/size/$size", $cookiejar);
+  //   //$rep = ss_get("$ss_url/assets/$asset_id/representation", $cookiejar);
+  //   print_r($rep);
+  // }
+  // exit;
+}
+
 
