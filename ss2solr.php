@@ -87,17 +87,18 @@ function ss_post($url, $data) {
   return $result;
 }
 
-$vars = parse_ini_file('ss2solr.ini');
+$user = parse_ini_file('ssUser.ini');
+$vars = parse_ini_file('ss2solr.aerial.ini');
 
 $ss_url = $vars['sharedshelf'];
 $cookiejar = $vars['cookiejar'];
 $solr_url = $vars['solr'];
 
 if (!file_exists($cookiejar)) {
-  die ("file does not exist: $cookiejar \n");
+  die ("file does not exist: $cookiejar \nto create it run this on command line:\ntouch $cookiejar");
 }
 
-$cookies = ss_login("$ss_url/account", $vars['email'], $vars['password'], $cookiejar);
+$cookies = ss_login("$ss_url/account", $user['email'], $user['password'], $cookiejar);
 
 $out = ss_get("$ss_url/projects", $cookiejar);
 
