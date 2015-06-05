@@ -157,6 +157,12 @@ for ($i = 0; $i < $field_check_limit; $i += $per_page) {
     }
   }
 }
+// ss fields with _multi_ in the name don't work in solr
+foreach ($fields as $fk => $fn) {
+  if (strpos($fk, '_multi_') !== FALSE) {
+    unset($fields["$fk"]);
+  }
+}
 foreach ($fields as $field) {
   echo "fields[$field] = \"$field\"\n";
 }
