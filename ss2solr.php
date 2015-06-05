@@ -200,12 +200,19 @@ for ($i = 0; $i < $total; $i += $per_page) {
     foreach($vars['set_solr_field'] as $solr_key => $value) {
       $filtered["$solr_key"] = $value;
     }
-    echo $filtered['id'] . "\n";
+    $asset_id = $filtered['id'];
+    echo "$asset_id\n";
+    $representation = ss_get_url("$ss_url/assets/$asset_id/representation", $cookiejar);
+    if (!empty($representation)) {
+      $filtered['Media_URL_s'] = $representation;
+    }
     //print_r($filtered);
     $filtered['Collection_s'] = $collections["$project_id"];
     $result = ss_post($solr_url, $filtered);
-    print_r($result);
-    die('quitting now');
+    $result = json_decode($result);
+    if ($result->responseHeader->status != 0) {
+      die("problem ingesting record.\n");
+    }
   }
   // print_r($asset);
   // $asset_id = $asset['id'];
