@@ -59,6 +59,6 @@ class SharedShelfService {
     if ($user === FALSE) {
       throw new Exception("Need to create ssUser.ini. See README.md", 1);
     }
-    do_login($user['email'], $user['password']);
+    $this->do_login($user['email'], $user['password']);
   }
 }
