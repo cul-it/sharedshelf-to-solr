@@ -41,6 +41,17 @@ class SharedShelfService {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     $result = curl_exec($ch);
     curl_close($ch);
+    // get cookie
+    // multi-cookie variant contributed by @Combuster in comments
+    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $result, $matches);
+    $cookies = array();
+    foreach($matches[1] as $item) {
+        parse_str($item, $cookie);
+        $cookies = array_merge($cookies, $cookie);
+    }
+    if (!isset($cookies['sharedshelf'])) {
+      throw new Exception("No sharedshelf cookie", 1);
+    }
   }
 
   function login() {
