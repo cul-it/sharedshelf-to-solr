@@ -49,7 +49,7 @@ class SharedShelfService {
     }
   }
 
-  function get_response($url_suffix = '/account') {
+  function get_response($url_suffix = '/account', $check_success = TRUE) {
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
@@ -63,12 +63,12 @@ class SharedShelfService {
       throw new Exception("Error Processing Request: " . $url, 1);
     }
     $output = json_decode($output, true);
-    if (isset($output['success']) && ($output['success'] === TRUE)) {
-      return $output;
+    if ($check_success) {
+      if (!(isset($output['success']) && ($output['success'] === TRUE))) {
+        throw new Exception("Error Processing Request - no success: " . $url, 1);
+      }
     }
-    else {
-      throw new Exception("Error Processing Request: " . $url, 1);
-    }
+    return $output;
   }
 
   function login() {
@@ -81,7 +81,7 @@ class SharedShelfService {
   }
 
   function logged_in() {
-    $response = $this->get_response('/account');
+    $response = $this->get_response('/account', FALSE);
     return (isset($response['logged_in']) && ($response['logged_in'] === TRUE));
   }
 
