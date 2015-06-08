@@ -101,7 +101,7 @@ function ss_post($url, $data) {
 }
 
 $user = parse_ini_file('ssUser.ini');
-$vars = parse_ini_file('ss2solr.artifacts.ini');
+$vars = parse_ini_file('ss2solr.tamang.ini');
 
 $ss_url = $vars['sharedshelf'];
 $cookiejar = $vars['cookiejar'];
