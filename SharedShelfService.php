@@ -109,10 +109,39 @@ class SharedShelfService {
     return $asset_ids;
   }
 
+  function project_metadata($project_id) {
+    // return metadata section of asset array
+    $args = "start=1&limit=1&with_meta=true";
+    $url = "/projects/$project_id/assets?$args";
+    $assets = $this->get_response($url);
+    if (!isset($assets['metaData'])) {
+      throw new Exception("No metadata", 1);
+    }
+    return $assets['metaData'];
+  }
+
+  function project_fields($project_id) {
+    $metadata = $this->project_metadata($project_id);
+    $columns = $metadata['columns'];
+    $fields = array();
+    foreach($columns as $column) {
+      $name = $column['dataIndex'];
+      $description = $column['header'];
+      $fields["$name"] = $description;
+    }
+    return $fields;
+  }
+
   function asset($asset_id) {
     // return all metadata about the asset
     $asset = $this->get_response("/assets/$asset_id");
     return $asset;
+  }
+
+  function asset_field_values($asset) {
+    // flatten out the array field values in an asset
+    $flat = array();
+    return $flat;
   }
 
 }
