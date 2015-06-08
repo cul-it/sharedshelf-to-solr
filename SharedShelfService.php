@@ -5,8 +5,8 @@ class SharedShelfService {
   private $sharedshelf_url = 'http://catalog.sharedshelf.artstor.org';
 
   function __construct() {
-    if (!file_exists($this->$cookie_jar_path)) {
-      throw new Exception("Cookie jar file must exist: " . $this->$cookie_jar_path, 1);
+    if (!file_exists($this->cookie_jar_path)) {
+      throw new Exception("Cookie jar file must exist: " . $this->cookie_jar_path, 1);
     }
     $this->login();
   }
@@ -31,8 +31,9 @@ class SharedShelfService {
   }
 
   private function get_cookies($params) {
+    $url = $this->sharedshelf_url . '/account';
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_COOKIEJAR, $this->$cookie_jar_path);
+    curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_jar_path);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     // get headers too with this line
     curl_setopt($ch, CURLOPT_HEADER, 1);
