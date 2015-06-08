@@ -83,4 +83,40 @@ class SharedShelfService {
     }
     $this->do_login($user['email'], $user['password']);
   }
+
+  function logged_in() {
+    $response = $this->get_response('/account');
+    return (isset($response['logged_in']) && ($response['logged_in'] === TRUE));
+  }
+
+  function projects() {
+    $response = $this->get_response('/projects');
+    return $response;
+  }
+
+  function project_assets($project_id) {
+    // return array of all asset ids in this project
+    $assets = $this->get_response("/projects/$project_id/assets");
+    if (!isset($assets['total'])) {
+      throw new Exception("Invalid project: $project_id", 1);
+    }
+    $total = $assets['total'];
+    $asset_ids = array();
+    $per_page = 25;
+    for ($item = 0; $item < $total; $item += $per_page) {
+      $args = "start=$item&limit=$per_page";
+      $assets = $this->get_response("/projects/$project_id/assets?$args");
+      foreach($assets['assets'] as $asset) {
+        $asset_ids[] = $asset['id'];
+      }
+    }
+    return $asset_ids;
+  }
+
+  function asset($asset_id) {
+    // return all metadata about the asset
+    $asset = $this->get_response("/assets/$asset_id");
+    return $asset;
+  }
+
 }
