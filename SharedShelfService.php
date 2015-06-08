@@ -1,13 +1,17 @@
 <?php
 class SharedShelfService {
 
+  private $sharedshelf_user = '';
+  private $sharedshelf_password = '';
   private $cookie_jar_path = '/tmp/SharedShelfService_cookies.txt';
   private $sharedshelf_url = 'http://catalog.sharedshelf.artstor.org';
 
-  function __construct() {
+  function __construct($user, $password) {
     if (!file_exists($this->cookie_jar_path)) {
       throw new Exception("Cookie jar file must exist: " . $this->cookie_jar_path, 1);
     }
+    $this->sharedshelf_user = $user;
+    $this->sharedshelf_password = $password;
     $this->login();
   }
 
@@ -19,15 +23,6 @@ class SharedShelfService {
     }
     rtrim($query, '&');
     return $query;
-  }
-
-  private function do_login($user, $password) {
-    $form_fields = array(
-      'email' => $user,
-      'password' => $password,
-      );
-    $params = $this->get_query_params($form_fields);
-    $this->get_cookies($params);
   }
 
   private function get_cookies($params) {
@@ -77,11 +72,12 @@ class SharedShelfService {
   }
 
   function login() {
-    $user = parse_ini_file('ssUser.ini');
-    if ($user === FALSE) {
-      throw new Exception("Need to create ssUser.ini. See README.md", 1);
-    }
-    $this->do_login($user['email'], $user['password']);
+    $form_fields = array(
+      'email' => $this->sharedshelf_user,
+      'password' => $this->sharedshelf_password,
+      );
+    $params = $this->get_query_params($form_fields);
+    $this->get_cookies($params);
   }
 
   function logged_in() {
