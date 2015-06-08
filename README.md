@@ -7,7 +7,7 @@ Installation:
 contents of ssUser.ini (your sharedshelf user name (email) and password):
 
     ;; account configuration for sharedshelf user
-    email = jgr25@cornell.edu
+    email = bozo@cornell.edu
     password = thisisnotreallymypassword
 
 
