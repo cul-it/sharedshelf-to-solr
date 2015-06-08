@@ -28,7 +28,10 @@ try {
 
   $id = rand(0, $count-1);
   $asset = $ss->asset($assets["$id"]);
-  //print_r($asset);
+  print_r($asset);
+
+  $values = $ss->asset_field_values($asset);
+  print_r($values);
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
