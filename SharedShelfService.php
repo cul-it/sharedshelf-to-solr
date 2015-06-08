@@ -135,7 +135,10 @@ class SharedShelfService {
   function asset($asset_id) {
     // return all metadata about the asset
     $asset = $this->get_response("/assets/$asset_id");
-    return $asset;
+    if (!(isset($asset['asset'][0]))) {
+      throw new Exception("Error Processing Request: asset id $asset_id", 1);
+    }
+    return $asset['asset'][0];
   }
 
   function asset_field_values($asset) {
