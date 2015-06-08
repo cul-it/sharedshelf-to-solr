@@ -144,6 +144,26 @@ class SharedShelfService {
   function asset_field_values($asset) {
     // flatten out the array field values in an asset
     $flat = array();
+    foreach ($asset as $k => $v) {
+      if (is_array($v)) {
+        $matches = null;
+        $returnValue = preg_match('/_lookup$/', $k, $matches);
+        if ($returnValue == 1) {
+          if (isset($v['display_value'])) {
+            $flat["$k"] = $v['display_value'];
+          }
+          else {
+            throw new Exception("Missing display_value: $k " . print_r($v, TRUE), 1);
+          }
+        }
+        else {
+          $flat["$k"] = implode("; ", $v);
+        }
+      }
+      else {
+        $flat["$k"] = $v;
+      }
+    }
     return $flat;
   }
 
