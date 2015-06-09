@@ -189,7 +189,24 @@ class SharedShelfService {
           }
         }
         else {
-          $flat["$k"] = implode("; ", $v);
+          $children = FALSE;
+          foreach ($v as $v_child) {
+            if (is_array($v_child)) {
+              $children = TRUE;
+              break;
+            }
+          }
+          if ($children) {
+            $mess = array();
+            $it = new RecursiveIteratorIterator(new RecursiveArrayIterator($v));
+            foreach($it as $key => $child) {
+              $mess[] = "$key | $child";
+            }
+            $flat["$k"] = implode("; ", $mess);
+          }
+          else {
+            $flat["$k"] = implode("; ", $v);
+          }
         }
       }
       else {
