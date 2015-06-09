@@ -150,6 +150,20 @@ class SharedShelfService {
     return $fields;
   }
 
+  function project_fields_ini($project_id) {
+    $fields = $this->project_fields($project_id);
+    $ini_text = "\n; *********Fields to include in .ini file:\n";
+    foreach( $fields as $ss_field => $desc) {
+      $matches = null;
+      $returnValue = preg_match('/_[is]$/', $ss_field, $matches);
+      $solr_field = ($returnValue == 1) ? $ss_field : "${ss_field}_s";
+      if ($solr_field == "id_s") $solr_field = "id";  // special case for id field!
+      $ini_text .= "\n; $desc\n";
+      $ini_text .= "fields[$ss_field] = \"$solr_field\"\n";
+    }
+    return $ini_text;
+  }
+
   function asset($asset_id) {
     // return all metadata about the asset
     $asset = $this->get_response("/assets/$asset_id");
