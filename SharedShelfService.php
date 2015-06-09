@@ -71,6 +71,24 @@ class SharedShelfService {
     return $output;
   }
 
+  function get_url($url_suffix = '/account') {
+    $url = $this->sharedshelf_url . $url_suffix;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
+    /* make sure you provide FULL PATH to cookie files*/
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    $output = curl_exec ($ch);
+    if ($output === FALSE) {
+      curl_close($ch);
+      throw new Exception("Error Processing Request: " . $url, 1);
+    }
+    $url_out = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
+    curl_close($ch);
+    return $url_out;
+  }
+
   function login() {
     $form_fields = array(
       'email' => $this->sharedshelf_user,
