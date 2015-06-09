@@ -129,7 +129,7 @@ class SharedShelfService {
 
   function project_metadata($project_id) {
     // return metadata section of asset array
-    $args = "start=1&limit=1&with_meta=true";
+    $args = "start=0&limit=1&with_meta=true";
     $url = "/projects/$project_id/assets?$args";
     $assets = $this->get_response($url);
     if (!isset($assets['metaData'])) {
