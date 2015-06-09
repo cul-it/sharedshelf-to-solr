@@ -1,6 +1,7 @@
 <?php
 // ssTest.php - test sharedshelf object
 require_once('SharedShelfService.php');
+require_once('SolrUpdater.php');
 
 try {
   $user = parse_ini_file('ssUser.ini');
@@ -32,6 +33,17 @@ try {
 
   $values = $ss->asset_field_values($asset);
   print_r($values);
+
+  echo "\n\n";
+  $solr = new SolrUpdater('http://jrc88.solr.library.cornell.edu/solr', 'ss2solr.gamelan.ini');
+  $json = $solr->format_update_asset_field_values($values);
+  echo $json;
+
+  echo "\n\n";
+  $json = $solr->format_add_asset_field_values($values);
+  echo $json;
+
+  echo "\n\n";
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
