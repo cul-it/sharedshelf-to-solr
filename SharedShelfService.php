@@ -215,5 +215,13 @@ class SharedShelfService {
     }
     return $flat;
   }
+  /**
+   * track down the url for this asset's sharedshelf image
+   * @param  integer $asset_id asset id
+   * @return string           url for main image of this asset
+   */
+  function media_url($asset_id) {
+    return $this->get_url("/assets/$asset_id/representation");
+  }
 
 }
