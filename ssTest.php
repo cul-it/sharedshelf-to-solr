@@ -38,11 +38,19 @@ try {
   $count = count($assets);
 
   $id = rand(0, $count-1);
-  $asset = $ss->asset($assets["$id"]);
+  $asset_id = $assets["$id"];
+  $asset = $ss->asset($asset_id);
   print_r($asset);
 
   $values = $ss->asset_field_values($asset);
   print_r($values);
+
+  $url = $ss->media_url($asset_id);
+  print_r($url);
+
+  echo "\n\n";
+
+  echo $ss->project_fields_ini($selected_project_id);
 
   echo "\n\n";
   $solr = new SolrUpdater('http://jrc88.solr.library.cornell.edu/solr', 'ss2solr.gamelan.ini');
