@@ -16,12 +16,22 @@ try {
   }
 
   $projects = $ss->projects();
-  //print_r($projects);
+  print_r($projects);
+
+  /*
+  48 - Campus Artifacts, Art &amp; Memorabilia
+  78 - NYS Aerial Photographs
+  370 - Reps Slides
+  522 - Tamang
+  589 - Reps Bastides
+  616 - Gamelan
+  746 - Ragamala Paintings
+   */
 
   $selected_project_id = 616;
 
   $metadata = $ss->project_fields($selected_project_id);
-  print_r($metadata);
+  //print_r($metadata);
 
   $assets = $ss->project_assets($selected_project_id);
   //print_r($assets);
