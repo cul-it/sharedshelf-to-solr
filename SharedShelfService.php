@@ -151,9 +151,34 @@ class SharedShelfService {
     }
     return $asset_ids;
   }
+
+  function assets_modified_since_request($project_id, $start_date = "07/01/2011") {
+    // return a list of asset ids for items modified on or since the date
+    $total = $this->project_assets_count($project_id);
+    $per_page = 25;
+    $asset_ids = array();
+    $filter = array(
+      'type' => 'date',
+      'comparison' => 'ge',
+      'value' => $start_date,
+      'field' => 'updated_on',
+      );
+    $filter_text = json_encode( (object) $filter);
+    $suffix = "limit=$per_page&with_meta=false&filter=$filter_text";
+    for ($item = 0; $item < $total; $item += $per_page) {
+      $args = "start=$item&$suffix";
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
         $asset_ids[] = $asset['id'];
+      }
+      if ($item == 0) {
+        // reset total to total with filter
+        if (isset($assets['assets']['total'])) {
+          $total = $assets['assets']['total'];
+        }
+        else {
+          throw new Exception("Can't find filtered asset total in assets_modified_since", 1);
+        }
       }
     }
     return $asset_ids;
