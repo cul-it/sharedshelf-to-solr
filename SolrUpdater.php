@@ -74,7 +74,8 @@ class SolrUpdater {
     $fields = $this->ini['fields'];
     foreach ($asset as $ss_field => $value) {
       if (empty($fields["$ss_field"])) {
-        throw new Exception("Missing mapping from field: $ss_field to it's solr field name", 1);
+        continue; // skip any unknown fields
+        //throw new Exception("Missing mapping from field: $ss_field to it's solr field name", 1);
       }
       if (empty($value)) {
         $value = NULL; // for clearing previous values
