@@ -215,6 +215,7 @@ class SharedShelfService {
   }
 
   function project_fields($project_id) {
+    // some of the fields have descriptions
     $metadata = $this->project_metadata($project_id);
     $columns = $metadata['columns'];
     $fields = array();
@@ -222,6 +223,32 @@ class SharedShelfService {
       $name = $column['dataIndex'];
       $description = $column['header'];
       $fields["$name"] = $description;
+    }
+
+    // other fields do not
+    $total = $this->project_assets_count($project_id);
+    $per_page = 100;
+    for ($start = 0; $start < $total; $start += $per_page) {
+      $assets = $this->project_assets($project_id, $start, $per_page);
+      foreach ($assets as $asset) {
+        foreach ($asset as $k => $v) {
+          if (!isset($fields["$k"])) {
+            if (is_scalar($k)) {
+              $fields["$k"] = '???';
+            }
+            else {
+              var_dump($asset);
+              echo "nonscalar: ";
+              var_dump($k);
+              die('here');
+            }
+          }
+        }
+      }
+    }
+
+    if (ksort($fields) === FALSE) {
+      throw new Exception("can't sort fields for project $project_id", 1);
     }
     return $fields;
   }
