@@ -16,10 +16,35 @@ class SolrUpdater {
     if ($vars === FALSE) {
       throw new Exception("ini_file $ini_file is not readable.", 1);
     }
-    if (empty($vars['project'])) {
+    $this->ini = $vars;
+    if (empty($this->ini['project'])) {
       throw new Exception("ini file must contain a project id", 1);
     }
-    $this->ini = $vars;
+    if (empty($this->ini['copy_field'])) {
+      throw new Exception("ini file must contain copy_field", 1);
+    }
+    if (empty($this->ini['set_solr_field'])) {
+      throw new Exception("ini file must contain set_solr_field", 1);
+    }
+  }
+
+  function post_json($url_suffix = '/admin/info/system', $json) {
+    $url = $this->solr_url . $url_suffix;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($json))
+    );
+    $result = curl_exec($ch);
+    curl_close($ch);
+    if ($result === FALSE) {
+      throw new Exception("Error Processing Request: " . $url, 1);
+    }
+    return $result;
   }
 
   function format_update_asset_field_values($asset) {
