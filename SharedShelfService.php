@@ -193,6 +193,16 @@ class SharedShelfService {
     $total = $assets['total'];
     return $total;
   }
+
+  function project_assets($project_id, $start, $count) {
+    $args = "start=$start&limit=$count&with_meta=false";
+    $assets = $this->get_response("/projects/$project_id/assets?$args");
+    if (!isset($assets['assets'])) {
+      throw new Exception("Error Processing project_assets: $project, $start, $count", 1);
+    }
+    return $assets['assets'];
+  }
+
   function project_metadata($project_id) {
     // return metadata section of asset array
     $args = "start=0&limit=1&with_meta=true";
