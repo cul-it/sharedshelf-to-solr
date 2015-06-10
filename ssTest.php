@@ -16,7 +16,7 @@ try {
   }
 
   $projects = $ss->projects();
-  print_r($projects);
+  //print_r($projects);
 
   /*
   48 - Campus Artifacts, Art &amp; Memorabilia
@@ -31,22 +31,23 @@ try {
   $selected_project_id = 616;
 
   $metadata = $ss->project_fields($selected_project_id);
-  //print_r($metadata);
+  print_r($metadata);
 
-  $assets = $ss->project_assets($selected_project_id);
+  $assets = $ss->project_asset_ids($selected_project_id);
   //print_r($assets);
   $count = count($assets);
 
   $id = rand(0, $count-1);
   $asset_id = $assets["$id"];
   $asset = $ss->asset($asset_id);
-  print_r($asset);
+  //print_r($asset);
 
   $values = $ss->asset_field_values($asset);
-  print_r($values);
+  //print_r($values);
 
   $url = $ss->media_url($asset_id);
   print_r($url);
+  $values['Media_URL_s'] = $url;
 
   echo "\n\n";
 
@@ -54,12 +55,26 @@ try {
 
   echo "\n\n";
   $solr = new SolrUpdater('http://jrc88.solr.library.cornell.edu/solr', 'ss2solr.gamelan.ini');
+  $solr->add_custom_fields($values);
   $json = $solr->format_update_asset_field_values($values);
   echo $json;
 
   echo "\n\n";
   $json = $solr->format_add_asset_field_values($values);
   echo $json;
+
+  //$asset_list = $ss->project_assets($selected_project_id, 0, 5);
+  //print_r($asset_list);
+
+  // $modified = $ss->assets_modified_since_request($selected_project_id);
+  // print_r($modified);
+
+
+  echo "\n\n";
+  $asset_ids = $ss->project_asset_ids($selected_project_id, '2014-10-10T14:39:58+00:00');
+  print_r($asset_ids);
+  $t = count($asset_ids);
+  echo "Counted $t\n";
 
   echo "\n\n";
 }
