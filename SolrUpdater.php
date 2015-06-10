@@ -98,4 +98,16 @@ class SolrUpdater {
     return json_encode($data2);
   }
 
+  function add_custom_fields(&$asset) {
+    if (isset($this->ini['copy_field'])) {
+      foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
+        $asset["$solr_key"] = $asset["$ss_solr_key"];
+      }
+    }
+    if (isset($this->ini['set_solr_field'])) {
+      foreach($this->ini['set_solr_field'] as $solr_key => $value) {
+        $asset["$solr_key"] = $value;
+      }
+    }
+  }
 }
