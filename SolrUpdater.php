@@ -110,4 +110,23 @@ class SolrUpdater {
       }
     }
   }
+
+  function update($assets) {
+    $json = '';
+    foreach ($assets as $asset) {
+      $this->add_custom_fields($asset);
+      $json .= $this->format_update_asset_field_values($asset);
+    }
+    $this->post_json('/update/json', $json);
+  }
+
+  function add($assets) {
+    $json = '';
+    foreach ($assets as $asset) {
+      $this->add_custom_fields($asset);
+      $json .= $this->format_add_asset_field_values($asset);
+    }
+    $this->post_json('/update/json', $json);
+  }
+
 }
