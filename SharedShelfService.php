@@ -108,17 +108,49 @@ class SharedShelfService {
     return $response;
   }
 
-  function project_assets($project_id) {
+  function project_asset_ids($project_id, $start_date = FALSE) {
     // return array of all asset ids in this project
     $assets = $this->get_response("/projects/$project_id/assets");
     if (!isset($assets['total'])) {
       throw new Exception("Invalid project: $project_id", 1);
     }
+    // 2014-10-08T14:39:58+00:00
+    $date_format = 'Y-m-d\TH:i:sP';
+    if ($start_date !== FALSE) {
+      // 2014-10-08T14:39:58+00:00
+      $timezone = new DateTimeZone('America/New_York');
+      $start_datetime = DateTime::createFromFormat($date_format, $start_date, $timezone);
+      if ($start_datetime === FALSE) {
+        throw new Exception("Invalid date format: $start_date", 1);
+      }
+    }
     $total = $assets['total'];
     $asset_ids = array();
     $per_page = 25;
     for ($item = 0; $item < $total; $item += $per_page) {
-      $args = "start=$item&limit=$per_page";
+      $args = "start=$item&limit=$per_page&with_meta=false";
+      $assets = $this->get_response("/projects/$project_id/assets?$args");
+      foreach($assets['assets'] as $asset) {
+        if ($start_date !== FALSE) {
+          if (!isset($asset['updated_on'])) {
+            $id = $asset['id'];
+            throw new Exception("Missing expected updated_on field: $id", 1);
+          }
+          $asset_date = DateTime::createFromFormat($date_format, $asset['updated_on'], $timezone);
+          if ($asset_date === FALSE) {
+            throw new Exception("Invalid asset date format: $asset_date", 1);
+          }
+          if ($asset_date >= $start_datetime) {
+            $asset_ids[] = $asset['id'] . ':' . $asset_date->format('Y-m-d');
+          }
+        }
+        else {
+          $asset_ids[] = $asset['id'];
+        }
+      }
+    }
+    return $asset_ids;
+  }
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
         $asset_ids[] = $asset['id'];
