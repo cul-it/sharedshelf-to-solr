@@ -141,7 +141,7 @@ class SharedShelfService {
             throw new Exception("Invalid asset date format: $asset_date", 1);
           }
           if ($asset_date >= $start_datetime) {
-            $asset_ids[] = $asset['id'] . ':' . $asset_date->format('Y-m-d');
+            $asset_ids[] = $asset['id'];
           }
         }
         else {
