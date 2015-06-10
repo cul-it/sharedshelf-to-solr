@@ -256,9 +256,11 @@ class SharedShelfService {
   function project_fields_ini($project_id) {
     $fields = $this->project_fields($project_id);
     $ini_text = "\n; *********Fields to include in .ini file:\n";
+    $ini_text .= "; ; SharedsShelf field name description\n";
+    $ini_text .= "; fields[sharedshelf_field_name] = \"solr_field_name\"\n";
     foreach( $fields as $ss_field => $desc) {
       $matches = null;
-      $returnValue = preg_match('/_[is]$/', $ss_field, $matches);
+      $returnValue = preg_match('/_[ist]$/', $ss_field, $matches);
       $solr_field = ($returnValue == 1) ? $ss_field : "${ss_field}_s";
       if ($solr_field == "id_s") $solr_field = "id";  // special case for id field!
       $ini_text .= "\n; $desc\n";
