@@ -3,10 +3,11 @@ class SharedShelfService {
 
   private $sharedshelf_user = '';
   private $sharedshelf_password = '';
-  private $cookie_jar_path = '/tmp/SharedShelfService_cookies.txt';
+  private $cookie_jar_path = '';
   private $sharedshelf_url = 'http://catalog.sharedshelf.artstor.org';
 
-  function __construct($user, $password) {
+  function __construct($user, $password, $cookiejar = '/tmp/SharedShelfService_cookies.txt') {
+    $this->cookie_jar_path = $cookiejar;
     if (!file_exists($this->cookie_jar_path)) {
       throw new Exception("Cookie jar file must exist: " . $this->cookie_jar_path, 1);
     }
