@@ -16,7 +16,7 @@ try {
   }
 
   $projects = $ss->projects();
-  //print_r($projects);
+  print_r($projects);
 
   /*
   48 - Campus Artifacts, Art &amp; Memorabilia
