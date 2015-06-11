@@ -9,7 +9,9 @@ class SharedShelfService {
   function __construct($user, $password, $cookiejar = '/tmp/SharedShelfService_cookies.txt') {
     $this->cookie_jar_path = $cookiejar;
     if (!file_exists($this->cookie_jar_path)) {
-      throw new Exception("Cookie jar file must exist: " . $this->cookie_jar_path, 1);
+      if (touch($this->cookie_jar_path) === FALSE) {
+        throw new Exception("Cookie jar file must exist: " . $this->cookie_jar_path, 1);
+      }
     }
     $this->sharedshelf_user = $user;
     $this->sharedshelf_password = $password;
