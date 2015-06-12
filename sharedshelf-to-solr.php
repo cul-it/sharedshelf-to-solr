@@ -76,12 +76,12 @@ try {
             throw new Exception("Missing updated_on field on sharedshelf asset $id ", 1);
           }
           $ss_date =  trim($asset['updated_on']);
-          if (empty($solr_data['updated_on'])) {
+          if (empty($solr_data['updated_on_s'])) {
             $log->note('solr missing updated_on');
             $solr_date = FALSE;
           }
           else {
-            $solr_date = trim($solr_data['updated_on']);
+            $solr_date = trim($solr_data['updated_on_s']);
           }
           if ($ss_date == $solr_date) {
             // dates match - skip this record
