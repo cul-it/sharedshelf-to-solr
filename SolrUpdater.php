@@ -144,4 +144,20 @@ class SolrUpdater {
     $this->post_json('/update/json', $json);
   }
 
+  function get_item($id) {
+    // return array of field values for given solr item
+    $q = "q=id:$id&wt=json";
+    $json = $this->get('/collection1/select', $q);
+    $result = json_decode($json);
+    if ($result->response->numFound == 0) {
+      return array();
+    }
+    elseif ($result->response->numFound == 1) {
+      return (array) $result->response->docs[0];
+    }
+    else {
+      throw new Exception("Found too many solr items for id $id", 1);
+    }
+  }
+
 }
