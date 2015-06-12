@@ -31,12 +31,8 @@ try {
     throw new Exception("Need to create ssUser.ini. See README.md", 1);
   }
 
-  $ss = new SharedShelfService($user['email'], $user['password']);
-
-  // collection list and start time
-  $task = parse_ini_file("sharedshelf-to-solr.ini");
-  if ($task === FALSE) {
-    throw new Exception("Need sharedshelf-to-solr.ini", 1);
+  if (!isset($task['process']['cookie_jar_path'])) {
+    throw new Exception("Expecting cookie_jar_path in .ini file", 1);
   }
 
   $start_date = $task['start_date'];
