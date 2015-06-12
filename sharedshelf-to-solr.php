@@ -35,8 +35,12 @@ try {
     throw new Exception("Expecting cookie_jar_path in .ini file", 1);
   }
 
-  $start_date = $task['start_date'];
-  foreach($task['config'] as $config) {
+  $log->task('SharedShelfService');
+  $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
+
+  $start_date = $task['process']['start_date'];
+  foreach($task['configuration_files']['config'] as $config) {
+    $log->task($config);
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
