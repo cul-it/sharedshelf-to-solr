@@ -61,7 +61,7 @@ try {
       foreach ($assets as $asset) {
         $id = $asset['id'];
         $id = 9165219;
-        $solr_id = $id; // "1ss-$id";
+        $solr_id = $id; // "ss.$id";
         $log->item("asset $id");
 
         // is this asset in solr already?
