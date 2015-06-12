@@ -65,10 +65,30 @@ try {
         $log->item("asset $id");
 
         // is this asset in solr already?
-        $solr_data = $solr->get_fields($solr_id);
-        if (!empty($solr_data)) {
-          print_r(array($asset,$solr_data));
-          die('here');
+        $solr_data = $solr->get_item($solr_id);
+        if (empty($solr_data)) {
+          // just add the asset to solr
+          $log->note('Job:AddNew');
+        }
+        else {
+          // compare the dates
+          if (empty($asset['updated_on'])) {
+            throw new Exception("Missing updated_on field on sharedshelf asset $id ", 1);
+          }
+          $ss_date =  trim($asset['updated_on']);
+          if (empty($solr_data['updated_on'])) {
+            $log->note('solr missing updated_on');
+            $solr_date = FALSE;
+          }
+          else {
+            $solr_date = trim($solr_data['updated_on']);
+          }
+          if ($ss_date == $solr_date) {
+            // dates match - skip this record
+            $log->note('Job:Skip-DatesMatch');
+            continue;
+          }
+          $log->note('Job:Update');
         }
      }
    }
