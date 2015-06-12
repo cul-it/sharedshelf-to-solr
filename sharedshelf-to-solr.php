@@ -3,8 +3,28 @@
 
 require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
+require_once('SharedShelfToSolrLogger.php');
+
+$log = FALSE;
 
 try {
+
+  // batch process information
+  $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
+  if ($task === FALSE) {
+    echo "Need sharedshelf-to-solr.ini\n";
+    exit (1);
+  }
+
+  // open log
+  if (empty($task['process']['log_file_prefix'])) {
+    echo "Need log_file_prefix\n";
+    exit (1);
+  }
+
+  $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
+
+  $log->task('ssUser');
   // sharedshelf user
   $user = parse_ini_file('ssUser.ini');
   if ($user === FALSE) {
