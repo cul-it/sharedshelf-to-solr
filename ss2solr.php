@@ -79,7 +79,7 @@ function ss_get_url($url, $cookiejar) {
 function ss_post($url, $data) {
   $data2 = array('add' => array( 'doc' => $data, 'commitWithin' => 1000,),);
   $data_string = json_encode($data2);
-  $postData = 'commit=true';
+  //$postData = 'commit=true';
   echo "\n\n";
   print_r($data_string);
   echo "\n\n";
