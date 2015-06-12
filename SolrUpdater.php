@@ -109,7 +109,17 @@ class SolrUpdater {
   }
 
   function format_add_asset_field_values($asset) {
-    $data2 = array('add' => array( 'doc' => $asset, 'commitWithin' => 1000,),);
+    // rename ss fields to their solr names
+    $fields = $this->ini['fields'];
+    $solr_asset = array();
+    foreach ($asset as $k => $v) {
+      if (empty($fields["$k"])) {
+        throw new Exception("Missing solr field name for $k", 1);
+      }
+      $sk = $fields["$k"];
+      $solr_asset["$sk"] = $asset["$k"];
+    }
+    $data2 = array('add' => array( 'doc' => $solr_asset, 'commitWithin' => 1000,),);
     return json_encode($data2);
   }
 
