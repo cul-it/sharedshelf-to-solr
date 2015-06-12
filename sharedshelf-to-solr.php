@@ -60,9 +60,8 @@ try {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       foreach ($assets as $asset) {
         $id = $asset['id'];
-        $id = 9165219;
-        $solr_id = $id; // "ss.$id";
-        $log->item("asset $id");
+        $solr_id = "ss.$id";
+        $log->item("asset $solr_id");
 
         // is this asset in solr already?
         $solr_data = $solr->get_item($solr_id);
