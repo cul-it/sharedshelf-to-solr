@@ -74,9 +74,13 @@ class SharedShelfService {
     return $output;
   }
 
-  function get_url($url_suffix = '/account') {
+  private function get_url($url_suffix = '/account') {
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
+    if ($ch === FALSE) {
+      curl_close($check);
+      throw new Exception("Bad request url: $url", 1);
+    }
     curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
     /* make sure you provide FULL PATH to cookie files*/
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
@@ -89,6 +93,12 @@ class SharedShelfService {
     }
     $url_out = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
     curl_close($ch);
+    $check = curl_init($url_out);
+    if ($check === FALSE) {
+      curl_close($check);
+      throw new Exception("Bad result url: $url_out", 1);
+    }
+    curl_close($check);
     return $url_out;
   }
 
@@ -329,7 +339,15 @@ class SharedShelfService {
    * @return string           url for main image of this asset
    */
   function media_url($asset_id) {
-    return $this->get_url("/assets/$asset_id/representation");
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_url Request", 1);
+    }
+    $url = $this->get_url("/assets/$asset_id/representation");
+    $file_headers = @get_headers($url);
+    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+      throw new Exception("URL Not Found: $url", 1);
+      }
+    return $url;
   }
 
 }
