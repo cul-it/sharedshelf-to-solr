@@ -59,8 +59,8 @@ try {
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       foreach ($assets as $asset) {
-        $id = $asset['id'];
-        $solr_id = "ss.$id";
+        $ss_id = $asset['id'];
+        $solr_id = 'ss.' . $ss_id;
         $log->item("asset $solr_id");
 
         // is this asset in solr already?
@@ -69,7 +69,7 @@ try {
           // just add the asset to solr
           $log->note('Job:AddNew');
           $flattened_asset = $ss->asset_field_values($asset);
-          $url = $ss->media_url($asset_id);
+          $url = $ss->media_url($ss_id);
           $flattened_asset['Media_URL_s'] = $url;
           $flattened_asset['id'] =  $solr_id;
           $result = $solr->add(array($flattened_asset));
@@ -77,7 +77,7 @@ try {
         else {
           // compare the dates
           if (empty($asset['updated_on'])) {
-            throw new Exception("Missing updated_on field on sharedshelf asset $id ", 1);
+            throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
           }
           $ss_date =  trim($asset['updated_on']);
           if (empty($solr_data['updated_on_s'])) {
@@ -94,7 +94,7 @@ try {
           }
           $log->note('Job:Update');
           $flattened_asset = $ss->asset_field_values($asset);
-          $url = $ss->media_url($asset_id);
+          $url = $ss->media_url($ss_id);
           $flattened_asset['Media_URL_s'] = $url;
           $flattened_asset['id'] =  $solr_id;
           $flattened_asset = $solr->convert_ss_names_to_solr($flattened_asset);
@@ -122,7 +122,7 @@ try {
             $updates['id'] = $solr_id;
             $updates['_version_'] = $solr_data['_version_'];
             $result = $solr->update(array($updates));
-         }
+          }
         }
      }
    }
