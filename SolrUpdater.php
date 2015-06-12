@@ -66,8 +66,8 @@ class SolrUpdater {
     /*
     convert
     $asset['id'] = nnn
-    $asset['ss_field_1'] = value1
-    $asset['ss_field_2'] = value2
+    $asset['solr_field_1'] = value1
+    $asset['solr_field_2'] = value2
     ...
     to JSON atomic update
     [
@@ -87,16 +87,11 @@ class SolrUpdater {
     }
     $out = array();
     $fields = $this->ini['fields'];
-    foreach ($asset as $ss_field => $value) {
-      if (empty($fields["$ss_field"])) {
-        continue; // skip any unknown fields
-        //throw new Exception("Missing mapping from field: $ss_field to it's solr field name", 1);
-      }
+    foreach ($asset as $solr_field => $value) {
       if (empty($value)) {
         $value = NULL; // for clearing previous values
       }
-      $solr_field = $fields["$ss_field"];
-      if ($ss_field == 'id') {
+      if ($solr_field == 'id') {
         $out["$solr_field"] = $value;
       }
       else {
@@ -105,21 +100,11 @@ class SolrUpdater {
       }
     }
     $obj = (object) $out;
-    return json_encode($obj);
+    $json = json_encode($obj);
   }
 
   function format_add_asset_field_values($asset) {
-    // rename ss fields to their solr names
-    $fields = $this->ini['fields'];
-    $solr_asset = array();
-    foreach ($asset as $k => $v) {
-      if (empty($fields["$k"])) {
-        throw new Exception("Missing solr field name for $k", 1);
-      }
-      $sk = $fields["$k"];
-      $solr_asset["$sk"] = $asset["$k"];
-    }
-    $data2 = array('add' => array( 'doc' => $solr_asset, 'commitWithin' => 1000,),);
+    $data2 = array('add' => array( 'doc' => $asset, 'commitWithin' => 1000,),);
     return json_encode($data2);
   }
 
@@ -137,6 +122,7 @@ class SolrUpdater {
   }
 
   function update($assets) {
+    // $assets have names converted to solr already
     $json = '';
     foreach ($assets as $asset) {
       $this->add_custom_fields($asset);
@@ -152,6 +138,7 @@ class SolrUpdater {
   }
 
   function add($assets) {
+    // $assets have names converted to solr already
     $json = '';
     foreach ($assets as $asset) {
       $this->add_custom_fields($asset);
