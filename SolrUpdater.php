@@ -8,7 +8,7 @@ class SolrUpdater {
    * constructor
    * @param string $solr URL of the solr service
    * @param string $ini_file path to .ini file containing field
-   * eg. http://jrc88.solr.library.cornell.edu/solr/
+   * eg. http://jrc88.solr.library.cornell.edu/solr
    */
   function __construct($solr, $ini_file) {
     $this->solr_url = $solr;
