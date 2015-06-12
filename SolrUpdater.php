@@ -169,4 +169,17 @@ class SolrUpdater {
     }
   }
 
+  function convert_ss_names_to_solr($asset) {
+    $fields = $this->ini['fields'];
+    $solr_asset = array();
+    foreach ($asset as $k => $v) {
+      if (empty($fields["$k"])) {
+        throw new Exception("Missing solr field name for $k", 1);
+      }
+      $sk = $fields["$k"];
+      $solr_asset["$sk"] = $asset["$k"];
+    }
+    return $solr_asset;
+  }
+
 }
