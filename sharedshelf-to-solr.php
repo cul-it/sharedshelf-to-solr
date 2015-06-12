@@ -93,15 +93,39 @@ try {
             continue;
           }
           $log->note('Job:Update');
+          $flattened_asset = $ss->asset_field_values($asset);
+          $url = $ss->media_url($asset_id);
+          $flattened_asset['Media_URL_s'] = $url;
+          $flattened_asset['id'] =  $solr_id;
+          $flattened_asset = $solr->convert_ss_names_to_solr($flattened_asset);
+          $updates = array();
+          foreach ($flattened_asset as $key => $value) {
+            if (empty($value)) {
+              // not allowed to set unknown fields to null
+              if (!empty($solr_data["$key"])) {
+                //field exists in solr so we can null it out
+                $updates["$key"] = NULL;
+              }
+            }
+            elseif (empty($solr_data["$key"])) {
+              // add the new field
+              $updates["$key"] = $value;
+            }
+            else {
+              if (strcmp($value, $solr_data["$key"]) != 0) {
+                // add the changed value
+                $updates["$key"] = $value;
+              }
+            }
+          }
+          if (!empty($updates)) {
+            $updates['id'] = $solr_id;
+            $updates['_version_'] = $solr_data['_version_'];
+            $result = $solr->update(array($updates));
+         }
         }
      }
    }
-      // $asset = $ss->asset($id);
-      // $ss_values = $ss->asset_field_values($asset);
-      // $url = $ss->media_url($asset_id);
-      // $ss_values['Media_URL_s'] = $url;
-      // print_r($values);
-      // }
   }
 
   print_r($task);
