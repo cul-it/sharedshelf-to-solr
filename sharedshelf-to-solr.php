@@ -68,6 +68,11 @@ try {
         if (empty($solr_data)) {
           // just add the asset to solr
           $log->note('Job:AddNew');
+          $flattened_asset = $ss->asset_field_values($asset);
+          $url = $ss->media_url($asset_id);
+          $flattened_asset['Media_URL_s'] = $url;
+          $flattened_asset['id'] =  $solr_id;
+          $result = $solr->add(array($flattened_asset));
         }
         else {
           // compare the dates
