@@ -142,7 +142,13 @@ class SolrUpdater {
       $this->add_custom_fields($asset);
       $json .= $this->format_update_asset_field_values($asset);
     }
-    $this->post_json('/update/json', $json);
+    $json = $this->post_json('/update/json', $json);
+    $result = json_decode($json);
+    if ($result->responseHeader->status != 0) {
+      $err = print_r($result, TRUE);
+      throw new Exception("Error Processing Request: $err", 1);
+    }
+    return $result;
   }
 
   function add($assets) {
@@ -151,7 +157,13 @@ class SolrUpdater {
       $this->add_custom_fields($asset);
       $json .= $this->format_add_asset_field_values($asset);
     }
-    $this->post_json('/update/json', $json);
+    $json = $this->post_json('/update/json', $json);
+    $result = json_decode($json);
+    if ($result->responseHeader->status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("Error Processing Request: $err", 1);
+    }
+    return $result;
   }
 
   function get_item($id) {
