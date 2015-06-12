@@ -45,12 +45,53 @@ try {
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
     }
-    print_r($project);
+    //print_r($project);
+    $log->note('SolrUpdater');
+    $solr_url = $project['solr'];
+    $solr = new SolrUpdater($solr_url, $config);
+
+    $log->note('project_asset_ids');
+    $project_id = $project['project'];
+    $asset_count = $ss->project_assets_count($project_id);
+    $log->note("asset_count:$asset_count");
+    echo "$config asset count: $asset_count\n";
+    $per_page = 10;
+    for ($start = 0; $start < $asset_count; $start += $per_page) {
+      $assets =  $ss->project_assets($project_id, $start, $per_page);
+      foreach ($assets as $asset) {
+        $id = $asset['id'];
+        $id = 9165219;
+        $solr_id = $id; // "1ss-$id";
+        $log->item("asset $id");
+
+        // is this asset in solr already?
+        $solr_data = $solr->get_fields($solr_id);
+        if (!empty($solr_data)) {
+          print_r(array($asset,$solr_data));
+          die('here');
+        }
+     }
+   }
+      // $asset = $ss->asset($id);
+      // $ss_values = $ss->asset_field_values($asset);
+      // $url = $ss->media_url($asset_id);
+      // $ss_values['Media_URL_s'] = $url;
+      // print_r($values);
+      // }
   }
 
   print_r($task);
+  $log->task('Done.');
 }
 catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
+  $error = 'Caught exception: ' . $e->getMessage() . "\n";
+  if ($log !== FALSE) {
+    $log->error($error);
+  }
+  else {
+    echo $error;
+  }
+  exit (1);
 }
+exit (0);
 
