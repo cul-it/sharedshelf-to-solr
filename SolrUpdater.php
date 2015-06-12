@@ -47,6 +47,21 @@ class SolrUpdater {
     return $result;
   }
 
+  private function get($url_suffix = '/admin/info/system', $params) {
+    $url = $this->solr_url . $url_suffix;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, count($params));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    if ($result === FALSE) {
+      throw new Exception("Error Processing Request: " . $url, 1);
+    }
+    return $result;
+  }
+
   function format_update_asset_field_values($asset) {
     /*
     convert
