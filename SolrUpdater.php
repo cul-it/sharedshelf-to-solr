@@ -28,7 +28,7 @@ class SolrUpdater {
     }
   }
 
-  function post_json($url_suffix = '/admin/info/system', $json) {
+  private function post_json($url_suffix = '/admin/info/system', $json) {
     $url = $this->solr_url . $url_suffix;
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
