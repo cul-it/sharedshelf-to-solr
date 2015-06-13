@@ -58,10 +58,14 @@ try {
     $per_page = 10;
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
+      $counter = $start;
       foreach ($assets as $asset) {
         $ss_id = $asset['id'];
+        //if ($ss_id < 1477340) continue;
         $solr_id = 'ss.' . $ss_id;
         $log->item("asset $solr_id");
+        $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
+        $log->note("Completed:$pct");
 
         // is this asset in solr already?
         $solr_data = $solr->get_item($solr_id);
