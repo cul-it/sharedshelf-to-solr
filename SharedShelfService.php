@@ -74,21 +74,45 @@ class SharedShelfService {
     return $output;
   }
 
-  function get_url($url_suffix = '/account') {
+  private function get_url($url_suffix = '/account') {
+    // sometimes the first time gets the url without an extension
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
-    /* make sure you provide FULL PATH to cookie files*/
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    $output = curl_exec ($ch);
-    if ($output === FALSE) {
+    if ($ch === FALSE) {
       curl_close($ch);
-      throw new Exception("Error Processing Request: " . $url, 1);
+      throw new Exception("Bad request url: $url", 1);
     }
-    $url_out = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    $response = curl_exec($ch);
+    preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+    $url2 = !empty($matches[1]) ? trim($matches[1][0]) : 'No redirect found';
     curl_close($ch);
+
+    $extension = pathinfo($url2, PATHINFO_EXTENSION);
+    if (!empty($extension)) {
+      return $url2;
+    }
+
+    // $url2 comes back without an extension (eg. .jpg) so get second redirect
+    $ch = curl_init($url2);
+    if ($ch === FALSE) {
+      curl_close($ch);
+      throw new Exception("Bad second request url: $url2", 1);
+    }
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    $response = curl_exec($ch);
+    preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+    if (empty($matches[1])) {
+      throw new Exception("Can't find url for $url", 1);
+    }
+
+    $url_out = trim($matches[1][0]);
     return $url_out;
   }
 
@@ -329,7 +353,15 @@ class SharedShelfService {
    * @return string           url for main image of this asset
    */
   function media_url($asset_id) {
-    return $this->get_url("/assets/$asset_id/representation");
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_url Request", 1);
+    }
+    $url = $this->get_url("/assets/$asset_id/representation");
+    $file_headers = @get_headers($url);
+    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+      throw new Exception("URL Not Found: $url", 1);
+      }
+    return $url;
   }
 
 }

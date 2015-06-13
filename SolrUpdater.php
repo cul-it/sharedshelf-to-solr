@@ -88,7 +88,7 @@ class SolrUpdater {
     $out = array();
     $fields = $this->ini['fields'];
     foreach ($asset as $solr_field => $value) {
-      if (empty($value)) {
+      if (empty($value) && $value !== FALSE) {
         $value = NULL; // for clearing previous values
       }
       if ($solr_field == 'id') {
@@ -101,6 +101,7 @@ class SolrUpdater {
     }
     $obj = (object) $out;
     $json = json_encode($obj);
+    return $json;
   }
 
   function format_add_asset_field_values($asset) {
@@ -128,6 +129,8 @@ class SolrUpdater {
       $this->add_custom_fields($asset);
       $json .= $this->format_update_asset_field_values($asset);
     }
+    // print_r($json);
+    // die('here');
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
     if ($result->responseHeader->status != 0) {
