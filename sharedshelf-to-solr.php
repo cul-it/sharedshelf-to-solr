@@ -58,6 +58,7 @@ try {
     $per_page = 10;
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
+      $solr_assets = array();
       $counter = $start;
       foreach ($assets as $asset) {
         $ss_id = $asset['id'];
@@ -68,15 +69,12 @@ try {
         $log->note("Completed:$pct");
 
         // is this asset in solr already?
-        $solr_data = $solr->get_item($solr_id);
-        if (empty($solr_data)) {
+        $solr_in = $solr->get_item($solr_id);
+        if (empty($solr_in)) {
           // just add the asset to solr
           $log->note('Job:AddNew');
           $flattened_asset = $ss->asset_field_values($asset);
-          $url = $ss->media_url($ss_id);
-          $flattened_asset['Media_URL_s'] = $url;
-          $flattened_asset['id'] =  $solr_id;
-          $result = $solr->add(array($flattened_asset));
+          $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
         }
         else {
           // compare the dates
@@ -84,14 +82,14 @@ try {
             throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
           }
           $ss_date =  trim($asset['updated_on']);
-          if (empty($solr_data['updated_on_s'])) {
+          if (empty($solr_in['updated_on_s'])) {
             $log->note('solr missing updated_on');
             $solr_date = FALSE;
           }
           else {
-            $solr_date = trim($solr_data['updated_on_s']);
+            $solr_date = trim($solr_in['updated_on_s']);
           }
-          $solr_date = FALSE;
+          $solr_date = FALSE; // *************************debugging******************
           if ($ss_date == $solr_date) {
             // dates match - skip this record
             $log->note('Job:Skip-DatesMatch');
@@ -99,43 +97,22 @@ try {
           }
           $log->note('Job:Update');
           $flattened_asset = $ss->asset_field_values($asset);
-          $url = $ss->media_url($ss_id);
-          $flattened_asset['Media_URL_s'] = $url;
-          $flattened_asset['id'] =  $solr_id;
-          $flattened_asset = $solr->convert_ss_names_to_solr($flattened_asset);
-          $updates = array();
-          foreach ($flattened_asset as $key => $value) {
-            if (empty($value)) {
-              // not allowed to set unknown fields to null
-              if (!empty($solr_data["$key"])) {
-                //field exists in solr so we can null it out
-                $updates["$key"] = $value;
-                echo "$key 1\n";
-              }
-            }
-            elseif (empty($solr_data["$key"])) {
-              // add the new field
-              $updates["$key"] = $value;
-               echo "$key 2\n";
-            }
-            else {
-              if (strcmp($value, $solr_data["$key"]) != 0) {
-                // add the changed value
-                $updates["$key"] = $value;
-                 echo "$key 3\n";
-              }
-            }
-          }
-          if (!empty($updates)) {
-            $updates['id'] = $solr_id;
-            //var_dump($solr_data); die('here');
-            //$updates['_version_'] = $solr_data['_version_'];
-            //$updates['_version_'] = 0;
-            $result = $solr->update(array($updates));
-          }
+          $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
+          $solr_out = array_replace($solr_in, $solr_new);
         }
-     }
-   }
+        $url = $ss->media_url($ss_id);
+        $solr_out['Media_URL_s'] = $url;
+        $solr_out['id'] =  $solr_id;
+        $solr_assets[] = $solr_out;
+      }
+      if (!empty($solr_assets)) {
+        $result = $solr->add($solr_assets);
+        if ($result->responseHeader->status != 0) {
+          $err = print_r($result, TRUE);
+          throw new Exception("Error Processing Request: $err", 1);
+        }
+      }
+    }
   }
 
   print_r($task);
