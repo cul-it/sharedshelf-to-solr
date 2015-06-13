@@ -55,7 +55,7 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
-    $per_page = 1;
+    $per_page = 25;
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       $solr_assets = array();
@@ -89,7 +89,7 @@ try {
           else {
             $solr_date = trim($solr_in['updated_on_s']);
           }
-          $solr_date = FALSE; // *************************debugging******************
+          //$solr_date = FALSE; // *************************debugging******************
           if ($ss_date == $solr_date) {
             // dates match - skip this record
             $log->note('Job:Skip-DatesMatch');
