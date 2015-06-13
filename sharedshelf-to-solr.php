@@ -105,23 +105,28 @@ try {
               // not allowed to set unknown fields to null
               if (!empty($solr_data["$key"])) {
                 //field exists in solr so we can null it out
-                $updates["$key"] = NULL;
+                $updates["$key"] = $value;
+                echo "$key 1\n";
               }
             }
             elseif (empty($solr_data["$key"])) {
               // add the new field
               $updates["$key"] = $value;
+               echo "$key 2\n";
             }
             else {
               if (strcmp($value, $solr_data["$key"]) != 0) {
                 // add the changed value
                 $updates["$key"] = $value;
+                 echo "$key 3\n";
               }
             }
           }
           if (!empty($updates)) {
             $updates['id'] = $solr_id;
-            $updates['_version_'] = $solr_data['_version_'];
+            //var_dump($solr_data); die('here');
+            //$updates['_version_'] = $solr_data['_version_'];
+            //$updates['_version_'] = 0;
             $result = $solr->update(array($updates));
           }
         }

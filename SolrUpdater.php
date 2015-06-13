@@ -88,7 +88,7 @@ class SolrUpdater {
     $out = array();
     $fields = $this->ini['fields'];
     foreach ($asset as $solr_field => $value) {
-      if (empty($value)) {
+      if (empty($value) && $value !== FALSE) {
         $value = NULL; // for clearing previous values
       }
       if ($solr_field == 'id') {
