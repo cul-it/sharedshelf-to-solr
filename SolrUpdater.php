@@ -161,10 +161,11 @@ class SolrUpdater {
     $q = "q=id:$id&wt=json";
     $json = $this->get('/collection1/select', $q);
     $result = json_decode($json);
-    if ($result->response->numFound == 0) {
+    $found = isset($result->response->numFound) ? $result->response->numFound : 0;
+    if ($found == 0) {
       return array();
     }
-    elseif ($result->response->numFound == 1) {
+    elseif ($found == 1) {
       return (array) $result->response->docs[0];
     }
     else {
