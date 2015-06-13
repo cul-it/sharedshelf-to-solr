@@ -87,6 +87,7 @@ try {
           else {
             $solr_date = trim($solr_data['updated_on_s']);
           }
+          $solr_date = FALSE;
           if ($ss_date == $solr_date) {
             // dates match - skip this record
             $log->note('Job:Skip-DatesMatch');
