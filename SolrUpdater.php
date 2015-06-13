@@ -157,7 +157,7 @@ class SolrUpdater {
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
-      $err = print_r($result, TRUE);
+      $err = print_r($json, TRUE);
       throw new Exception("6 Error Processing Request: result:$err status:$status", 1);
     }
     return $status;
