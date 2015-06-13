@@ -75,30 +75,44 @@ class SharedShelfService {
   }
 
   private function get_url($url_suffix = '/account') {
+    // sometimes the first time gets the url without an extension
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
     if ($ch === FALSE) {
-      curl_close($check);
+      curl_close($ch);
       throw new Exception("Bad request url: $url", 1);
     }
     curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
-    /* make sure you provide FULL PATH to cookie files*/
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    $output = curl_exec ($ch);
-    if ($output === FALSE) {
-      curl_close($ch);
-      throw new Exception("Error Processing Request: " . $url, 1);
-    }
-    $url_out = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    $response = curl_exec($ch);
+    preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+    $url2 = !empty($matches[1]) ? trim($matches[1][0]) : 'No redirect found';
     curl_close($ch);
-    $check = curl_init($url_out);
-    if ($check === FALSE) {
-      curl_close($check);
-      throw new Exception("Bad result url: $url_out", 1);
+
+    $extension = pathinfo($url2, PATHINFO_EXTENSION);
+    if (!empty($extension)) {
+      return $url2;
     }
-    curl_close($check);
+
+    // $url2 comes back without an extension (eg. .jpg) so get second redirect
+    $ch = curl_init($url2);
+    if ($ch === FALSE) {
+      curl_close($ch);
+      throw new Exception("Bad second request url: $url2", 1);
+    }
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    $response = curl_exec($ch);
+    preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+    if (empty($matches[1])) {
+      throw new Exception("Can't find url for $url", 1);
+    }
+
+    $url_out = trim($matches[1][0]);
     return $url_out;
   }
 
