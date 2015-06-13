@@ -138,7 +138,8 @@ class SolrUpdater {
     // die('here');
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
-    if ($result->responseHeader->status != 0) {
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
       $err = print_r($result, TRUE);
       throw new Exception("Error Processing Request: $err", 1);
     }
@@ -154,7 +155,8 @@ class SolrUpdater {
     }
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
-    if ($result->responseHeader->status != "0") {
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
       $err = print_r($result, TRUE);
       throw new Exception("Error Processing Request: $err", 1);
     }
