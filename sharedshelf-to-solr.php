@@ -107,9 +107,8 @@ try {
       }
       if (!empty($solr_assets)) {
         $result = $solr->add($solr_assets);
-        if ($result->responseHeader->status != 0) {
-          $err = print_r($result, TRUE);
-          throw new Exception("Error Processing Request: $err", 1);
+        if ($result != 0) {
+          throw new Exception("Error adding record: $solr_id", 1);
         }
       }
     }

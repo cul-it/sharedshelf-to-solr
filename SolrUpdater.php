@@ -143,7 +143,7 @@ class SolrUpdater {
       $err = print_r($result, TRUE);
       throw new Exception("Error Processing Request: $err", 1);
     }
-    return $result;
+    return $status;
   }
 
   function add($assets) {
@@ -160,7 +160,7 @@ class SolrUpdater {
       $err = print_r($result, TRUE);
       throw new Exception("Error Processing Request: $err", 1);
     }
-    return $result;
+    return $status;
   }
 
   function get_item($id) {
