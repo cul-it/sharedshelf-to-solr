@@ -112,6 +112,9 @@ class SolrUpdater {
   function add_custom_fields(&$asset) {
     if (isset($this->ini['copy_field'])) {
       foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
+        if (!isset($asset["$ss_solr_key"])) {
+          throw new Exception("copy_field missing: $ss_solr_key", 1);
+        }
         $asset["$solr_key"] = $asset["$ss_solr_key"];
       }
     }
