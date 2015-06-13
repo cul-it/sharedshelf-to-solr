@@ -3,7 +3,7 @@ class SharedShelfToSolrLogger {
 
   private $log_file = '';
   private $task = 'unknown';
-  private $tast_start = FALSE;
+  private $task_start = FALSE;
   private $item = 'unknown';
   private $item_start = FALSE;
   private $messages = array();
