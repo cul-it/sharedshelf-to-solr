@@ -55,7 +55,7 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
-    $per_page = 10;
+    $per_page = 1;
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       $solr_assets = array();
