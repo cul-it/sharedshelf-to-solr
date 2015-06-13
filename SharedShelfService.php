@@ -63,7 +63,7 @@ class SharedShelfService {
     $output = curl_exec ($ch);
     curl_close($ch);
     if ($output === FALSE) {
-      throw new Exception("Error Processing Request: " . $url, 1);
+      throw new Exception("1 Error Processing Request: " . $url, 1);
     }
     $output = json_decode($output, true);
     if ($check_success) {
@@ -300,7 +300,7 @@ class SharedShelfService {
     // return all metadata about the asset
     $asset = $this->get_response("/assets/$asset_id");
     if (!(isset($asset['asset'][0]))) {
-      throw new Exception("Error Processing Request: asset id $asset_id", 1);
+      throw new Exception("2 Error Processing Request: asset id $asset_id", 1);
     }
     return $asset['asset'][0];
   }

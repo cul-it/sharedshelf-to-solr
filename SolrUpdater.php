@@ -42,7 +42,7 @@ class SolrUpdater {
     $result = curl_exec($ch);
     curl_close($ch);
     if ($result === FALSE) {
-      throw new Exception("Error Processing Request: " . $url, 1);
+      throw new Exception("3 Error Processing Request: " . $url, 1);
     }
     return $result;
   }
@@ -57,7 +57,7 @@ class SolrUpdater {
     $result = curl_exec($ch);
     curl_close($ch);
     if ($result === FALSE) {
-      throw new Exception("Error Processing Request: " . $url, 1);
+      throw new Exception("4 Error Processing Request: " . $url, 1);
     }
     return $result;
   }
@@ -141,7 +141,7 @@ class SolrUpdater {
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
       $err = print_r($result, TRUE);
-      throw new Exception("Error Processing Request: $err", 1);
+      throw new Exception("5 Error Processing Request: $err", 1);
     }
     return $status;
   }
@@ -158,7 +158,7 @@ class SolrUpdater {
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
       $err = print_r($result, TRUE);
-      throw new Exception("Error Processing Request: $err", 1);
+      throw new Exception("6 Error Processing Request: $err", 1);
     }
     return $status;
   }
