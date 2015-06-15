@@ -38,7 +38,6 @@ try {
   $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
-  $start_date = $task['process']['start_date'];
   foreach($task['configuration_files']['config'] as $config) {
     $log->task($config);
     $project = parse_ini_file($config);
