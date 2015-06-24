@@ -63,7 +63,7 @@ try {
       foreach ($assets as $asset) {
         $ss_id = $asset['id'];
         //if ($ss_id < 1477340) continue;
-        $solr_id = 'ss.' . $ss_id;
+        $solr_id = 'ss:' . $ss_id;
         $log->item("asset $solr_id");
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
