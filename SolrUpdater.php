@@ -120,6 +120,17 @@ class SolrUpdater {
         $asset["$solr_key"] = $value;
       }
     }
+    if (isset($this->ini['set_location'])) {
+      foreach($this->ini['set_location'] as $solr_key => $value) {
+        // grab solr field names for lat and lon
+        list($lat,$lon) = explode(',', $value);
+        if (isset($asset["$lat"]) && isset($asset["$lon"])) {
+          // set the value of the field to the two field values separated by a comma
+          $value = $asset["$lat"] . ',' . $asset["$lon"];
+          $asset["$solr_key"] = $value;
+        }
+      }
+    }
   }
 
   function update($assets) {
