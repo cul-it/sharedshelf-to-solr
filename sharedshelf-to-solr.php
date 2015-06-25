@@ -114,7 +114,6 @@ try {
       if (!empty($solr_assets)) {
         $result = $solr->add($solr_assets);
         if ($result->responseHeader->status != 0) {
-          $err = print_r($result, TRUE);
           throw new Exception("Error Processing Request: $err", 1);
         }
       }
