@@ -5,6 +5,8 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
+define("FORCE_REPLACEMENT", FALSE);
+
 $log = FALSE;
 
 try {
@@ -89,13 +91,17 @@ try {
           else {
             $solr_date = trim($solr_in['updated_on_s']);
           }
-          $solr_date = FALSE; // *************************debugging******************
-          if ($ss_date == $solr_date) {
+          if (FORCE_REPLACEMENT) {
+            $log->note('Job:Replace');
+          }
+          else if ($ss_date == $solr_date) {
             // dates match - skip this record
             $log->note('Job:Skip-DatesMatch');
             continue;
           }
-          $log->note('Job:Update');
+          else {
+            $log->note('Job:Update');
+          }
           $flattened_asset = $ss->asset_field_values($asset);
           $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
           $solr_out = array_replace($solr_in, $solr_new);
