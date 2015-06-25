@@ -125,6 +125,17 @@ class SolrUpdater {
         $asset["$solr_key"] = $value;
       }
     }
+    if (isset($this->ini['set_location'])) {
+      foreach($this->ini['set_location'] as $solr_key => $value) {
+        // grab solr field names for lat and lon
+        list($lat,$lon) = explode(',', $value);
+        if (isset($asset["$lat"]) && isset($asset["$lon"])) {
+          // set the value of the field to the two field values separated by a comma
+          $value = $asset["$lat"] . ',' . $asset["$lon"];
+          $asset["$solr_key"] = $value;
+        }
+      }
+    }
   }
 
   function update($assets) {
@@ -153,13 +164,13 @@ class SolrUpdater {
       $this->add_custom_fields($asset);
       $json .= $this->format_add_asset_field_values($asset);
     }
-    if (empty($json)) return 0;
-    $json_out = $this->post_json('/update/json', $json);
-    $result = json_decode($json_out);
-    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
-    if ($status != "0") {
-      $err = print_r($json_out, TRUE);
-      throw new Exception("6 Error Processing Request: result:$err status:$status", 1);
+    $json = $this->post_json('/update/json', $json);
+      // print_r($json);
+      // die('here');
+    $result = json_decode($json);
+    if ($result->responseHeader->status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("Error Processing Request: $err", 1);
     }
     return $status;
   }
