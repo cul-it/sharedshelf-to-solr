@@ -178,6 +178,8 @@ class SolrUpdater {
 
   function get_item($id) {
     // return array of field values for given solr item
+    // note: colon characters in $id must be escaped
+    $id = str_replace(':', '\:', $id);
     $q = "q=id:$id&wt=json";
     $json = $this->get('/collection1/select', $q);
     $result = json_decode($json);
