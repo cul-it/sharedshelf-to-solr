@@ -78,11 +78,15 @@ try {
         $parts = explode("\t", $output);
         array_unshift($parts, $ss_id);
         array_push($parts, $asset['fd_28389_s']);
+        $parts2 = array();
+        foreach ($parts as $part) {
+          $parts2[] = trim($part);
+        }
         // var_dump($parts);
         // print_r($asset);
         // die(PHP_EOF . 'here');
 
-        $line = implode("\t", $parts) . PHP_EOL;
+        $line = implode("\t", $parts2) . PHP_EOL;
         file_put_contents($output_file, $line, FILE_APPEND);
       }
     }
