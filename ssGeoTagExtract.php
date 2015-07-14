@@ -62,6 +62,7 @@ try {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       $solr_assets = array();
       $counter = $start;
+      $lines = '';
       foreach ($assets as $asset) {
         $ss_id = $asset['id'];
         $solr_id = 'ss:' . $ss_id;
@@ -86,9 +87,9 @@ try {
         // print_r($asset);
         // die(PHP_EOF . 'here');
 
-        $line = implode("\t", $parts2) . PHP_EOL;
-        file_put_contents($output_file, $line, FILE_APPEND);
+        $lines .= implode("\t", $parts2) . PHP_EOL;
       }
+      file_put_contents($output_file, $lines, FILE_APPEND);
     }
   }
 
