@@ -106,6 +106,10 @@ try {
         }
         $url = $ss->media_url($ss_id);
         $solr_out['Media_URL_s'] = $url;
+        for ($size = 0; $size <= 4; $size++) {
+          $fld = 'Media_URL_size_' . $size . "_s";
+          $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+        }
         $solr_out['id'] =  $solr_id;
         $solr_assets[] = $solr_out;
       }
