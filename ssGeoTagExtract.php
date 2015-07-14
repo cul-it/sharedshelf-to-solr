@@ -77,6 +77,8 @@ try {
           throw new Exception("Error Processing Request: $ss_id : $url", 1);
         }
         $parts = explode("\t", $output);
+        if ($parts[0] == "-") continue; // no lat/lon data
+
         array_unshift($parts, $ss_id);
         array_push($parts, $asset['fd_28389_s']);
         $parts2 = array();
