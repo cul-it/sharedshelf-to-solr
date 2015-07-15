@@ -5,13 +5,33 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
-define("FORCE_REPLACEMENT", FALSE);
+function usage() {
+  echo PHP_EOL;
+  echo "Usage: " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
+  echo "--help - show this info" . PHP_EOL;
+  echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
+  echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric)" . PHP_EOL;
+  exit (0);
+}
 
 $log = FALSE;
 
-$single_collection = isset($argv[1]) ? $argv[1] : FALSE;
-if ($single_collection === FALSE) {
-  echo "You can select a single SharedShelf collection by specifying project number on the command line. See listProjects.php" . PHP_EOL;
+$options = getopt("p:",array("help", "force"));
+var_dump($options);
+if (isset($options['help'])) {
+  usage();
+}
+$force_replacement = isset($options["force"]);
+if (isset($options['p'])) {
+  if (is_numeric($options['p'])) {
+    $single_collection = $options['p'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $single_collection = FALSE;
 }
 
 try {
