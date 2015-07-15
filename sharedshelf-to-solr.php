@@ -17,7 +17,7 @@ function usage() {
 $log = FALSE;
 
 $options = getopt("p:",array("help", "force"));
-var_dump($options);
+
 if (isset($options['help'])) {
   usage();
 }
