@@ -74,7 +74,7 @@ class SharedShelfService {
     return $output;
   }
 
-  private function get_url($url_suffix = '/account') {
+  private function get_url($url_suffix = '/account', $require_extension = TRUE) {
     // sometimes the first time gets the url without an extension
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
@@ -92,7 +92,7 @@ class SharedShelfService {
     curl_close($ch);
 
     $extension = pathinfo($url2, PATHINFO_EXTENSION);
-    if (!empty($extension)) {
+    if (!empty($extension) || $require_extension === FALSE) {
       return $url2;
     }
 
@@ -357,6 +357,19 @@ class SharedShelfService {
       throw new Exception("Error Processing media_url Request", 1);
     }
     $url = $this->get_url("/assets/$asset_id/representation");
+    $file_headers = @get_headers($url);
+    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+      throw new Exception("URL Not Found: $url", 1);
+      }
+    return $url;
+  }
+
+ function media_derivative_url($asset_id, $size) {
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_derivative_url Request", 1);
+    }
+    // note: the urls for derivatives do not include an extension!! -> FALSE arg to get_url
+    $url = $this->get_url("/assets/$asset_id/representation/size/$size", FALSE);
     $file_headers = @get_headers($url);
     if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
       throw new Exception("URL Not Found: $url", 1);

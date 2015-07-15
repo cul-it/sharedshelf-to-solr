@@ -5,9 +5,35 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
-define("FORCE_REPLACEMENT", FALSE);
+function usage() {
+  global $argv;
+  echo PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
+  echo "--help - show this info" . PHP_EOL;
+  echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
+  echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
+  exit (0);
+}
 
 $log = FALSE;
+
+$options = getopt("p:",array("help", "force"));
+
+if (isset($options['help'])) {
+  usage();
+}
+$force_replacement = isset($options["force"]);
+if (isset($options['p'])) {
+  if (is_numeric($options['p'])) {
+    $single_collection = $options['p'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $single_collection = FALSE;
+}
 
 try {
 
@@ -45,6 +71,12 @@ try {
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
+    }
+    if ($single_collection !== FALSE) {
+      if ($project['project'] != $single_collection) {
+        echo PHP_EOL . "Skipping collection " . $project['project'] . " as it was not selected on the command line" . PHP_EOL;
+        continue;
+      }
     }
     //print_r($project);
     $log->note('SolrUpdater');
@@ -89,7 +121,7 @@ try {
           else {
             $solr_date = trim($solr_in['updated_on_s']);
           }
-          if (FORCE_REPLACEMENT) {
+          if ($force_replacement) {
             $log->note('Job:Replace');
           }
           else if ($ss_date == $solr_date) {
@@ -106,6 +138,10 @@ try {
         }
         $url = $ss->media_url($ss_id);
         $solr_out['Media_URL_s'] = $url;
+        for ($size = 0; $size <= 4; $size++) {
+          $fld = 'Media_URL_size_' . $size . "_s";
+          $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+        }
         $solr_out['id'] =  $solr_id;
         $solr_assets[] = $solr_out;
       }
