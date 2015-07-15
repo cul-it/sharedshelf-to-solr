@@ -120,7 +120,7 @@ try {
           else {
             $solr_date = trim($solr_in['updated_on_s']);
           }
-          if (FORCE_REPLACEMENT) {
+          if ($force_replacement) {
             $log->note('Job:Replace');
           }
           else if ($ss_date == $solr_date) {
