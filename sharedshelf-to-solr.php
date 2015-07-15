@@ -9,6 +9,11 @@ define("FORCE_REPLACEMENT", FALSE);
 
 $log = FALSE;
 
+$single_collection = isset($argv[1]) ? $argv[1] : FALSE;
+if ($single_collection === FALSE) {
+  echo "You can select a single SharedShelf collection by specifying project number on the command line. See listProjects.php" . PHP_EOL;
+}
+
 try {
 
   // batch process information
@@ -45,6 +50,12 @@ try {
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
+    }
+    if ($single_collection !== FALSE) {
+      if ($project['project'] != $single_collection) {
+        echo PHP_EOL . "Skipping collection $project['project'] as it was not selected on the command line" . PHP_EOL;
+        continue;
+      }
     }
     //print_r($project);
     $log->note('SolrUpdater');
@@ -106,6 +117,10 @@ try {
         }
         $url = $ss->media_url($ss_id);
         $solr_out['Media_URL_s'] = $url;
+        for ($size = 0; $size <= 4; $size++) {
+          $fld = 'Media_URL_size_' . $size . "_s";
+          $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+        }
         $solr_out['id'] =  $solr_id;
         $solr_assets[] = $solr_out;
       }

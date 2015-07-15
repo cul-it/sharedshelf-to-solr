@@ -364,4 +364,16 @@ class SharedShelfService {
     return $url;
   }
 
+ function media_derivative_url($asset_id, $size) {
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_derivative_url Request", 1);
+    }
+    $url = $this->get_url("/assets/$asset_id/representation/size/$size");
+    $file_headers = @get_headers($url);
+    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+      throw new Exception("URL Not Found: $url", 1);
+      }
+    return $url;
+  }
+
 }
