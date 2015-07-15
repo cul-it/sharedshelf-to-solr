@@ -11,7 +11,7 @@ function usage() {
   echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
-  echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric)" . PHP_EOL;
+  echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   exit (0);
 }
 
