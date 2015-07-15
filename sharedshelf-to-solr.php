@@ -53,7 +53,7 @@ try {
     }
     if ($single_collection !== FALSE) {
       if ($project['project'] != $single_collection) {
-        echo PHP_EOL . "Skipping collection $project['project'] as it was not selected on the command line" . PHP_EOL;
+        echo PHP_EOL . "Skipping collection " . $project['project'] . " as it was not selected on the command line" . PHP_EOL;
         continue;
       }
     }
