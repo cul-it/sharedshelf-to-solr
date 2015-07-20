@@ -137,9 +137,9 @@ try {
           $solr_out = array_replace($solr_in, $solr_new);
         }
         $url = $ss->media_url($ss_id);
-        $solr_out['Media_URL_s'] = $url;
+        $solr_out['media_URL_tesim'] = $url;
         for ($size = 0; $size <= 4; $size++) {
-          $fld = 'Media_URL_size_' . $size . "_s";
+          $fld = 'media_URL_size_' . $size . "_tesim";
           $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
         }
         $solr_out['id'] =  $solr_id;
