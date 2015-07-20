@@ -144,6 +144,11 @@ try {
         }
         $solr_out['id'] =  $solr_id;
 
+        if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
+          $solr_out['img_width_tesim'] = $dim['width'];
+          $solr_out['img_height_tesim'] = $dim['height'];
+        }
+
         // remove any fields that will become "" in solr
         $solr_out_full = array();
         foreach ($solr_out as $key => $value) {
