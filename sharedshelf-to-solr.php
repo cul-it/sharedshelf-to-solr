@@ -143,7 +143,15 @@ try {
           $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
         }
         $solr_out['id'] =  $solr_id;
-        $solr_assets[] = $solr_out;
+
+        // remove any fields that will become "" in solr
+        $solr_out_full = array();
+        foreach ($solr_out as $key => $value) {
+          if (!empty($value) || $value === FALSE) {
+            $solr_out_full["$key"]= $value;
+          }
+        }
+        $solr_assets[] = $solr_out_full;
       }
       if (!empty($solr_assets)) {
         $result = $solr->add($solr_assets);
