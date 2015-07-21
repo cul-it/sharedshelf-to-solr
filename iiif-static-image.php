@@ -28,7 +28,7 @@ function iiif_static_image($url, $collection_id, $image_id) {
   }
 
   $script = "/cul/share/iiif/iiif/iiif_static.py";
-  $command = "python $script $local_copy $path";
+  $command = "python $script -d $path $local_copy";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
