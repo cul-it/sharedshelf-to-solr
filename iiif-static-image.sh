@@ -13,4 +13,7 @@ SCRIPT="/cul/share/iiif/iiif/iiif_static.py"
 [ -d "$OUTPUT_PATH" ] || rm -r "$OUTPUT_PATH"
 mkdir -p "$OUTPUT_PATH"
 
-"$SCRIPT" --dst="$OUTPUT_PATH" "$IMAGE_URL"
+$CMD="python $SCRIPT --dst=$OUTPUT_PATH $IMAGE_URL"
+echo $CMD
+
+
