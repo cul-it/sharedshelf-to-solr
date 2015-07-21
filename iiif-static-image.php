@@ -3,7 +3,7 @@
 
 function iiif_static_image($url, $collection_id, $image_id) {
   $path = "iiif-static-images/$collection_id/$image_id";
-  $command = "./iiif-static-image.sh $url $path";
+  $command = "/cul/share/sharedshelf-to-solr/iiif-static-image.sh $url $path";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
