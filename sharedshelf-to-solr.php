@@ -4,12 +4,14 @@
 require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
+require_once('iiif-static-image.php');
 
 function usage() {
   global $argv;
   echo PHP_EOL;
   echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
+  echo "--iiif - create static iiif images";
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   exit (0);
@@ -17,12 +19,13 @@ function usage() {
 
 $log = FALSE;
 
-$options = getopt("p:",array("help", "force"));
+$options = getopt("p:",array("help", "iiif", "force"));
 
 if (isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
+$iiif_images = isset($options["iiif"]);
 if (isset($options['p'])) {
   if (is_numeric($options['p'])) {
     $single_collection = $options['p'];
@@ -143,6 +146,10 @@ try {
           $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
         }
         $solr_out['id'] =  $solr_id;
+
+        if ($iiif_images) {
+          iiif_static_image($url, $project_id, $ss_id);
+        }
 
         if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
           $solr_out['img_width_tesim'] = $dim['width'];
