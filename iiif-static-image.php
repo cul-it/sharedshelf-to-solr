@@ -22,7 +22,7 @@ function iiif_static_image($url, $collection_id, $image_id) {
   iiif_static_mkdir($temp_path);
   $ext = pathinfo($url, PATHINFO_EXTENSION);
   $ext = empty($ext) ? 'jpg' : $ext;
-  $local_copy = "$local_path/$image_id.$ext";
+  $local_copy = "$temp_path/$image_id.$ext";
   if (!copy($url,$local_copy)) {
     throw new Exception("Can't copy $url to local", 1);
   }
