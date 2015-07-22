@@ -32,7 +32,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE) {
     // assume this image has already been processed
     if (!$force_replacement) {
       // user did not want to replace any existing image
-      exit(0);
+      return;
     }
   }
   if (OUTPUT) {
