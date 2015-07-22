@@ -40,8 +40,8 @@ function iiif_static_image($url, $collection_id, $image_id) {
 }
 
 // code for testing the function
-$url = 'http://stor.artstor.org/stor/55533d5d-a593-44b9-95a8-55dcd2121eb8.jpg';
-$collection_id = 'test';
-$image_id = '201711';
+// $url = 'http://stor.artstor.org/stor/55533d5d-a593-44b9-95a8-55dcd2121eb8.jpg';
+// $collection_id = 'test';
+// $image_id = '201711';
 
-iiif_static_image($url, $collection_id, $image_id);
+// iiif_static_image($url, $collection_id, $image_id);
