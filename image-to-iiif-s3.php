@@ -38,7 +38,7 @@ $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu';
 if (OUTPUT) echo "Checking pre-existing.\n";
 
 // check if it already exists on S3
-$command = "s3cmd ls $s3_bucket/$s3_path/";
+$command = "s3cmd ls $s3_bucket/$s3_path";
 $output = '';
 $return_var = 0;
 $lastline = exec($command, $output, $return_var);
