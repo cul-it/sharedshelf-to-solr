@@ -33,7 +33,7 @@ $force_replacement = isset($options["force"]);
 $image_url = isset($options["url"]) ? $options["url"] : usage();
 $s3_path = isset($options["s3path"]) ? $options["s3path"] : usage();
 
-$s3_bucket = 's3://sharedshelftosolr.library.cornell.edu';
+$s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
 
 if (OUTPUT) echo "Checking pre-existing.\n";
 
