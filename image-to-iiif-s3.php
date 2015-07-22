@@ -82,7 +82,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE) {
   if (OUTPUT) echo "Moving tiles to S3.\n";
 
   // rsync tiles to s3
-  $command = "s3cmd sync $local_iiif_dir/ $s3_bucket/$s3_path/";
+  $command = "s3cmd sync $local_iiif_dir $s3_bucket/$s3_path/";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
