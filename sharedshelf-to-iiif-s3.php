@@ -101,7 +101,6 @@ try {
 
         image_to_iiif_s3($url, $s3_path, $force_replacement);
       }
-      break; // debug
     }
   }
 
