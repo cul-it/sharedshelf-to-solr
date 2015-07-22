@@ -93,6 +93,15 @@ if ($return_var != 0) {
 if (OUTPUT) echo "Moving tiles to S3.\n";
 
 // rsync tiles to s3
+$command = "s3cmd sync $local_iiif_dir $s3_bucket/$s3_path";
+$output = '';
+$return_var = 0;
+$lastline = exec($command, $output, $return_var);
+if ($return_var != 0) {
+  $output[] = 'Command failed: ' .  $command;
+  $out = implode("PHP_EOL", $output);
+  throw new Exception("Error Processing checking for iiif on s3: $out", 1);
+}
 
 if (OUTPUT) echo "Done.\n";
 
