@@ -80,7 +80,7 @@ if (OUTPUT) echo "Making iiif tiles.\n";
 
 // generate the static iiif tiles
 $script = "/cul/share/iiif/iiif/iiif_static.py";
-$command = "python $script -d $local_iiif_dir $local_image";
+$command = "python $script -d $local_iiif_dir --tilesize 800 $local_image";
 $output = '';
 $return_var = 0;
 $lastline = exec($command, $output, $return_var);
