@@ -47,6 +47,13 @@ if ($return_var != 0) {
   $out = implode("PHP_EOL", $output);
   throw new Exception("Error Processing checking for iiif on s3: $out", 1);
 }
+if (strpos($lastline, $s3_path) !== FALSE) {
+  // assume this image has already been processed
+  if (!$force_replacement) {
+    // user did not want to replace any existing image
+    exit(0);
+  }
+}
 if (OUTPUT) {
   echo "$command\n";
   echo implode("\n",$output);
