@@ -56,7 +56,7 @@ if (strpos($lastline, $s3_path) !== FALSE) {
 }
 if (OUTPUT) {
   echo "$command\n";
-  echo implode("\n",$output);
+  echo implode("\n",$output) . "\n";
 }
 
 // find extension of filename in image url
