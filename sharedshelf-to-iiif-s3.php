@@ -101,7 +101,7 @@ try {
 
         image_to_iiif_s3($url, $s3_path, $force_replacement);
 
-        throw new Exception("shortcut to exit", 1);
+        if (FALSE) throw new Exception("shortcut to exit", 1);
 
       }
     }
