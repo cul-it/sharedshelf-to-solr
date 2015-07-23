@@ -81,7 +81,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE) {
   }
 
   //hack: rewrite the @id from 'iiif' to the s3 path to info.json
-  $s3path = "$s3_url_prefix/$s3_path/info.json";
+  $s3path = "$s3_url_prefix/$s3_path/";
   $info_file = "$local_iiif_dir/info.json";
   if (($json = file_get_contents($info_file)) === FALSE) {
     throw new Exception("can't get file contents: $info_file", 1);
