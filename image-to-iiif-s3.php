@@ -87,10 +87,9 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE) {
     throw new Exception("can't get file contents: $info_file", 1);
     }
   $json2 = preg_replace('/"@id": "([^"]+)"/', '"@id": "' . $s3path . '"', $json);
-  var_dump($json);
-  var_dump($json2);
-  exit(0);
-
+  if (file_put_contents($info_file, $json2) === FALSE) {
+    throw new Exception("Can not write file: $info_file", 1);
+    }
 
   if (OUTPUT) echo "Moving tiles to S3.\n";
 
