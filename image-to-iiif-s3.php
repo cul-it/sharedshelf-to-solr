@@ -80,6 +80,16 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE) {
     throw new Exception("Error Processing iiif: $out", 1);
   }
 
+  //hack: rewrite the @id from 'iiif' to the s3 path to info.json
+  $s3path = "$s3_url_prefix/$s3_path/info.json";
+  $info_file = "$local_iiif_dir/info.json"
+  $json = file_get_contents($info_file);
+  $json2 = preg_replace('/"@id": "([^"]+)"/', '"@id": "' . $s3path . '"', $json);
+  var_dump($json);
+  var_dump($json2);
+  exit(0);
+
+
   if (OUTPUT) echo "Moving tiles to S3.\n";
 
   // rsync tiles to s3
