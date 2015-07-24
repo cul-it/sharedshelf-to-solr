@@ -104,6 +104,11 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
     throw new Exception("Error Processing checking for iiif on s3: $out", 1);
   }
 
+  // delete temp files
+  if (!$save_tmp_files) {
+    system('/bin/rm -rf ' . $temp_dir);
+  }
+
   if (OUTPUT) {
     $s3path = "$s3_url_prefix/$s3_path/info.json";
     echo "Done: $s3path\n";
