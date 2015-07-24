@@ -108,7 +108,11 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
   }
 
   // delete temp files
-  if (!$save_tmp_files) {
+  if ($save_tmp_files) {
+    if (OUTPUT) echo "Saving $temp_dir.\n";
+  }
+  else {
+    if (OUTPUT) echo "Deleting $temp_dir.\n";
     system('/bin/rm -rf ' . $temp_dir);
   }
 
