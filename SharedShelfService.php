@@ -377,4 +377,18 @@ class SharedShelfService {
     return $url;
   }
 
+  function media_dimensions($asset_id) {
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_dimensions Request", 1);
+    }
+    $details = $this->get_response("/assets/$asset_id/representation/details");
+    if (isset($details['width']) && isset($details['height'])) {
+      $output = array('width' => $details['width'], 'height' => $details['height']);
+    }
+    else {
+      $output = FALSE;
+    }
+    return $output;
+  }
+
 }
