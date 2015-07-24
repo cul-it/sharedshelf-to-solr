@@ -153,6 +153,7 @@ try {
         $solr_out_full = array();
         foreach ($solr_out as $key => $value) {
           if (!empty($value) || $value === FALSE) {
+            $value = trim($value, '"'); //hack to remove "" from Lat/Lon
             $solr_out_full["$key"]= $value;
           }
         }
