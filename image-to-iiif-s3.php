@@ -69,8 +69,11 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
 
   // generate the static iiif tiles
   $script = "/cul/share/iiif/iiif/iiif_static.py";
+  $s3path = "$s3_url_prefix/$s3_path";
+  $osd = "/cul/share/openseadragon/openseadragon-1.2.1"; // path to
   //$command = "python $script -d $local_iiif_dir --tilesize 800 $local_image";
-  $command = "python $script -d $local_iiif_dir $local_image";
+  //$command = "python $script -d $local_iiif_dir $local_image";
+  $command = "python $script --api-version 2.0 -d $local_iiif_dir -p $s3path --osd $osd $local_image";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
