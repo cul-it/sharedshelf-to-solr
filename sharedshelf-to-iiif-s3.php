@@ -105,7 +105,7 @@ try {
 
           if (FALSE) throw new Exception("shortcut to exit", 1);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
           $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
           if ($log !== FALSE) {
             $log->error($error);
