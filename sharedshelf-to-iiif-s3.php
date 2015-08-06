@@ -95,14 +95,25 @@ try {
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
 
-        $url = $ss->media_url($ss_id);
+        try {
 
-        $s3_path = "$project_id/$ss_id";
+          $url = $ss->media_url($ss_id);
 
-        image_to_iiif_s3($url, $s3_path, $force_replacement);
+          $s3_path = "$project_id/$ss_id";
 
-        if (FALSE) throw new Exception("shortcut to exit", 1);
+          image_to_iiif_s3($url, $s3_path, $force_replacement);
 
+          if (FALSE) throw new Exception("shortcut to exit", 1);
+        }
+        catch (\Exception $e) {
+          $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
+          if ($log !== FALSE) {
+            $log->error($error);
+          }
+          else {
+            echo $error;
+          }
+        }
       }
     }
   }

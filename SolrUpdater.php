@@ -181,7 +181,7 @@ class SolrUpdater {
     // note: colon characters in $id must be escaped
     $id = str_replace(':', '\:', $id);
     $q = "q=id:$id&wt=json";
-    $json = $this->get('/collection1/select', $q);
+    $json = $this->get('/select', $q);
     $result = json_decode($json);
     $found = isset($result->response->numFound) ? $result->response->numFound : 0;
     if ($found == 0) {
