@@ -110,17 +110,33 @@ try {
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
           }
           else {
+
+            // flatten the solr asset
+            $flat = array();
+            foreach ($solr_in as $k => $v) {
+              if (is_array($v)) {
+                if (count($v) != 1) {
+                  throw new Exception("Complex array retunred from solr: $solr_id $k", 1);
+                }
+                $flat["$k"] = array_shift($v);
+              }
+              else {
+                $flat["$k"] = $v;
+              }
+            }
+            $solr_in = $flat;
+
             // compare the dates
             if (empty($asset['updated_on'])) {
               throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
             }
             $ss_date =  trim($asset['updated_on']);
-            if (empty($solr_in['updated_on_s'])) {
+            if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
-              $solr_date = FALSE;
+              $solr_date = '';
             }
             else {
-              $solr_date = trim($solr_in['updated_on_s']);
+              $solr_date = trim($solr_in['updated_on_ss']);
             }
             if ($force_replacement) {
               $log->note('Job:Replace');
