@@ -171,7 +171,9 @@ try {
           foreach ($solr_out as $key => $value) {
             if (!empty($value) || $value === FALSE) {
               $value = trim($value, '"'); //hack to remove "" from Lat/Lon
-              $solr_out_full["$key"]= $value;
+              if (!empty($value)) {
+                $solr_out_full["$key"] = $value;
+              }
             }
           }
           $solr_assets[] = $solr_out_full;
