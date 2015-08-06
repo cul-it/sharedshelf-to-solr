@@ -115,12 +115,12 @@ try {
               throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
             }
             $ss_date =  trim($asset['updated_on']);
-            if (empty($solr_in['updated_on_s'])) {
+            if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
-              $solr_date = FALSE;
+              $solr_date = '';
             }
             else {
-              $solr_date = trim($solr_in['updated_on_s']);
+              $solr_date = trim($solr_in['updated_on_ss']);
             }
             if ($force_replacement) {
               $log->note('Job:Replace');
