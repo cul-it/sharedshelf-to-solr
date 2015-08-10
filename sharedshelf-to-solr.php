@@ -88,17 +88,22 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
-    $per_page = 25;
-    for ($start = 0; $start < $asset_count; $start += $per_page) {
-      $assets =  $ss->project_assets($project_id, $start, $per_page);
-      $solr_assets = array();
-      $counter = $start;
-      foreach ($assets as $asset) {
+    for ($start = 0; $start < $asset_count; $start++) {
+      for ($attempt = 0; $attempt < 3; $attempt++) {
+        $assets =  $ss->project_assets($project_id, $start, 1);
+        $solr_assets = array();
+        $counter = $start;
+        $asset = array_shift($assets);
         $ss_id = $asset['id'];
         $solr_id = 'ss:' . $ss_id;
         $log->item("asset $solr_id");
-        $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
-        $log->note("Completed:$pct");
+        if ($attempt > 0) {
+          $log->note("Attempt " . $attempt + 1);
+        }
+        else {
+          $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
+          $log->note("Completed:$pct");
+        }
 
         try {
           // is this asset in solr already?
