@@ -181,8 +181,14 @@ try {
               }
             }
           }
+          // make an arrary out of the one result
           $solr_assets[] = $solr_out_full;
-        }
+
+          // add one result to solr - may fail if multiple processes are running against same document
+          $result = $solr->add($solr_assets);
+
+          break; // No more $attempts necessary!
+         }
         catch (\Exception $e) {
           $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
           if ($log !== FALSE) {
@@ -192,10 +198,7 @@ try {
             echo $error;
           }
         }
-      }
-      if (!empty($solr_assets)) {
-        $result = $solr->add($solr_assets);
-      }
+      } // $attempt
     }
   }
 
