@@ -116,7 +116,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
   }
 
   if (OUTPUT) {
-    $s3path = "$s3_url_prefix/$s3_path/info.json";
+    $s3path = "$s3_url_prefix/$s3_path/image/info.json";
     echo "Done: $s3path\n";
   }
 }

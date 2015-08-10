@@ -39,9 +39,9 @@ else {
 try {
 
   // batch process information
-  $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
+  $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
   if ($task === FALSE) {
-    echo "Need sharedshelf-to-solr.ini\n";
+    echo "Need sharedshelf-to-iiif-s3.ini\n";
     exit (1);
   }
 
