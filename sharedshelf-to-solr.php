@@ -149,7 +149,7 @@ try {
             else if (strcmp($ss_date,$solr_date) == 0) {
               // dates match - skip this record
               $log->note('Job:Skip-DatesMatch');
-              continue;
+              break; // No more $attempts necessary!
             }
             else {
               $log->note('Job:Update');
