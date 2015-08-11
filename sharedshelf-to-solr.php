@@ -89,7 +89,8 @@ try {
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
     for ($start = 0; $start < $asset_count; $start++) {
-      for ($attempt = 0; $attempt < 3; $attempt++) {
+      $another_attempt = TRUE;
+      for ($attempt = 0; $attempt < 3 && $another_attempt; $attempt++) {
         $assets =  $ss->project_assets($project_id, $start, 1);
         $solr_assets = array();
         $counter = $start;
@@ -149,7 +150,8 @@ try {
             else if (strcmp($ss_date,$solr_date) == 0) {
               // dates match - skip this record
               $log->note('Job:Skip-DatesMatch');
-              break; // No more $attempts necessary!
+              $another_attempt = FALSE;
+              continue;
             }
             else {
               $log->note('Job:Update');
@@ -187,7 +189,8 @@ try {
           // add one result to solr - may fail if multiple processes are running against same document
           $result = $solr->add($solr_assets);
 
-          break; // No more $attempts necessary!
+          $another_attempt = FALSE;
+          continue;
          }
         catch (\Exception $e) {
           $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
