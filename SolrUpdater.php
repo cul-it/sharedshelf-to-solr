@@ -199,11 +199,10 @@ class SolrUpdater {
     $fields = $this->ini['fields'];
     $solr_asset = array();
     foreach ($asset as $k => $v) {
-      if (empty($fields["$k"])) {
-        throw new Exception("Missing solr field name for $k", 1);
+      if (!empty($fields["$k"])) {
+        $sk = $fields["$k"];
+        $solr_asset["$sk"] = $asset["$k"];
       }
-      $sk = $fields["$k"];
-      $solr_asset["$sk"] = $asset["$k"];
     }
     return $solr_asset;
   }
