@@ -118,13 +118,19 @@ try {
           else {
 
             // flatten the solr asset
+            // given $k the solr field name and $v the value for that field
+            // if value $v is scalar or single element array then the flattened version is a scalar
+            // if value $v is an array with more than one element, pass it on as an array
             $flat = array();
             foreach ($solr_in as $k => $v) {
               if (is_array($v)) {
-                if (count($v) != 1) {
-                  throw new Exception("Complex array retunred from solr: $solr_id $k", 1);
+                if (count($v) == 1) {
+                  $flat["$k"] = array_shift($v);
                 }
-                $flat["$k"] = array_shift($v);
+                else {
+                  $flat["$k"] = $v; // pass full array along
+                  $log->note("complex value for $solr_id key $k");
+                }
               }
               else {
                 $flat["$k"] = $v;
