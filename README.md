@@ -1,5 +1,7 @@
 # ss2solr - migrate metadata from sharedshelf to solr
 
+version: beta9
+
 Run:
 - php sharedshelf-to-solr.php
 
