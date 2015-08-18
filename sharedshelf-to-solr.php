@@ -129,7 +129,6 @@ try {
                 }
                 else {
                   $flat["$k"] = $v; // pass full array along
-                  $log->note("complex value for $solr_id key $k");
                 }
               }
               else {
