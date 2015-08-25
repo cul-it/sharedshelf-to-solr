@@ -165,17 +165,22 @@ try {
             $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
             $solr_out = array_replace($solr_in, $solr_new);
           }
-          $url = $ss->media_url($ss_id);
-          $solr_out['media_URL_tesim'] = $url;
-          for ($size = 0; $size <= 4; $size++) {
-            $fld = 'media_URL_size_' . $size . "_tesim";
-            $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
-          }
-          $solr_out['id'] =  $solr_id;
 
-          if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
-            $solr_out['img_width_tesim'] = $dim['width'];
-            $solr_out['img_height_tesim'] = $dim['height'];
+          // check if we need images and their derivatives
+          $need_images = (isset($asset['has_images']) && (strcmp($asset['has_images'], 'no') == 0)) ? FALSE : TRUE;
+          if ($need_images) {
+            $url = $ss->media_url($ss_id);
+            $solr_out['media_URL_tesim'] = $url;
+            for ($size = 0; $size <= 4; $size++) {
+              $fld = 'media_URL_size_' . $size . "_tesim";
+              $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+            }
+            $solr_out['id'] =  $solr_id;
+
+            if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
+              $solr_out['img_width_tesim'] = $dim['width'];
+              $solr_out['img_height_tesim'] = $dim['height'];
+            }
           }
 
           // remove any fields that will become "" in solr
