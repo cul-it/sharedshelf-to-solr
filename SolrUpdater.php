@@ -20,9 +20,6 @@ class SolrUpdater {
     if (empty($this->ini['project'])) {
       throw new Exception("ini file must contain a project id", 1);
     }
-    if (empty($this->ini['copy_field'])) {
-      throw new Exception("ini file must contain copy_field", 1);
-    }
     if (empty($this->ini['set_solr_field'])) {
       throw new Exception("ini file must contain set_solr_field", 1);
     }
