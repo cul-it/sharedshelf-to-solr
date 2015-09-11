@@ -98,6 +98,16 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
+
+    // extranct list of sharedshelf field names that need special array treatment
+    if (empty($project['delimited_field'])) {
+      $delimited_fields = array();
+    }
+    else {
+      $delimited_fields = array_keys($project['delimited_field']);
+    }
+    debug($delimited_fields, 'delimited_fields', FALSE);
+
     for ($start = 0; $start < $asset_count; $start++) {
       $another_attempt = TRUE;
       for ($attempt = 0; $attempt < 3 && $another_attempt; $attempt++) {
