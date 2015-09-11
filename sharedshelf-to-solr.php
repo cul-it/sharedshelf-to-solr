@@ -122,13 +122,14 @@ try {
         }
 
         try {
-          debug($asset, 'asset');
+          debug($asset, 'asset', FALSE);
           // is this asset in solr already?
           $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
             // just add the asset to solr
             $log->note('Job:AddNew');
             $flattened_asset = $ss->asset_field_values($asset);
+            debug($flattened_asset, 'flattened asset');
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
           }
           else {
