@@ -5,6 +5,14 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
+function debug($item, $die = TRUE) {
+  var_dump($item);
+  if ($die) {
+    echo PHP_EOF;
+    die('debugging' . PHP_EOF);
+  }
+}
+
 function usage() {
   global $argv;
   echo PHP_EOL;
