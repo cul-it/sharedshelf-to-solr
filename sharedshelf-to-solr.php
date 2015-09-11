@@ -86,7 +86,7 @@ try {
         continue;
       }
     }
-    //print_r($project);
+    debug($project, FALSE);
     $log->note('SolrUpdater');
     $solr_url = $project['solr'];
     $solr = new SolrUpdater($solr_url, $config);
@@ -115,6 +115,7 @@ try {
         }
 
         try {
+          debug($asset);
           // is this asset in solr already?
           $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
