@@ -100,12 +100,7 @@ try {
     echo "$config asset count: $asset_count\n";
 
     // extranct list of sharedshelf field names that need special array treatment
-    if (empty($project['delimited_field'])) {
-      $delimited_fields = array();
-    }
-    else {
-      $delimited_fields = array_keys($project['delimited_field']);
-    }
+    $delimited_fields = (empty($project['delimited_field']) ? array() : $project['delimited_field'];
     debug($delimited_fields, 'delimited_fields', FALSE);
 
     for ($start = 0; $start < $asset_count; $start++) {
