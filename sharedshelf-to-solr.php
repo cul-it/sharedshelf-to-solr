@@ -5,11 +5,13 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
-function debug($item, $die = TRUE) {
-  var_dump($item);
+function debug($item, $description = '', $die = TRUE) {
+  if (!empty($description)) {
+    print PHP_EOL . 'DEBUG: ' . $description . PHP_EOL;
+  }
+  print_r($item);
   if ($die) {
-    echo PHP_EOF;
-    die('debugging' . PHP_EOF);
+    die('debugging' . PHP_EOL);
   }
 }
 
@@ -86,7 +88,7 @@ try {
         continue;
       }
     }
-    debug($project, FALSE);
+    debug($project, '.ini file', FALSE);
     $log->note('SolrUpdater');
     $solr_url = $project['solr'];
     $solr = new SolrUpdater($solr_url, $config);
@@ -115,7 +117,7 @@ try {
         }
 
         try {
-          debug($asset);
+          debug($asset, 'asset');
           // is this asset in solr already?
           $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
