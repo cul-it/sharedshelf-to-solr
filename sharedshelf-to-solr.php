@@ -203,7 +203,6 @@ try {
           }
 
           // check if we need images and their derivatives
-          debug($project, 'project has_images?');
           $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
           if ($need_images) {
             $url = $ss->media_url($ss_id);
