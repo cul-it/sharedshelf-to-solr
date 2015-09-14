@@ -25,6 +25,17 @@ function usage() {
   exit (0);
 }
 
+function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) {
+  if (!empty($delimited_fields)) {
+    foreach ($flattened_asset as $k => $v) {
+      if (!empty($delimited_fields["$k"])) {
+        $delimiter = $delimited_fields["$k"];
+        $flattened_asset["$k"] = explode($delimiter, $v);
+      }
+    }
+  }
+}
+
 $log = FALSE;
 
 $options = getopt("p:",array("help", "force"));
