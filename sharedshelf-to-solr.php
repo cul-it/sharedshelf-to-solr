@@ -141,7 +141,6 @@ try {
             $flattened_asset = $ss->asset_field_values($asset);
             split_delimited_fields($flattened_asset, $delimited_fields);
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
-            $solr_out['overwrite'] = TRUE;
           }
           else {
             // is this asset in solr already?
