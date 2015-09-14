@@ -141,7 +141,7 @@ try {
             $flattened_asset = $ss->asset_field_values($asset);
             split_delimited_fields($flattened_asset, $delimited_fields);
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
-         }
+          }
           else {
             // is this asset in solr already?
             $solr_in = $solr->get_item($solr_id);
@@ -203,6 +203,7 @@ try {
           }
 
           // check if we need images and their derivatives
+          debug($project, 'project has_images?');
           $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
           if ($need_images) {
             $url = $ss->media_url($ss_id);
