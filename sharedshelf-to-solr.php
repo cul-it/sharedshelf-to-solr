@@ -141,6 +141,8 @@ try {
             $log->note('Job:AddNew');
             $flattened_asset = $ss->asset_field_values($asset);
             debug($flattened_asset, 'flattened asset');
+            split_delimited_fields($flattened_asset, $delimited_fields);
+            debug($flattened_asset, 'flattened asset delimited');
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
           }
           else {
@@ -190,6 +192,8 @@ try {
               $log->note('Job:Update');
             }
             $flattened_asset = $ss->asset_field_values($asset);
+            split_delimited_fields($flattened_asset, $delimited_fields);
+            debug($flattened_asset, 'flattened asset delimited - in solr already');
             $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
             $solr_out = array_replace($solr_in, $solr_new);
           }
