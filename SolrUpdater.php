@@ -161,7 +161,6 @@ class SolrUpdater {
       $this->add_custom_fields($asset);
       $json .= $this->format_add_asset_field_values($asset);
     }
-    debug($json, 'json');
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
