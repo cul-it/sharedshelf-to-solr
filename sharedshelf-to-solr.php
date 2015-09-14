@@ -181,7 +181,6 @@ try {
               $solr_date = '';
             }
             else {
-              debug($solr_in['updated_on_ss'], 'solr_in solr date');
               $solr_date = trim($solr_in['updated_on_ss']);
             }
             if ($force_replacement) {
