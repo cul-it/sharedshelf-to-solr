@@ -136,65 +136,70 @@ try {
         }
 
         try {
-          // is this asset in solr already?
-          $solr_in = $solr->get_item($solr_id);
-          if (empty($solr_in)) {
-            // just add the asset to solr
-            $log->note('Job:AddNew');
+          if ($force_replacement) {
+            $log->note('Job:Replace');
             $flattened_asset = $ss->asset_field_values($asset);
             split_delimited_fields($flattened_asset, $delimited_fields);
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
-          }
+         }
           else {
-
-            // flatten the solr asset
-            // given $k the solr field name and $v the value for that field
-            // if value $v is scalar or single element array then the flattened version is a scalar
-            // if value $v is an array with more than one element, pass it on as an array
-            // $flat = array();
-            // foreach ($solr_in as $k => $v) {
-            //   if (is_array($v)) {
-            //     if (count($v) == 1) {
-            //       $flat["$k"] = array_shift($v);
-            //     }
-            //     else {
-            //       $flat["$k"] = $v; // pass full array along
-            //     }
-            //   }
-            //   else {
-            //     $flat["$k"] = $v;
-            //   }
-            // }
-            // $solr_in = $flat;
-
-            // compare the dates
-            if (empty($asset['updated_on'])) {
-              throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
-            }
-            $ss_date =  trim($asset['updated_on']);
-            if (empty($solr_in['updated_on_ss'])) {
-              $log->note('solr missing updated_on');
-              $solr_date = '';
+            // is this asset in solr already?
+            $solr_in = $solr->get_item($solr_id);
+            if (empty($solr_in)) {
+              // just add the asset to solr
+              $log->note('Job:AddNew');
+              $flattened_asset = $ss->asset_field_values($asset);
+              split_delimited_fields($flattened_asset, $delimited_fields);
+              $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
             }
             else {
-              $solr_date = trim($solr_in['updated_on_ss']);
+
+              // flatten the solr asset
+              // given $k the solr field name and $v the value for that field
+              // if value $v is scalar or single element array then the flattened version is a scalar
+              // if value $v is an array with more than one element, pass it on as an array
+              // $flat = array();
+              // foreach ($solr_in as $k => $v) {
+              //   if (is_array($v)) {
+              //     if (count($v) == 1) {
+              //       $flat["$k"] = array_shift($v);
+              //     }
+              //     else {
+              //       $flat["$k"] = $v; // pass full array along
+              //     }
+              //   }
+              //   else {
+              //     $flat["$k"] = $v;
+              //   }
+              // }
+              // $solr_in = $flat;
+
+              // compare the dates
+              if (empty($asset['updated_on'])) {
+                throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
+              }
+              $ss_date =  trim($asset['updated_on']);
+              if (empty($solr_in['updated_on_ss'])) {
+                $log->note('solr missing updated_on');
+                $solr_date = '';
+              }
+              else {
+                $solr_date = trim($solr_in['updated_on_ss']);
+              }
+              if (strcmp($ss_date,$solr_date) == 0) {
+                // dates match - skip this record
+                $log->note('Job:Skip-DatesMatch');
+                $another_attempt = FALSE;
+                continue;
+              }
+              else {
+                $log->note('Job:Update');
+              }
+              $flattened_asset = $ss->asset_field_values($asset);
+              split_delimited_fields($flattened_asset, $delimited_fields);
+              $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
+              $solr_out = array_replace($solr_in, $solr_new);
             }
-            if ($force_replacement) {
-              $log->note('Job:Replace');
-            }
-            else if (strcmp($ss_date,$solr_date) == 0) {
-              // dates match - skip this record
-              $log->note('Job:Skip-DatesMatch');
-              $another_attempt = FALSE;
-              continue;
-            }
-            else {
-              $log->note('Job:Update');
-            }
-            $flattened_asset = $ss->asset_field_values($asset);
-            split_delimited_fields($flattened_asset, $delimited_fields);
-            $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
-            $solr_out = array_replace($solr_in, $solr_new);
           }
 
           // check if we need images and their derivatives
