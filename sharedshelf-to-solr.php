@@ -138,7 +138,6 @@ try {
         }
 
         try {
-          debug($asset, 'asset', FALSE);
           // is this asset in solr already?
           $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
