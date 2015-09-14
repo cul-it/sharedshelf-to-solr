@@ -153,7 +153,7 @@ try {
               }
               if (isset($delimited_fields["$k"])) {
                 // create array of values by splitting string at delimiter
-                $flat["$k"] = explode($delimited_fields["$k"], $v);
+                $flat["$k"] = explode($delimited_fields["$k"], $flat["$k"]);
               }
             }
             debug($flat, 'flattened');
