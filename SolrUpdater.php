@@ -162,6 +162,7 @@ class SolrUpdater {
       $json .= $this->format_add_asset_field_values($asset);
     }
     $json = $this->post_json('/update/json', $json);
+    debug($json, 'json');
       // print_r($json);
       // die('here');
     $result = json_decode($json);
