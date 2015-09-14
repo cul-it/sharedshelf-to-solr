@@ -30,7 +30,12 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
     foreach ($flattened_asset as $k => $v) {
       if (!empty($delimited_fields["$k"])) {
         $delimiter = $delimited_fields["$k"];
-        $flattened_asset["$k"] = explode($delimiter, $v);
+        $v_array = explode($delimiter, $v);
+        $v_array_trimmed = array();
+        foreach ($v_array as $value) {
+          $v_array_trimmed[] = trim($value);
+        }
+        $flattened_asset["$k"] = $v_array_trimmed;
       }
     }
   }
