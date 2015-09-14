@@ -104,7 +104,6 @@ try {
         continue;
       }
     }
-    debug($project, '.ini file', FALSE);
     $log->note('SolrUpdater');
     $solr_url = $project['solr'];
     $solr = new SolrUpdater($solr_url, $config);
@@ -117,7 +116,6 @@ try {
 
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
-    debug($delimited_fields, 'delimited_fields', FALSE);
 
     for ($start = 0; $start < $asset_count; $start++) {
       $another_attempt = TRUE;
@@ -144,9 +142,7 @@ try {
             // just add the asset to solr
             $log->note('Job:AddNew');
             $flattened_asset = $ss->asset_field_values($asset);
-            debug($flattened_asset, 'flattened asset');
             split_delimited_fields($flattened_asset, $delimited_fields);
-            debug($flattened_asset, 'flattened asset delimited');
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
           }
           else {
@@ -199,7 +195,6 @@ try {
             split_delimited_fields($flattened_asset, $delimited_fields);
             $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
             $solr_out = array_replace($solr_in, $solr_new);
-            debug($solr_out, 'solr_out - in solr already');
           }
 
           // check if we need images and their derivatives
