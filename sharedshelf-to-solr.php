@@ -220,9 +220,6 @@ try {
               $solr_out['img_height_tesim'] = $dim['height'];
             }
           }
-          else {
-            debug($solr_out, 'no images here...');
-          }
 
           // remove any fields that will become "" in solr
           $solr_out_full = array();
