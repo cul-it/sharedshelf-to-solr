@@ -192,13 +192,15 @@ try {
               $fld = 'media_URL_size_' . $size . "_tesim";
               $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
             }
-            $solr_out['id'] =  $solr_id;
 
             if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
               $solr_out['img_width_tesim'] = $dim['width'];
               $solr_out['img_height_tesim'] = $dim['height'];
             }
           }
+
+          // be sure the id field is the solr id not the sharedshelf one
+          $solr_out['id'] =  $solr_id;
 
           // remove any fields that will become "" in solr
           $solr_out_full = array();
