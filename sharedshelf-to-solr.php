@@ -140,7 +140,9 @@ try {
             $log->note('Job:Replace');
             $flattened_asset = $ss->asset_field_values($asset);
             split_delimited_fields($flattened_asset, $delimited_fields);
+            debug($flattened_asset, 'flattentd', FALSE);
             $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
+            debug($solr_out, 'solr out');
           }
           else {
             // is this asset in solr already?
