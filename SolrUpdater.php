@@ -102,7 +102,7 @@ class SolrUpdater {
   }
 
   function format_add_asset_field_values($asset) {
-    $data2 = array('add' => array( 'doc' => $asset, 'commitWithin' => 1000,),);
+    $data2 = array('add' => array('commitWithin' => 1000, 'doc' => $asset, ),);
     return json_encode($data2);
   }
 
@@ -162,8 +162,6 @@ class SolrUpdater {
       $json .= $this->format_add_asset_field_values($asset);
     }
     $json = $this->post_json('/update/json', $json);
-      // print_r($json);
-      // die('here');
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
