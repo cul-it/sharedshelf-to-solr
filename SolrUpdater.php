@@ -20,9 +20,6 @@ class SolrUpdater {
     if (empty($this->ini['project'])) {
       throw new Exception("ini file must contain a project id", 1);
     }
-    if (empty($this->ini['copy_field'])) {
-      throw new Exception("ini file must contain copy_field", 1);
-    }
     if (empty($this->ini['set_solr_field'])) {
       throw new Exception("ini file must contain set_solr_field", 1);
     }
@@ -105,7 +102,7 @@ class SolrUpdater {
   }
 
   function format_add_asset_field_values($asset) {
-    $data2 = array('add' => array( 'doc' => $asset, 'commitWithin' => 1000,),);
+    $data2 = array('add' => array('commitWithin' => 1000, 'doc' => $asset, ),);
     return json_encode($data2);
   }
 
@@ -165,8 +162,6 @@ class SolrUpdater {
       $json .= $this->format_add_asset_field_values($asset);
     }
     $json = $this->post_json('/update/json', $json);
-      // print_r($json);
-      // die('here');
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
