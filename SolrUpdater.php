@@ -102,7 +102,7 @@ class SolrUpdater {
   }
 
   function format_add_asset_field_values($asset) {
-    $data2 = array('add' => array('commitWithin' => 1000, 'overwrite' => TRUE, 'doc' => $asset, ),);
+    $data2 = array('add' => array('commitWithin' => 1000, 'doc' => $asset, ),);
     return json_encode($data2);
   }
 
