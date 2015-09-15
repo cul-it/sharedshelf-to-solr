@@ -154,26 +154,6 @@ try {
             }
             else {
 
-              // flatten the solr asset
-              // given $k the solr field name and $v the value for that field
-              // if value $v is scalar or single element array then the flattened version is a scalar
-              // if value $v is an array with more than one element, pass it on as an array
-              // $flat = array();
-              // foreach ($solr_in as $k => $v) {
-              //   if (is_array($v)) {
-              //     if (count($v) == 1) {
-              //       $flat["$k"] = array_shift($v);
-              //     }
-              //     else {
-              //       $flat["$k"] = $v; // pass full array along
-              //     }
-              //   }
-              //   else {
-              //     $flat["$k"] = $v;
-              //   }
-              // }
-              // $solr_in = $flat;
-
               // compare the dates
               if (empty($asset['updated_on'])) {
                 throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
