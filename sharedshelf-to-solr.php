@@ -185,7 +185,6 @@ try {
           // check if we need images and their derivatives
           $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
           if ($need_images) {
-            debug("Needs IMAGES","Images");
             $url = $ss->media_url($ss_id);
             $solr_out['media_URL_tesim'] = $url;
             for ($size = 0; $size <= 4; $size++) {
