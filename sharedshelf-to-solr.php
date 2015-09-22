@@ -33,7 +33,7 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
       }
       if (!empty($delimited_fields["$k"])) {
         $delimiter = $delimited_fields["$k"];
-        if (strpos($delimiter, $v) === FALSE) {
+        if (strpos($v, $delimiter) === FALSE) {
           $flattened_asset["$k"] = trim($v);
         }
         else {
