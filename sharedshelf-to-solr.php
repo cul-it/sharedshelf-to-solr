@@ -201,6 +201,8 @@ try {
           // be sure the id field is the solr id not the sharedshelf one
           $solr_out['id'] =  $solr_id;
 
+          debug($solr_out['work_type_tesim'], 'work_type_tesim');
+
           // remove any fields that will become "" in solr
           $solr_out_full = array();
           foreach ($solr_out as $key => $value) {
