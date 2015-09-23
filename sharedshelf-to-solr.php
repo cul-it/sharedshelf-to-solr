@@ -26,16 +26,19 @@ function usage() {
 }
 
 function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) {
-  if (!empty($delimited_fields)) {
-    foreach ($flattened_asset as $k => $v) {
-      if (!empty($delimited_fields["$k"])) {
-        $delimiter = $delimited_fields["$k"];
-        $v_array = explode($delimiter, $v);
-        $v_array_trimmed = array();
-        foreach ($v_array as $value) {
-          $v_array_trimmed[] = trim($value);
+  foreach ($delimited_fields as $key => $delimiter) {
+    if (!empty($flattened_asset["$key"])) {
+      $value = $flattened_asset["$key"];
+      if (strpos($value, $delimiter) === FALSE) {
+        $flattened_asset["$key"] = trim($value);
+      }
+      else {
+        $items = explode($delimiter, $value);
+        $items_trim = array();
+        foreach ($items as $item) {
+          $items_trim[] = trim($item);
         }
-        $flattened_asset["$k"] = $v_array_trimmed;
+        $flattened_asset["$key"] = $items_trim;
       }
     }
   }
