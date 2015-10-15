@@ -55,15 +55,15 @@ try {
 
   echo $ss->project_fields_ini($selected_project_id);
 
-  echo "\n\n";
-  $solr = new SolrUpdater('http://jrc88.solr.library.cornell.edu/solr', 'ss2solr.gamelan.ini');
-  $solr->add_custom_fields($values);
-  $json = $solr->format_update_asset_field_values($values);
-  echo $json;
+  // echo "\n\n";
+  // $solr = new SolrUpdater('http://jrc88.solr.library.cornell.edu/solr', 'ss2solr.gamelan.ini');
+  // $solr->add_custom_fields($values);
+  // $json = $solr->format_update_asset_field_values($values);
+  // echo $json;
 
-  echo "\n\n";
-  $json = $solr->format_add_asset_field_values($values);
-  echo $json;
+  // echo "\n\n";
+  // $json = $solr->format_add_asset_field_values($values);
+  // echo $json;
 
   //$asset_list = $ss->project_assets($selected_project_id, 0, 5);
   //print_r($asset_list);
@@ -72,11 +72,11 @@ try {
   // print_r($modified);
 
 
-  echo "\n\n";
-  $asset_ids = $ss->project_asset_ids($selected_project_id, '2014-10-10T14:39:58+00:00');
-  print_r($asset_ids);
-  $t = count($asset_ids);
-  echo "Counted $t\n";
+  // echo "\n\n";
+  // $asset_ids = $ss->project_asset_ids($selected_project_id, '2014-10-10T14:39:58+00:00');
+  // print_r($asset_ids);
+  // $t = count($asset_ids);
+  // echo "Counted $t\n";
 
   echo "\n\n";
 }
