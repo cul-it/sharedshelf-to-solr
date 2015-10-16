@@ -5,6 +5,8 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
+define("SOLR_WRITE_COUNT", 10);
+
 function debug($item, $description = '', $die = TRUE) {
   if (!empty($description)) {
     print PHP_EOL . 'DEBUG: ' . $description . PHP_EOL;
@@ -134,6 +136,9 @@ try {
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
 
+    $solr_assets = array(); // accumulate assets for solr here
+
+    $counter = 1;
     foreach ($asset_list as $asset_id) {
       try {
         $asset_full = $ss->asset($asset_id);
@@ -216,11 +221,8 @@ try {
             }
           }
         }
-        // make an arrary out of the one result
-        $solr_assets[] = $solr_out_full;
-
-        // add one result to solr - may fail if multiple processes are running against same document
-        $result = $solr->add($solr_assets);
+        // add this asset to the list for solr
+        $solr_assets[] = array($solr_out_full);
       }
       catch (Exception $e) {
         $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
@@ -231,7 +233,23 @@ try {
           echo $error;
         }
       }
+
+      // if enough solr_assets are ready add them to solr
+      if (count($solr_assets) >= SOLR_WRITE_COUNT) {
+        // add these results to solr - may fail if multiple processes are running against same document
+        $log->note("Writing to solr. " . SOLR_WRITE_COUNT);
+        $result = $solr->add($solr_assets);
+        $solr_assets = array();
+      }
     }
+
+    // add any remaining solr_assets to solr
+    if (count($solr_assets) > 0) {
+      $log->note("Writing last bit to solr. ");
+      // add results to solr - may fail if multiple processes are running against same document
+      $result = $solr->add($solr_assets);
+      $solr_assets = array();
+      }
 
     print_r($task);
     $log->task('Done.');
