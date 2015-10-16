@@ -140,7 +140,6 @@ try {
     foreach ($asset_list as $asset_id) {
       try {
         $asset_full = $ss->asset($asset_id);
-        $asset = $ss->asset_field_values($asset_full);
         $ss_id = $asset_id;
         $solr_id = 'ss:' . $asset_id;
 
@@ -159,15 +158,11 @@ try {
           }
           else {
             // compare the dates
-            if (empty($asset['updated_on'])) {
+            if (empty($asset_full['updated_on'])) {
               throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
             }
 
-            // //debug
-            // print_r(array($asset['updated_on'], $solr_in['updated_on_ss']));
-            // die ("here\n");
-
-            $ss_date =  trim($asset['updated_on']);
+            $ss_date =  trim($asset_full['updated_on']);
             if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
               $solr_date = '';
@@ -187,6 +182,7 @@ try {
         }
 
         // prepare the sharedshelf record for solr
+        $asset = $ss->asset_field_values($asset_full);
         split_delimited_fields($asset, $delimited_fields);
         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
