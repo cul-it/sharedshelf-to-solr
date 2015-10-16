@@ -44,7 +44,20 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
   }
 }
 
-$log = FALSE;
+function get_ss_asset_list(&$ss, $project_id) {
+  $assets = $ss->project_asset_ids($project_id);
+  $count = count($assets);
+  $asset_count = $ss->project_assets_count($project_id);
+  if ($count != $asset_count) {
+    throw new Exception("get_ss_asset_list got the wrong number of assets", 1);
+  }
+  if (sort($assets, SORT_NUMERIC) === FALSE) {
+    throw new Exception("get_ss_asset_list could not sort list of assets.", 1);
+  }
+  return $assets;
+}
+
+$log = TRUE;
 
 $options = getopt("p:",array("help", "force"));
 
@@ -116,6 +129,7 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
+    $asset_list = get_ss_asset_list($ss, $project_id);
 
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
