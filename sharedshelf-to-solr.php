@@ -44,7 +44,20 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
   }
 }
 
-$log = FALSE;
+function get_ss_asset_list(&$ss, $project_id) {
+  $assets = $ss->project_asset_list($project_id);
+  $count = count($assets);
+  $asset_count = $ss->project_assets_count($project_id);
+  if ($count != $asset_count) {
+    throw new Exception("get_ss_asset_list got the wrong number of assets: $count counted, $asset_count expected.", 1);
+  }
+  if (sort($assets, SORT_NUMERIC) === FALSE) {
+    throw new Exception("get_ss_asset_list could not sort list of assets.", 1);
+  }
+  return $assets;
+}
+
+$log = TRUE;
 
 $options = getopt("p:",array("help", "force"));
 
@@ -116,128 +129,110 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
+    $asset_list = get_ss_asset_list($ss, $project_id);
 
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
 
-    for ($start = 0; $start < $asset_count; $start++) {
-      $another_attempt = TRUE;
-      for ($attempt = 0; $attempt < 3 && $another_attempt; $attempt++) {
-        $assets =  $ss->project_assets($project_id, $start, 1);
-        $solr_assets = array();
-        $counter = $start;
-        $asset = array_shift($assets);
-        $ss_id = $asset['id'];
-        $solr_id = 'ss:' . $ss_id;
+    $solr_assets = array(); // accumulate assets for solr here
+
+    $counter = 1;
+    foreach ($asset_list as $asset_id) {
+      try {
+        $asset_full = $ss->asset($asset_id);
+        $ss_id = $asset_id;
+        $solr_id = 'ss:' . $asset_id;
+
         $log->item("asset $solr_id");
-        if ($attempt > 0) {
-          $log->note("Attempt " . $attempt + 1);
+        $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
+        $log->note("Completed:$pct");
+
+        if ($force_replacement) {
+          $log->note('Job:Replace');
         }
         else {
-          $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
-          $log->note("Completed:$pct");
-        }
-
-        try {
-          if ($force_replacement) {
-            $log->note('Job:Replace');
-            $flattened_asset = $ss->asset_field_values($asset);
-            split_delimited_fields($flattened_asset, $delimited_fields);
-            $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
+          // is it in solr already?
+          $solr_in = $solr->get_item($solr_id);
+          if (empty($solr_in)) {
+            $log->note('Job:AddNew');
           }
           else {
-            // is this asset in solr already?
-            $solr_in = $solr->get_item($solr_id);
-            if (empty($solr_in)) {
-              // just add the asset to solr
-              $log->note('Job:AddNew');
-              $flattened_asset = $ss->asset_field_values($asset);
-              split_delimited_fields($flattened_asset, $delimited_fields);
-              $solr_out = $solr->convert_ss_names_to_solr($flattened_asset);
+            // compare the dates
+            if (empty($asset_full['updated_on'])) {
+              throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
+            }
+
+            $ss_date =  trim($asset_full['updated_on']);
+            if (empty($solr_in['updated_on_ss'])) {
+              $log->note('solr missing updated_on');
+              $solr_date = '';
             }
             else {
-
-              // compare the dates
-              if (empty($asset['updated_on'])) {
-                throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
-              }
-              $ss_date =  trim($asset['updated_on']);
-              if (empty($solr_in['updated_on_ss'])) {
-                $log->note('solr missing updated_on');
-                $solr_date = '';
-              }
-              else {
-                $solr_date = trim($solr_in['updated_on_ss']);
-              }
-              if (strcmp($ss_date,$solr_date) == 0) {
-                // dates match - skip this record
-                $log->note('Job:Skip-DatesMatch');
-                $another_attempt = FALSE;
-                continue;
-              }
-              else {
-                $log->note('Job:Update');
-              }
-              $flattened_asset = $ss->asset_field_values($asset);
-              split_delimited_fields($flattened_asset, $delimited_fields);
-              $solr_new = $solr->convert_ss_names_to_solr($flattened_asset);
-              $solr_out = array_replace($solr_in, $solr_new);
+              $solr_date = trim($solr_in['updated_on_ss']);
             }
-          }
-
-          // check if we need images and their derivatives
-          $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
-          if ($need_images) {
-            $url = $ss->media_url($ss_id);
-            $solr_out['media_URL_tesim'] = $url;
-            for ($size = 0; $size <= 4; $size++) {
-              $fld = 'media_URL_size_' . $size . "_tesim";
-              $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+            if (strcmp($ss_date,$solr_date) == 0) {
+              // dates match - skip this record
+              $log->note('Job:Skip-DatesMatch');
+              continue; // <--------- go on to the next asset_id !!!
             }
-
-            if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
-              $solr_out['img_width_tesim'] = $dim['width'];
-              $solr_out['img_height_tesim'] = $dim['height'];
+            else {
+              $log->note('Job:Update');
             }
-          }
-
-          // be sure the id field is the solr id not the sharedshelf one
-          $solr_out['id'] =  $solr_id;
-
-          // remove any fields that will become "" in solr
-          $solr_out_full = array();
-          foreach ($solr_out as $key => $value) {
-            if (!empty($value) || $value === FALSE) {
-              $value = is_array($value) ? $value : trim($value, '"'); //hack to remove "" from Lat/Lon
-              if (!empty($value)) {
-                $solr_out_full["$key"] = $value;
-              }
-            }
-          }
-          // make an arrary out of the one result
-          $solr_assets[] = $solr_out_full;
-
-          // add one result to solr - may fail if multiple processes are running against same document
-          $result = $solr->add($solr_assets);
-
-          $another_attempt = FALSE;
-          continue;
-         }
-        catch (\Exception $e) {
-          $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
-          if ($log !== FALSE) {
-            $log->error($error);
-          }
-          else {
-            echo $error;
           }
         }
-      } // $attempt
-    }
-  }
 
-  print_r($task);
-  $log->task('Done.');
+        // prepare the sharedshelf record for solr
+        $asset = $ss->asset_field_values($asset_full);
+        split_delimited_fields($asset, $delimited_fields);
+        $solr_out = $solr->convert_ss_names_to_solr($asset);
+
+        // check if we need images and their derivatives
+        $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
+        if ($need_images) {
+          $url = $ss->media_url($ss_id);
+          $solr_out['media_URL_tesim'] = $url;
+          for ($size = 0; $size <= 4; $size++) {
+            $fld = 'media_URL_size_' . $size . "_tesim";
+            $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+          }
+
+          if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
+            $solr_out['img_width_tesim'] = $dim['width'];
+            $solr_out['img_height_tesim'] = $dim['height'];
+          }
+        }
+
+        // be sure the id field is the solr id not the sharedshelf one
+        $solr_out['id'] =  $solr_id;
+
+        // remove any fields that will become "" in solr
+        $solr_out_full = array();
+        foreach ($solr_out as $key => $value) {
+          if (!empty($value) || $value === FALSE) {
+            $value = is_array($value) ? $value : trim($value, '"'); //hack to remove "" from Lat/Lon
+            if (!empty($value)) {
+              $solr_out_full["$key"] = $value;
+            }
+          }
+        }
+        // add this asset to solr
+        $solr_assets = array($solr_out_full);
+        $result = $solr->add($solr_assets);
+      }
+      catch (Exception $e) {
+        $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
+        if ($log !== FALSE) {
+          $log->error($error);
+        }
+        else {
+          echo $error;
+        }
+      }
+    }
+
+    print_r($task);
+    $log->task('Done.');
+  }
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";

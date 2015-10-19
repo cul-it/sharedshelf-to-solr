@@ -32,6 +32,15 @@ try {
 
   $selected_project_id = 687;
 
+  for ($page = 13; $page < 101; $page += 10) {
+    $time_start = microtime(TRUE);
+    print "Trying $page per page:";
+    $ids = $ss->project_asset_list($selected_project_id, $page);
+    $time_end = microtime(TRUE);
+    $took = $time_end - $time_start;
+    print " took $took seconds.\n";
+  }
+
   $metadata = $ss->project_fields($selected_project_id);
   print_r($metadata);
 
