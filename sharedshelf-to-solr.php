@@ -215,7 +215,7 @@ try {
             }
           }
         }
-        // add this asset to the list for solr
+        // add this asset to solr
         $solr_assets = array($solr_out_full);
         $result = $solr->add($solr_assets);
       }
