@@ -166,7 +166,7 @@ class SolrUpdater {
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
       $err = print_r($result, TRUE);
-      throw new Exception("Error Processing Request: $err", 1);
+      throw new Exception("Error Processing add Request: $err", 1);
     }
     return $status;
   }

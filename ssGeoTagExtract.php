@@ -74,7 +74,7 @@ try {
         copy($url, $temp_image_file);
         $output = shell_exec($exiftool);
         if ($output == NULL) {
-          throw new Exception("Error Processing Request: $ss_id : $url", 1);
+          throw new Exception("Error Processing ssGeoTagExtract Request: $ss_id : $url", 1);
         }
         $parts = explode("\t", $output);
         if ($parts[0] == "-") continue; // no lat/lon data
