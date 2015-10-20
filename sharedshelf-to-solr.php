@@ -189,13 +189,16 @@ try {
         // check if we need images and their derivatives
         $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
         if ($need_images) {
+          $log->note('get media');
           $url = $ss->media_url($ss_id);
           $solr_out['media_URL_tesim'] = $url;
+          $log->note('get derivatives');
           for ($size = 0; $size <= 4; $size++) {
             $fld = 'media_URL_size_' . $size . "_tesim";
             $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
           }
 
+          $log->note('get dimensions');
           if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
             $solr_out['img_width_tesim'] = $dim['width'];
             $solr_out['img_height_tesim'] = $dim['height'];
@@ -216,6 +219,7 @@ try {
           }
         }
         // add this asset to solr
+        $log->note('adding to solr');
         $solr_assets = array($solr_out_full);
         $result = $solr->add($solr_assets);
       }
