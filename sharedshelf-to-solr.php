@@ -60,7 +60,7 @@ function get_ss_asset_list(&$ss, $project_id) {
 
 $log = TRUE;
 
-$options = getopt("ps:",array("help", "force"));
+$options = getopt("p:s:",array("help", "force"));
 
 if (isset($options['help'])) {
   usage();
