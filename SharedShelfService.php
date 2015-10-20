@@ -59,6 +59,17 @@ class SharedShelfService {
       curl_close($ch);
       throw new Exception("Bad get_response url: $url", 1);
     }
+    $options = array(
+      CURLOPT_CONNECTTIMEOUT => 120,
+      CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_TIMEOUT => 120,
+      );
+    $problems = curl_setopt_array($ch, $options);
+    if ($problems !== FALSE) {
+      throw new Exception("get_response failed to set curl options", 1);
+    }
     $output = curl_exec ($ch);
     curl_close($ch);
     if ($output === FALSE) {
@@ -79,12 +90,20 @@ class SharedShelfService {
     $ch = curl_init($url);
     if ($ch === FALSE) {
       curl_close($ch);
-      throw new Exception("Bad request url: $url", 1);
+      throw new Exception("Bad request url in get_url: $url", 1);
     }
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    $options = array(
+      CURLOPT_CONNECTTIMEOUT => 120,
+      CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
+      CURLOPT_FOLLOWLOCATION => FALSE,  // We want to just get redirect url but not to follow it.
+      CURLOPT_HEADER => TRUE,    // We'll parse redirect url from header.
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_TIMEOUT => 120,
+      );
+    $problems = curl_setopt_array($ch, $options);
+    if ($problems !== FALSE) {
+      throw new Exception("get_url failed to set curl options", 1);
+    }
     $response = curl_exec($ch);
     preg_match_all('/^Location:(.*)$/mi', $response, $matches);
     $url2 = !empty($matches[1]) ? trim($matches[1][0]) : 'No redirect found';
@@ -101,11 +120,13 @@ class SharedShelfService {
       curl_close($ch);
       throw new Exception("Bad second request url: $url2", 1);
     }
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HEADER, TRUE); // We'll parse redirect url from header.
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE); // We want to just get redirect url but not to follow it.
+    // re-use curl options
+    $problems = curl_setopt_array($ch, $options);
+    if ($problems !== FALSE) {
+      throw new Exception("get_url failed to set curl options 2", 1);
+    }
     $response = curl_exec($ch);
+    curl_close($ch);
     preg_match_all('/^Location:(.*)$/mi', $response, $matches);
     if (empty($matches[1])) {
       throw new Exception("Can't find url for $url", 1);
