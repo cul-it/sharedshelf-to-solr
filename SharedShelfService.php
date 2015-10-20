@@ -66,8 +66,8 @@ class SharedShelfService {
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_TIMEOUT => 120,
       );
-    $problems = curl_setopt_array($ch, $options);
-    if ($problems !== FALSE) {
+    $allswell = curl_setopt_array($ch, $options);
+    if ($allswell === FALSE) {
       throw new Exception("get_response failed to set curl options", 1);
     }
     $output = curl_exec ($ch);
@@ -100,8 +100,8 @@ class SharedShelfService {
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_TIMEOUT => 120,
       );
-    $problems = curl_setopt_array($ch, $options);
-    if ($problems !== FALSE) {
+    $allswell = curl_setopt_array($ch, $options);
+    if ($allswell === FALSE) {
       throw new Exception("get_url failed to set curl options", 1);
     }
     $response = curl_exec($ch);
@@ -121,8 +121,8 @@ class SharedShelfService {
       throw new Exception("Bad second request url: $url2", 1);
     }
     // re-use curl options
-    $problems = curl_setopt_array($ch, $options);
-    if ($problems !== FALSE) {
+    $allswell = curl_setopt_array($ch, $options);
+    if ($allswell === FALSE) {
       throw new Exception("get_url failed to set curl options 2", 1);
     }
     $response = curl_exec($ch);
