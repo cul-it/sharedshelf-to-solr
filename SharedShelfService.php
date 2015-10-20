@@ -55,11 +55,10 @@ class SharedShelfService {
   function get_response($url_suffix = '/account', $check_success = TRUE) {
     $url = $this->sharedshelf_url . $url_suffix;
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_jar_path);
-    /* make sure you provide FULL PATH to cookie files*/
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    if ($ch === FALSE) {
+      curl_close($ch);
+      throw new Exception("Bad get_response url: $url", 1);
+    }
     $output = curl_exec ($ch);
     curl_close($ch);
     if ($output === FALSE) {
