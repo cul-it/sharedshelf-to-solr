@@ -18,10 +18,11 @@ function debug($item, $description = '', $die = TRUE) {
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
+  echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)";
   exit (0);
 }
 
@@ -59,7 +60,7 @@ function get_ss_asset_list(&$ss, $project_id) {
 
 $log = TRUE;
 
-$options = getopt("p:",array("help", "force"));
+$options = getopt("ps:",array("help", "force"));
 
 if (isset($options['help'])) {
   usage();
@@ -75,6 +76,17 @@ if (isset($options['p'])) {
 }
 else {
   $single_collection = FALSE;
+}
+if (isset($options['s'])) {
+  if (is_numeric($options['s'])) {
+    $starting_asset = $options['s'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $starting_asset = 0;
 }
 
 try {
@@ -138,6 +150,9 @@ try {
 
     $counter = 1;
     foreach ($asset_list as $asset_id) {
+      if ($asset_id < $starting_asset) {
+        continue;
+      }
       try {
         $asset_full = $ss->asset($asset_id);
         $ss_id = $asset_id;
