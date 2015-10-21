@@ -12,7 +12,7 @@ class SharedShelfToSolrLogger {
   function __construct($logfile_prefix) {
     $this->timezone = new DateTimeZone('America/New_York');
     $dt = new DateTime('NOW',  $this->timezone);
-    $this->log_file = $logfile_prefix . $dt->format('-Y-m-d-U') . '.log';
+    $this->log_file = $logfile_prefix . $dt->format('-Y-m-d-H-i-s') . '.log';
     if (!file_exists($this->log_file)) {
       if (touch($this->log_file) === FALSE) {
         throw new Exception("Log file must exist: " . $this->log_file, 1);
