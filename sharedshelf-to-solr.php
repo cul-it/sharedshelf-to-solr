@@ -151,6 +151,7 @@ try {
     $counter = 1;
     foreach ($asset_list as $asset_id) {
       if ($asset_id < $starting_asset) {
+        $counter++;
         continue;
       }
       try {
