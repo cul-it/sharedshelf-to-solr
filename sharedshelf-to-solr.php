@@ -196,6 +196,8 @@ try {
 
         // prepare the sharedshelf record for solr
         $asset = $ss->asset_field_values($asset_full);
+        debug($asset_full, 'asset', FALSE);
+        debug($asset, 'flattened asset', TRUE);
         split_delimited_fields($asset, $delimited_fields);
         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
