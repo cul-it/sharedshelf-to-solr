@@ -178,6 +178,36 @@ class SharedShelfService {
     return $ids;
   }
 
+/**
+ * return array with id as the key and a given field as the value
+ * @param  integer  $project_id ss project number
+ * @param  text field name of ss field to return
+ * @param  integer $per_page   count of items to collect from ss at once
+ * @return array              [description]
+ */
+  function project_asset_list_values($project_id, $field_name, $per_page = 100) {
+    // simplest version
+    $args = "start=0&limit=1&with_meta=false&sort=id&dir=ASC";
+    $assets = $this->get_response("/projects/$project_id/assets?$args");
+    if (!isset($assets['total'])) {
+      throw new Exception("Invalid project: $project_id", 1);
+    }
+    $total = $assets['total'];
+    $ids = array();
+    for ($start = 0; $start < $total; $start += $per_page) {
+      $args = "start=$start&limit=$per_page&with_meta=false&sort=id&sort=id&dir=ASC";
+      $assets = $this->get_response("/projects/$project_id/assets?$args");
+      foreach($assets['assets'] as $asset) {
+        $id = $asset['id'];
+        $ids["$id"] = $asset["$field_name"];
+      }
+    }
+    if (count($ids) != $total) {
+      throw new Exception("SS did not return enough unique IDs: expected $total; counted " . count($ids), 1);
+    }
+    return $ids;
+  }
+
   function project_asset_ids($project_id, $start_date = FALSE) {
     // return array of all asset ids in this project
     $assets = $this->get_response("/projects/$project_id/assets");
