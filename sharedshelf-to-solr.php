@@ -138,7 +138,7 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
-    $asset_list = get_ss_asset_list($ss, $project_id);
+    $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
