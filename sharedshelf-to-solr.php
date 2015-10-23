@@ -45,15 +45,12 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
   }
 }
 
-function get_ss_asset_list(&$ss, $project_id) {
-  $assets = $ss->project_asset_list($project_id);
+function get_ss_asset_list(&$ss, $project_id, $date_field) {
+  $assets = $ss->project_asset_list_values($project_id, $date_field);
   $count = count($assets);
   $asset_count = $ss->project_assets_count($project_id);
   if ($count != $asset_count) {
     throw new Exception("get_ss_asset_list got the wrong number of assets: $count counted, $asset_count expected.", 1);
-  }
-  if (sort($assets, SORT_NUMERIC) === FALSE) {
-    throw new Exception("get_ss_asset_list could not sort list of assets.", 1);
   }
   return $assets;
 }
