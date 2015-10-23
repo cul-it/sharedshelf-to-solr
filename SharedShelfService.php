@@ -179,7 +179,7 @@ class SharedShelfService {
   }
 
 /**
- * return array with id as the key and a given field as the value
+ * return associative array with id as the key and a given field as the value
  * @param  integer  $project_id ss project number
  * @param  text field name of ss field to return
  * @param  integer $per_page   count of items to collect from ss at once
@@ -204,6 +204,9 @@ class SharedShelfService {
     }
     if (count($ids) != $total) {
       throw new Exception("SS did not return enough unique IDs: expected $total; counted " . count($ids), 1);
+    }
+    if (ksort($ids, SORT_NUMERIC) === FALSE) {
+      throw new Exception("Unable to ksort project_asset_list_values", 1);
     }
     return $ids;
   }
