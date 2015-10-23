@@ -198,8 +198,6 @@ class SharedShelfService {
       $args = "start=$start&limit=$per_page&with_meta=false&sort=id&sort=id&dir=ASC";
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
-        print_r($asset);
-        die();
         $id = $asset['id'];
         $ids["$id"] = $asset["$field_name"];
       }
