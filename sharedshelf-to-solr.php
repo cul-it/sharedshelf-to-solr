@@ -173,10 +173,6 @@ try {
           }
           else {
             // compare the dates
-            if (empty($asset_full['updated_on'])) {
-              throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
-            }
-
             if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
               $solr_date = '';
