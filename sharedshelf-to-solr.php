@@ -152,13 +152,13 @@ try {
         continue;
       }
       try {
-        $log->item("asset $solr_id");
-        $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
-        $log->note("Completed:$pct");
-
         $ss_id = $asset_id;
         $solr_id = 'ss:' . $asset_id;
         $ss_date = trim($updated_date);
+
+        $log->item("asset $solr_id");
+        $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
+        $log->note("Completed:$pct");
 
         if ($force_replacement) {
           $log->note('Job:Replace');
