@@ -146,19 +146,19 @@ try {
     $solr_assets = array(); // accumulate assets for solr here
 
     $counter = 1;
-    foreach ($asset_list as $asset_id) {
+    foreach ($asset_list as $asset_id => $updated_date) {
       if ($asset_id < $starting_asset) {
         $counter++;
         continue;
       }
       try {
-        $asset_full = $ss->asset($asset_id);
-        $ss_id = $asset_id;
-        $solr_id = 'ss:' . $asset_id;
-
         $log->item("asset $solr_id");
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
+
+        $ss_id = $asset_id;
+        $solr_id = 'ss:' . $asset_id;
+        $ss_date = trim($updated_date);
 
         if ($force_replacement) {
           $log->note('Job:Replace');
@@ -175,7 +175,6 @@ try {
               throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
             }
 
-            $ss_date =  trim($asset_full['updated_on']);
             if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
               $solr_date = '';
@@ -193,6 +192,9 @@ try {
             }
           }
         }
+
+        // grab the record from sharedshelf
+        $asset_full = $ss->asset($asset_id);
 
         // prepare the sharedshelf record for solr
         $asset = $ss->asset_field_values($asset_full);
