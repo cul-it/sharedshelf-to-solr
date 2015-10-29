@@ -201,6 +201,23 @@ class SharedShelfService {
       $args = "start=$start&limit=$per_page&with_meta=false&sort=id&sort=id&dir=ASC";
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
+        if (!empty($asset['publishing_status'])) {
+          if (count($asset['publishing_status']) > 1) {
+            print_r($asset);
+            die();
+          }
+          foreach ($asset['publishing_status'] as $target_id => $publishing) {
+            if ($publishing['status'] != 'Published') {
+              print_r($publishing);
+              print_r($asset['publishing_status']);
+              //die();
+            }
+          }
+        }
+        else {
+          //echo 'no publishing status: ' . $asset['id'] . PHP_EOL;
+          continue;
+        }
         $id = $asset['id'];
         $ids["$id"] = $asset["$field_name"];
       }
