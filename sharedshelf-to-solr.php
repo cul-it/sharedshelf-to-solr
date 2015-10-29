@@ -23,6 +23,7 @@ function usage() {
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
+  echo "-n - process only this many (integer) assets" . PHP_EOL;
   exit (0);
 }
 
@@ -57,7 +58,7 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
 
 $log = TRUE;
 
-$options = getopt("p:s:",array("help", "force"));
+$options = getopt("p:s:n:",array("help", "force"));
 
 if (isset($options['help'])) {
   usage();
@@ -84,6 +85,17 @@ if (isset($options['s'])) {
 }
 else {
   $starting_asset = 0;
+}
+if (isset($options['n'])) {
+  if (is_numeric($options['n'])) {
+    $max_processing_count = $options['n'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $max_processing_count = false; // this means process them all
 }
 
 try {
@@ -148,10 +160,14 @@ try {
     $solr_assets = array(); // accumulate assets for solr here
 
     $counter = 1;
+    $assets_processed = 0;
     foreach ($asset_list as $asset_id => $updated_date) {
       if ($asset_id < $starting_asset) {
         $counter++;
         continue;
+      }
+      if (($max_processing_count  !== false) && ($assets_processed++ >= $max_processing_count)) {
+        throw new Exception("Reached the maximum count specified on the -n argument", 1);
       }
       try {
         $ss_id = $asset_id;
