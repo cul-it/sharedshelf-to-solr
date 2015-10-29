@@ -184,6 +184,9 @@ class SharedShelfService {
  * @param  text field name of ss field to return
  * @param  integer $per_page   count of items to collect from ss at once
  * @return array              [description]
+ *
+ * query parameter to get just the published ones
+ * [{"type":"string","value":"1114","field":"publishing_status"}]
  */
   function project_asset_list_values($project_id, $field_name, $per_page = 100) {
     // simplest version
