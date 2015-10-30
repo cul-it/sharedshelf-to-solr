@@ -23,6 +23,7 @@ function usage() {
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
+  echo "-n - process only this many (integer) assets" . PHP_EOL;
   exit (0);
 }
 
@@ -45,22 +46,19 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
   }
 }
 
-function get_ss_asset_list(&$ss, $project_id) {
-  $assets = $ss->project_asset_list($project_id);
+function get_ss_asset_list(&$ss, $project_id, $date_field) {
+  $assets = $ss->project_asset_list_values($project_id, $date_field);
   $count = count($assets);
   $asset_count = $ss->project_assets_count($project_id);
   if ($count != $asset_count) {
     throw new Exception("get_ss_asset_list got the wrong number of assets: $count counted, $asset_count expected.", 1);
-  }
-  if (sort($assets, SORT_NUMERIC) === FALSE) {
-    throw new Exception("get_ss_asset_list could not sort list of assets.", 1);
   }
   return $assets;
 }
 
 $log = TRUE;
 
-$options = getopt("p:s:",array("help", "force"));
+$options = getopt("p:s:n:",array("help", "force"));
 
 if (isset($options['help'])) {
   usage();
@@ -88,6 +86,17 @@ if (isset($options['s'])) {
 else {
   $starting_asset = 0;
 }
+if (isset($options['n'])) {
+  if (is_numeric($options['n'])) {
+    $max_processing_count = $options['n'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $max_processing_count = false; // this means process them all
+}
 
 try {
 
@@ -105,6 +114,8 @@ try {
   }
 
   $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
+
+  echo 'Logging to: ' . $log->log_file_name() . PHP_EOL;
 
   $log->task('ssUser');
   // sharedshelf user
@@ -141,7 +152,7 @@ try {
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
-    $asset_list = get_ss_asset_list($ss, $project_id);
+    $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
     // extranct list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
@@ -149,15 +160,19 @@ try {
     $solr_assets = array(); // accumulate assets for solr here
 
     $counter = 1;
-    foreach ($asset_list as $asset_id) {
+    $assets_processed = 0;
+    foreach ($asset_list as $asset_id => $updated_date) {
       if ($asset_id < $starting_asset) {
         $counter++;
         continue;
       }
+      if (($max_processing_count  !== false) && ($assets_processed++ >= $max_processing_count)) {
+        throw new Exception("Reached the maximum count specified on the -n argument", 1);
+      }
       try {
-        $asset_full = $ss->asset($asset_id);
         $ss_id = $asset_id;
         $solr_id = 'ss:' . $asset_id;
+        $ss_date = trim($updated_date);
 
         $log->item("asset $solr_id");
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
@@ -174,11 +189,6 @@ try {
           }
           else {
             // compare the dates
-            if (empty($asset_full['updated_on'])) {
-              throw new Exception("Missing updated_on field on sharedshelf asset $ss_id ", 1);
-            }
-
-            $ss_date =  trim($asset_full['updated_on']);
             if (empty($solr_in['updated_on_ss'])) {
               $log->note('solr missing updated_on');
               $solr_date = '';
@@ -197,8 +207,14 @@ try {
           }
         }
 
+        // grab the record from sharedshelf
+        $asset_full = $ss->asset($asset_id);
+
         // prepare the sharedshelf record for solr
         $asset = $ss->asset_field_values($asset_full);
+        if (empty($asset['publishing_status'])) {
+          $log->note("No publishing_status");
+        }
         split_delimited_fields($asset, $delimited_fields);
         $solr_out = $solr->convert_ss_names_to_solr($asset);
 

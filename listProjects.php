@@ -22,15 +22,17 @@ try {
     echo $project['id'] . ' - ' . $project['name'] . PHP_EOL;
   }
 
-  /*
-  48 - Campus Artifacts, Art &amp; Memorabilia
-  78 - NYS Aerial Photographs
-  370 - Reps Slides
-  522 - Tamang
-  589 - Reps Bastides
-  616 - Gamelan
-  746 - Ragamala Paintings
-   */
+/*
+48 - Campus Artifacts, Art &amp; Memorabilia
+78 - NYS Aerial Photographs
+370 - Reps Slides
+522 - Tamang
+589 - Reps Bastides
+616 - Gamelan
+659 - PJ Mode Map Collection
+687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia
+746 - Ragamala Paintings
+ */
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
