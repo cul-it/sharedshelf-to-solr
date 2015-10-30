@@ -20,6 +20,10 @@ class SharedShelfToSolrLogger {
     }
   }
 
+  function log_file_name() {
+    return $this->log_file;
+  }
+
   function task($taskname) {
     $this->end_item();
     $this->end_task();
