@@ -203,7 +203,7 @@ class SharedShelfService {
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
         if (!empty($asset['publishing_status'])) {
-          if (count($asset['publishing_status']) > 1) {
+          if (false && count($asset['publishing_status']) > 1) {
             print_r($asset);
             die();
           }
