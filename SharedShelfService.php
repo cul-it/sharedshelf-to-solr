@@ -197,6 +197,7 @@ class SharedShelfService {
     }
     $total = $assets['total'];
     $ids = array();
+    $publish_counts = array('no status' => 0, 'Published' => 0, 'Suppressed' => 0);
     for ($start = 0; $start < $total; $start += $per_page) {
       $args = "start=$start&limit=$per_page&with_meta=false&sort=id&sort=id&dir=ASC";
       $assets = $this->get_response("/projects/$project_id/assets?$args");
@@ -212,19 +213,24 @@ class SharedShelfService {
               print_r($asset['publishing_status']);
               die();
             }
+            $status = $publishing['status'];
+            $publish_counts["$status"]++;
+            break; // only count the first
           }
         }
         else {
           //echo 'no publishing status: ' . $asset['id'] . PHP_EOL;
+          $publish_counts['no status']++;
           continue;
         }
         $id = $asset['id'];
         $ids["$id"] = $asset["$field_name"];
       }
     }
-    if (count($ids) != $total) {
-      throw new Exception("SS did not return enough unique IDs: expected $total; counted " . count($ids), 1);
-    }
+    print_r($publish_counts);
+    // if (count($ids) != $total) {
+    //   throw new Exception("SS did not return enough unique IDs: expected $total; counted " . count($ids), 1);
+    // }
     if (ksort($ids, SORT_NUMERIC) === FALSE) {
       throw new Exception("Unable to ksort project_asset_list_values", 1);
     }
