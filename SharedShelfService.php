@@ -208,7 +208,7 @@ class SharedShelfService {
             die();
           }
           foreach ($asset['publishing_status'] as $target_id => $publishing) {
-            if (!in_array($publishing['status'], array('Published','Suppressed')) {
+            if (!in_array($publishing['status'], array('Published','Suppressed'))) {
               print_r($publishing);
               print_r($asset['publishing_status']);
               die();
