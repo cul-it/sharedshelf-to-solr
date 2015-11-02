@@ -435,7 +435,7 @@ class SharedShelfService {
               // save non-array items trimmed
               // will be incomplete if an arrray item is found
               // but it will not be used!
-              $trimmed[] = trim($v);
+              $trimmed[] = trim($v_child);
             }
           }
           if ($children) {
