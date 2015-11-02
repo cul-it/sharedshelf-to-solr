@@ -409,6 +409,7 @@ class SharedShelfService {
 
   function asset_field_values($asset) {
     // flatten out the array field values in an asset
+    // if a field is an array, stick all the array's elements in a single text string
     $flat = array();
     foreach ($asset as $k => $v) {
       if (is_array($v)) {
@@ -416,7 +417,7 @@ class SharedShelfService {
         $returnValue = preg_match('/_lookup$/', $k, $matches);
         if ($returnValue == 1) {
           if (isset($v['display_value'])) {
-            $flat["$k"] = $v['display_value'];
+            $flat["$k"] = trim($v['display_value']);
           }
           else {
             throw new Exception("Missing display_value: $k " . print_r($v, TRUE), 1);
@@ -424,27 +425,34 @@ class SharedShelfService {
         }
         else {
           $children = FALSE;
+          $trimmed = array();
           foreach ($v as $v_child) {
             if (is_array($v_child)) {
               $children = TRUE;
               break;
+            }
+            else {
+              // save non-array items trimmed
+              // will be incomplete if an arrray item is found
+              // but it will not be used!
+              $trimmed[] = trim($v_child);
             }
           }
           if ($children) {
             $mess = array();
             $it = new RecursiveIteratorIterator(new RecursiveArrayIterator($v));
             foreach($it as $key => $child) {
-              $mess[] = "$key | $child";
+              $mess[] = "$key | " . trim("$child");
             }
             $flat["$k"] = implode("; ", $mess);
           }
           else {
-            $flat["$k"] = implode("; ", $v);
+            $flat["$k"] = implode("; ", $trimmed);
           }
         }
       }
       else {
-        $flat["$k"] = $v;
+        $flat["$k"] = trim($v);
       }
     }
     return $flat;
