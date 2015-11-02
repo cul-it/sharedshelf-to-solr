@@ -409,6 +409,7 @@ class SharedShelfService {
 
   function asset_field_values($asset) {
     // flatten out the array field values in an asset
+    // if a field is an array, stick all the array's elements in a single text string
     $flat = array();
     foreach ($asset as $k => $v) {
       if (is_array($v)) {
