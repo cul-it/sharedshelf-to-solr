@@ -270,7 +270,7 @@ try {
       }
     }
 
-    print_r($task);
+    //print_r($task);
     $log->task('Done.');
   }
 }
