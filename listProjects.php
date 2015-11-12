@@ -1,7 +1,6 @@
 <?php
-// listFields.php - list the fields in a project
-// php listFields.php ss2solr.tamang.ini
-// use configuration file name as argument
+// listProjects.php - list the project ids
+// php listProjects.php
 require_once('SharedShelfService.php');
 
 try {
