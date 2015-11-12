@@ -212,11 +212,21 @@ try {
         // grab the record from sharedshelf
         $asset_full = $ss->asset($asset_id);
 
+        // determine publishing status
+        $cul_publishing_status = array();
+        if (empty($asset_full['publishing_status'])) {
+          $cul_publishing_status[] = 'Unpublished';
+          $log->note("No publishing_status");
+        } else {
+          foreach ($asset_full['publishing_status'] as $target_id => $publishing_info) {
+            $cul_publishing_status["$target_id"] =  $publishing_info['status'];
+          }
+        }
+        $log->note(print_r($cul_publishing_status, true));
+
         // prepare the sharedshelf record for solr
         $asset = $ss->asset_field_values($asset_full);
-        if (empty($asset['publishing_status'])) {
-          $log->note("No publishing_status");
-        }
+
         split_delimited_fields($asset, $delimited_fields);
         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
