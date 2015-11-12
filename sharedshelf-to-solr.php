@@ -21,6 +21,7 @@ function usage() {
   echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
+  echo "--no-write - do everything EXCEPT writing the solr records";
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
@@ -58,12 +59,13 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
 
 $log = TRUE;
 
-$options = getopt("p:s:n:",array("help", "force"));
+$options = getopt("p:s:n:",array("help", "force", "no-write"));
 
 if (isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
+$do_not_write_to_solr = isset($options["no-write"]);
 if (isset($options['p'])) {
   if (is_numeric($options['p'])) {
     $single_collection = $options['p'];
@@ -250,10 +252,12 @@ try {
             }
           }
         }
-        // add this asset to solr
-        $log->note('adding to solr');
-        $solr_assets = array($solr_out_full);
-        $result = $solr->add($solr_assets);
+        if ($do_not_write_to_solr === false) {
+          // add this asset to solr
+          $log->note('adding to solr');
+          $solr_assets = array($solr_out_full);
+          $result = $solr->add($solr_assets);
+        }
       }
       catch (Exception $e) {
         $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
