@@ -249,6 +249,9 @@ try {
           }
         }
 
+        // add in the publishing status field
+        $solr_out['status_ssi'] = $cul_publishing_status;
+
         // be sure the id field is the solr id not the sharedshelf one
         $solr_out['id'] =  $solr_id;
 
