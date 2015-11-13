@@ -156,8 +156,11 @@ try {
     echo "$config asset count: $asset_count\n";
     $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
-    // extranct list of sharedshelf field names that need special array treatment
+    // extract list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
+
+    // find the publishing target id for this project
+    $publishing_target_id = $ss->find_publishing_target_id($project_id);
 
     $solr_assets = array(); // accumulate assets for solr here
 
