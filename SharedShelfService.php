@@ -501,4 +501,16 @@ class SharedShelfService {
     return $output;
   }
 
+  function find_publishing_target_id($project_id, $publish_to = 'Shared Shelf Commons') {
+    $meta = $this->project_metadata($project_id);
+    if (is_array($meta['targets'])) {
+      foreach ($meta['targets'] as $target) {
+        if (strcmp($target['target_name'], $publish_to) == 0) {
+          return $target['id'];
+        }
+      }
+    }
+    return false;
+  }
+
 }
