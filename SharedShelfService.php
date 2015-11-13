@@ -155,6 +155,16 @@ class SharedShelfService {
     return $response;
   }
 
+  function project_asset_count($project_id) {
+    $args = "start=0&limit=1&with_meta=false&sort=id&dir=ASC";
+    $assets = $this->get_response("/projects/$project_id/assets?$args");
+    if (!isset($assets['total'])) {
+      throw new Exception("Invalid project: $project_id", 1);
+    }
+    $total = $assets['total'];
+    return $total;
+  }
+
   function project_asset_list($project_id, $per_page = 100) {
     // simplest version
     $args = "start=0&limit=1&with_meta=false&sort=id&dir=ASC";
