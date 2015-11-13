@@ -16,13 +16,24 @@ try {
     echo "User is logged in\n";
   }
 
+  echo "publication_target_id is the last number on each line....\n";
 
   $projects = $ss->projects();
   foreach ($projects['items'] as $project) {
-    echo $project['id'] . ' - ' . $project['name'] . PHP_EOL;
+    //echo $project['id'] . ' - ' . $project['name'] . PHP_EOL;
     $meta = $ss->project_metadata($project['id']);
-    print_r($meta['targets']);
-    die();
+    if (is_array($meta['targets'])) {
+      foreach ($meta['targets'] as $target) {
+        $info = array($project['id'], $project['name'], $target['target_name'], $target['target_id'], $target['id']);
+        echo implode(' - ', $info) . PHP_EOL;
+
+        $id = $ss->find_publishing_target_id($project['id'], $target['target_name']);
+        if ($id != $target['id']) {
+          throw new Exception("find_publishing_target returned wrong publishing target!!", 1);
+
+        }
+      }
+    }
   }
 
 /*
