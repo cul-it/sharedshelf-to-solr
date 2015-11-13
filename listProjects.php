@@ -18,7 +18,8 @@ try {
 
   $projects = $ss->projects();
   foreach ($projects['items'] as $project) {
-    echo $project['id'] . ' - ' . $project['name'] . PHP_EOL;
+    $count = $ss->project_asset_count($project['id']);
+    echo $project['id'] . ' - ' . $project['name'] . ' - asset count: ' . $count . PHP_EOL;
   }
 
 /*
