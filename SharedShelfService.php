@@ -155,6 +155,16 @@ class SharedShelfService {
     return $response;
   }
 
+  function project_asset_count($project_id) {
+    $args = "start=0&limit=1&with_meta=false&sort=id&dir=ASC";
+    $assets = $this->get_response("/projects/$project_id/assets?$args");
+    if (!isset($assets['total'])) {
+      throw new Exception("Invalid project: $project_id", 1);
+    }
+    $total = $assets['total'];
+    return $total;
+  }
+
   function project_asset_list($project_id, $per_page = 100) {
     // simplest version
     $args = "start=0&limit=1&with_meta=false&sort=id&dir=ASC";
@@ -202,27 +212,6 @@ class SharedShelfService {
       $args = "start=$start&limit=$per_page&with_meta=false&sort=id&sort=id&dir=ASC";
       $assets = $this->get_response("/projects/$project_id/assets?$args");
       foreach($assets['assets'] as $asset) {
-        // if (!empty($asset['publishing_status'])) {
-        //   if (false && count($asset['publishing_status']) > 1) {
-        //     print_r($asset);
-        //     die();
-        //   }
-        //   foreach ($asset['publishing_status'] as $target_id => $publishing) {
-        //     if (!in_array($publishing['status'], array('Published','Suppressed'))) {
-        //       print_r($publishing);
-        //       print_r($asset['publishing_status']);
-        //       die();
-        //     }
-        //     $status = $publishing['status'];
-        //     $publish_counts["$status"]++;
-        //     break; // only count the first
-        //   }
-        // }
-        // else {
-        //   //echo 'no publishing status: ' . $asset['id'] . PHP_EOL;
-        //   $publish_counts['no status']++;
-        //   continue;
-        // }
         $id = $asset['id'];
         $ids["$id"] = $asset["$field_name"];
       }
@@ -499,6 +488,18 @@ class SharedShelfService {
       $output = FALSE;
     }
     return $output;
+  }
+
+  function find_publishing_target_id($project_id, $publish_to = 'Shared Shelf Commons') {
+    $meta = $this->project_metadata($project_id);
+    if (is_array($meta['targets'])) {
+      foreach ($meta['targets'] as $target) {
+        if (strcmp($target['target_name'], $publish_to) == 0) {
+          return $target['id'];
+        }
+      }
+    }
+    return false;
   }
 
 }

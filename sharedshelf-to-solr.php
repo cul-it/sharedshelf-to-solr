@@ -21,6 +21,7 @@ function usage() {
   echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
+  echo "--no-write - do everything EXCEPT writing the solr records";
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
@@ -58,12 +59,13 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
 
 $log = TRUE;
 
-$options = getopt("p:s:n:",array("help", "force"));
+$options = getopt("p:s:n:",array("help", "force", "no-write"));
 
 if (isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
+$do_not_write_to_solr = isset($options["no-write"]);
 if (isset($options['p'])) {
   if (is_numeric($options['p'])) {
     $single_collection = $options['p'];
@@ -154,8 +156,11 @@ try {
     echo "$config asset count: $asset_count\n";
     $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
-    // extranct list of sharedshelf field names that need special array treatment
+    // extract list of sharedshelf field names that need special array treatment
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
+
+    // find the publishing target id for this project
+    $publishing_target_id = $ss->find_publishing_target_id($project_id);
 
     $solr_assets = array(); // accumulate assets for solr here
 
@@ -210,11 +215,18 @@ try {
         // grab the record from sharedshelf
         $asset_full = $ss->asset($asset_id);
 
+        // determine publishing status - status_ssi
+        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+          $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
+        }
+        else {
+          $cul_publishing_status  = 'Unpublished';
+        }
+        $log->note(print_r($cul_publishing_status, true));
+
         // prepare the sharedshelf record for solr
         $asset = $ss->asset_field_values($asset_full);
-        if (empty($asset['publishing_status'])) {
-          $log->note("No publishing_status");
-        }
+
         split_delimited_fields($asset, $delimited_fields);
         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
@@ -237,6 +249,9 @@ try {
           }
         }
 
+        // add in the publishing status field
+        $solr_out['status_ssi'] = $cul_publishing_status;
+
         // be sure the id field is the solr id not the sharedshelf one
         $solr_out['id'] =  $solr_id;
 
@@ -250,10 +265,12 @@ try {
             }
           }
         }
-        // add this asset to solr
-        $log->note('adding to solr');
-        $solr_assets = array($solr_out_full);
-        $result = $solr->add($solr_assets);
+        if ($do_not_write_to_solr === false) {
+          // add this asset to solr
+          $log->note('adding to solr');
+          $solr_assets = array($solr_out_full);
+          $result = $solr->add($solr_assets);
+        }
       }
       catch (Exception $e) {
         $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
@@ -266,7 +283,7 @@ try {
       }
     }
 
-    print_r($task);
+    //print_r($task);
     $log->task('Done.');
   }
 }

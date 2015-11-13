@@ -1,7 +1,6 @@
 <?php
-// listFields.php - list the fields in a project
-// php listFields.php ss2solr.tamang.ini
-// use configuration file name as argument
+// listProjects.php - list the project ids
+// php listProjects.php
 require_once('SharedShelfService.php');
 
 try {
@@ -19,7 +18,8 @@ try {
 
   $projects = $ss->projects();
   foreach ($projects['items'] as $project) {
-    echo $project['id'] . ' - ' . $project['name'] . PHP_EOL;
+    $count = $ss->project_asset_count($project['id']);
+    echo $project['id'] . ' - ' . $project['name'] . ' - asset count: ' . $count . PHP_EOL;
   }
 
 /*
