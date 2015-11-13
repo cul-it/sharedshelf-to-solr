@@ -215,15 +215,12 @@ try {
         // grab the record from sharedshelf
         $asset_full = $ss->asset($asset_id);
 
-        // determine publishing status
-        $cul_publishing_status = array();
-        if (empty($asset_full['publishing_status'])) {
-          $cul_publishing_status[] = 'Unpublished';
-          $log->note("No publishing_status");
-        } else {
-          foreach ($asset_full['publishing_status'] as $target_id => $publishing_info) {
-            $cul_publishing_status["$target_id"] =  $publishing_info['status'];
-          }
+        // determine publishing status - status_ssi
+        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+          $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
+        }
+        else {
+          $cul_publishing_status  = 'Unpublished';
         }
         $log->note(print_r($cul_publishing_status, true));
 
