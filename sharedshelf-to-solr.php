@@ -117,7 +117,7 @@ try {
 
   $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
 
-  echo 'Logging to: ' . $log->log_file_name() . PHP_EOL;
+  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
 
   $log->task('ssUser');
   // sharedshelf user
@@ -149,8 +149,12 @@ try {
     $solr_url = $project['solr'];
     $solr = new SolrUpdater($solr_url, $config);
 
-    $log->note('project_asset_ids');
+    // list of the ids already in solr
     $project_id = $project['project'];
+    $solr_asset_id_list = $solr->get_all_ids($project_id);
+    $solr_asset_ids_to_delete = array_flip($solr_asset_id_list);
+
+    $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
@@ -167,6 +171,12 @@ try {
     $counter = 1;
     $assets_processed = 0;
     foreach ($asset_list as $asset_id => $updated_date) {
+      $ss_id = $asset_id;
+      $solr_id = 'ss:' . $asset_id;
+
+      // eliminate asset ids that still exist in sharedshelf from the delete list
+      unset($solr_asset_ids_to_delete["$solr_id"]);
+
       if ($asset_id < $starting_asset) {
         $counter++;
         continue;
@@ -175,8 +185,6 @@ try {
         throw new Exception("Reached the maximum count specified on the -n argument", 1);
       }
       try {
-        $ss_id = $asset_id;
-        $solr_id = 'ss:' . $asset_id;
         $ss_date = trim($updated_date);
 
         $log->item("asset $solr_id");
@@ -280,6 +288,18 @@ try {
         else {
           echo $error;
         }
+      }
+    }
+
+    // delete assets from solr that are no longer in sharedshelf
+    if ($do_not_write_to_solr === false) {
+      if (!empty($solr_asset_ids_to_delete)) {
+        $ids = array_flip($solr_asset_ids_to_delete);
+        $log->note("Deleting solr ids: " . implode(', ', $ids));
+        $solr->delete_items($ids);
+      }
+      else {
+        $log->note("No solr asssets to delete for project $project_id.");
       }
     }
 
