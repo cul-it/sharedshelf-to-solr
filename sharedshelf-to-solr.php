@@ -117,7 +117,7 @@ try {
 
   $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
 
-  echo 'Logging to: ' . $log->log_file_name() . PHP_EOL;
+  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
 
   $log->task('ssUser');
   // sharedshelf user
