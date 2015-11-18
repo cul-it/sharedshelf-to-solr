@@ -221,8 +221,25 @@ class SolrUpdater {
     return $status;
   }
 
-  functino get_all_ids($project_id) {
-
+  function get_all_ids($project_id) {
+    $max_to_find = 99999;
+    $q = "q=project_id_ssi:$project_id&wt=json&start=0&rows=$max_to_find&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $found = isset($result->response->numFound) ? $result->response->numFound : 0;
+    if ($found >= $max_to_find) {
+      throw new Exception("get_all_ids need to increase maximum number of ids to find", 1);
+    }
+    elseif ($found > 0) {
+      $ids = array();
+      foreach ($result->response->docs as $doc) {
+        $ids[] = $doc->id;
+      }
+      return $ids;
+    }
+    else {
+      return array();
+    }
   }
 
 }
