@@ -15,7 +15,6 @@ try {
     echo "User is logged in\n";
   }
 
-
   $projects = $ss->projects();
   foreach ($projects['items'] as $project) {
     $count = $ss->project_asset_count($project['id']);
