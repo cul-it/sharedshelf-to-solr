@@ -171,6 +171,12 @@ try {
     $counter = 1;
     $assets_processed = 0;
     foreach ($asset_list as $asset_id => $updated_date) {
+      $ss_id = $asset_id;
+      $solr_id = 'ss:' . $asset_id;
+
+      // eliminate asset ids that still exist in sharedshelf from the delete list
+      unset($solr_asset_ids_to_delete["$solr_id"]);
+
       if ($asset_id < $starting_asset) {
         $counter++;
         continue;
@@ -179,8 +185,6 @@ try {
         throw new Exception("Reached the maximum count specified on the -n argument", 1);
       }
       try {
-        $ss_id = $asset_id;
-        $solr_id = 'ss:' . $asset_id;
         $ss_date = trim($updated_date);
 
         $log->item("asset $solr_id");
