@@ -202,4 +202,44 @@ class SolrUpdater {
     return $solr_asset;
   }
 
+  function delete_items($ids = array()) {
+    $ids_escaped = array();
+     foreach ($ids as $id) {
+      // note: colon characters in $id must be escaped
+      $ids_escaped[] = str_replace(':', '\:', $id);
+    }
+    $deletes = implode(' OR ', $ids_escaped);
+    $cmd = array('delete' => array('query' => "id:($deletes)", 'commitWithin' => 500));
+    $json = json_encode($cmd);
+    $json = $this->post_json('/update/json', $json);
+    $result = json_decode($json);
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("6 Error Processing Delete Request: $err", 1);
+    }
+    return $status;
+  }
+
+  function get_all_ids($project_id) {
+    $max_to_find = 99999;
+    $q = "q=project_id_ssi:$project_id&wt=json&start=0&rows=$max_to_find&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $found = isset($result->response->numFound) ? $result->response->numFound : 0;
+    if ($found >= $max_to_find) {
+      throw new Exception("get_all_ids need to increase maximum number of ids to find", 1);
+    }
+    elseif ($found > 0) {
+      $ids = array();
+      foreach ($result->response->docs as $doc) {
+        $ids[] = $doc->id;
+      }
+      return $ids;
+    }
+    else {
+      return array();
+    }
+  }
+
 }
