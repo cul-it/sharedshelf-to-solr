@@ -291,6 +291,18 @@ try {
       }
     }
 
+    // delete assets from solr that are no longer in sharedshelf
+    if ($do_not_write_to_solr === false) {
+      if (!empty($solr_asset_ids_to_delete)) {
+        $ids = array_flip($solr_asset_ids_to_delete);
+        $log->note("Deleting solr ids: " . implode(', ', $ids));
+        $solr->delete_items($ids);
+      }
+      else {
+        $log->note("No solr asssets to delete for project $project_id.");
+      }
+    }
+
     //print_r($task);
     $log->task('Done.');
   }
