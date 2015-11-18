@@ -202,16 +202,21 @@ class SolrUpdater {
     return $solr_asset;
   }
 
-  function delete_item($id) {
-    // note: colon characters in $id must be escaped
-    $id = str_replace(':', '\:', $id);
-    $json = json_encode(array('delete' => array('id' => $id)));
+  function delete_items($ids = array()) {
+    $ids_escaped = array();
+     foreach ($ids as $id) {
+      // note: colon characters in $id must be escaped
+      $ids_escaped[] = str_replace(':', '\:', $id);
+    }
+    $deletes = implode(' OR ', $ids_escaped);
+    $cmd = array('delete' => array('query' => "id:($deletes)", 'commitWithin' => 500));
+    $json = json_encode($cmd);
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status != "0") {
       $err = print_r($result, TRUE);
-      throw new Exception("5 Error Processing Request: $err", 1);
+      throw new Exception("6 Error Processing Delete Request: $err", 1);
     }
     return $status;
   }
