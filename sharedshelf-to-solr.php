@@ -149,8 +149,12 @@ try {
     $solr_url = $project['solr'];
     $solr = new SolrUpdater($solr_url, $config);
 
-    $log->note('project_asset_ids');
+    // list of the ids already in solr
     $project_id = $project['project'];
+    $solr_asset_id_list = $solr->get_all_ids($project_id);
+    $solr_asset_ids_to_delete = array_flip($solr_asset_id_list);
+
+    $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
