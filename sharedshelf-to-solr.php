@@ -18,10 +18,10 @@ function debug($item, $description = '', $die = TRUE) {
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
-  echo "--no-write - do everything EXCEPT writing the solr records";
+  echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
