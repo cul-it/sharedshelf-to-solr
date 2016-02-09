@@ -23,7 +23,7 @@ version: beta17
 - php sharedshelf-to-solr.php --help
 
   <pre>
-    Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
+  Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
   --help - show this info
   --force - ignore timestamps and rewrite all solr records
   --no-write - do everything EXCEPT writing the solr records
