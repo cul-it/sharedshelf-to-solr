@@ -22,13 +22,15 @@ version: beta17
 ## Run:
 - php sharedshelf-to-solr.php --help
 
-  Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
+  <pre>
+    Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
   --help - show this info
   --force - ignore timestamps and rewrite all solr records
   --no-write - do everything EXCEPT writing the solr records
   -p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php
   -s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)
   -n - process only this many (integer) assets
+</pre>
 
 sharedshelf-to-solr.php without arguments:
 - moves metadata for all collections listed in sharedshelf-to-solr.ini into solr
