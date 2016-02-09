@@ -51,7 +51,9 @@ contents of ssUser.ini (your sharedshelf user name (email) and password):
     password = thisisnotreallymypassword
 
 
-Note: When Sharedshelf returns arrays I flatten them with impolode('; ', $junk)
+## Notes
+
+When Sharedshelf returns arrays I flatten them with impolode('; ', $junk)
 
 Fields to add:
 - Collection_s = name of the ss collection (eg. NYS Aerial Photographs, Reps Slides)
@@ -64,8 +66,4 @@ Fields to add for spotlight:
 - spotlight_upload_attribution_tesim (rights)
 - spotlight_upload_date_tesim (you could leave this blank or make it equal to the date it got added to shared shelf)
 
-see notes about .ini files for each collection in the template ss2solr.ini
-
-listFields.php - writes out a list of fields for use in collection .ini file
-
-listProjects.php - writes out projects and project ids
+see notes about .ini files for each collection in the template ss2solr.example.ini
