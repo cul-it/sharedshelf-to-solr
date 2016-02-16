@@ -2,7 +2,7 @@
 
 version: beta17
 
-What it does:
+## What it does:
 - moves metadata from sharedshelf into a solr index
 - provides a mechanism for using a sharedshelf user's credentials to access the sharedshelf API
  - see notes below about ssUser.ini
@@ -19,23 +19,25 @@ What it does:
   - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif
   - ssGeoTagExtract.php - Grab Geotags from sharedshelf image
 
-Run:
+## Run:
 - php sharedshelf-to-solr.php --help
 
-    Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
-    --help - show this info
-    --force - ignore timestamps and rewrite all solr records
-    --no-write - do everything EXCEPT writing the solr records
-    -p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php
-    -s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)
-    -n - process only this many (integer) assets
+  <pre>
+  Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
+  --help - show this info
+  --force - ignore timestamps and rewrite all solr records
+  --no-write - do everything EXCEPT writing the solr records
+  -p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php
+  -s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)
+  -n - process only this many (integer) assets
+</pre>
 
 sharedshelf-to-solr.php without arguments:
 - moves metadata for all collections listed in sharedshelf-to-solr.ini into solr
 - checks the timestamps of the assets already in solr and only moves the ones that have been updated in sharedshelf since
 - we run it this way nightly to keep the solr index fresh
 
-Installation:
+## Installation:
 - check out from git
 - install s3cmd for using Amazon S3 - http://s3tools.org/s3cmd
 - someone needs an account on sharedshelf that has access to the collections
@@ -49,7 +51,9 @@ contents of ssUser.ini (your sharedshelf user name (email) and password):
     password = thisisnotreallymypassword
 
 
-Note: When Sharedshelf returns arrays I flatten them with impolode('; ', $junk)
+## Notes
+
+When Sharedshelf returns arrays I flatten them with impolode('; ', $junk)
 
 Fields to add:
 - Collection_s = name of the ss collection (eg. NYS Aerial Photographs, Reps Slides)
@@ -62,8 +66,4 @@ Fields to add for spotlight:
 - spotlight_upload_attribution_tesim (rights)
 - spotlight_upload_date_tesim (you could leave this blank or make it equal to the date it got added to shared shelf)
 
-see notes about .ini files for each collection in the template ss2solr.ini
-
-listFields.php - writes out a list of fields for use in collection .ini file
-
-listProjects.php - writes out projects and project ids
+see notes about .ini files for each collection in the template ss2solr.example.ini

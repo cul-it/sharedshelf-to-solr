@@ -17,6 +17,7 @@ try {
 
   $assets = array(
     3853124,
+    201647,
     );
 
   foreach ($assets as $id) {
