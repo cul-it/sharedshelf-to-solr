@@ -483,6 +483,7 @@ class SharedShelfService {
     $details = $this->get_response("/assets/$asset_id/representation/details");
     if (isset($details['width']) && isset($details['height'])) {
       $output = array('width' => $details['width'], 'height' => $details['height']);
+      $output['all'] = $details;
     }
     else {
       $output = FALSE;
