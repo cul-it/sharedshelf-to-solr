@@ -10,16 +10,16 @@ GIT=`which git`
 "$GIT" pull
 
 # pull in the prarameter file
-# nightly-tonight-only.sh looks like this:
+# nightly-use-force.sh looks like this:
 #
 # #!/bin/bash
 # FORCE_UPDATE=1
 
-if [ -f ./nightly-tonight-only.sh ]; then
-  . ./nightly-tonight-only.sh
+if [ -f ./nightly-use-force.sh ]; then
+  . ./nightly-use-force.sh
 # the file gets deleted after a singe use!!!
-  echo "Removing $DIR/nightly-tonight-only.sh"
-  rm nightly-tonight-only.sh
+  echo "Removing $DIR/nightly-use-force.sh"
+  rm nightly-use-force.sh
 fi
 
 if [[ "$FORCE_UPDATE" ]]; then
