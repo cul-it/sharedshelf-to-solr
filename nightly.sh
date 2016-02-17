@@ -22,7 +22,7 @@ if [ -f ./nightly-tonight-only.sh ]; then
 fi
 
 if [[ "$FORCE_UPDATE" ]]; then
-  echo "$PHP" "${DIR}/sharedshelf-to-solr.php --force"
+  "$PHP" "${DIR}/sharedshelf-to-solr.php --force"
 else
-  echo "$PHP" "${DIR}/sharedshelf-to-solr.php"
+  "$PHP" "${DIR}/sharedshelf-to-solr.php"
 fi
