@@ -17,7 +17,8 @@ GIT=`which git`
 
 if [ -f ./nightly-tonight-only.sh ]; then
   . ./nightly-tonight-only.sh
-  rm ./nightly-tonight-only
+# the file gets deleted after a singe use!!!
+  rm nightly-tonight-only.sh
 fi
 
 # check out the latest master branch
