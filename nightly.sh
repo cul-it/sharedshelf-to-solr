@@ -24,7 +24,7 @@ fi
 
 if [[ "$FORCE_UPDATE" ]]; then
   echo "Running sharedshelf-to-solr.php with the --force option"
-  "$PHP" "${DIR}/sharedshelf-to-solr.php --force"
+  "$PHP" "${DIR}/sharedshelf-to-solr.php" --force
 else
   "$PHP" "${DIR}/sharedshelf-to-solr.php"
 fi
