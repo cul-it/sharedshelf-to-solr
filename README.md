@@ -1,6 +1,6 @@
 # ss2solr - migrate metadata from sharedshelf to solr
 
-version: beta20
+version: beta21
 
 ## What it does:
 - moves metadata from sharedshelf into a solr index
@@ -49,6 +49,17 @@ contents of ssUser.ini (your sharedshelf user name (email) and password):
     ;; account configuration for sharedshelf user
     email = bozo@cornell.edu
     password = thisisnotreallymypassword
+
+## .ini files
+- one for each collection
+- named like ss2solr.aerial.ini where aerial is the collection
+- fields[fd_1945_s] = "title_tesim"
+ - fd_1945_s is the name of the field in sharedshelf and title_tesim is the name in of the solr field fd_145_s maps to
+- copy_field[title_tesim] = "full_title_tesim"
+ - title_tesim is one of the solr fields from the right hand side of a fields[] declaration
+ - full_title_tesim is a second, new solr field that gets a copy of the value from the first field for each record
+- set_solr_field[collection_tesim] = "New York State Aerial Photographs"
+ - collection_tesim is a new solr field that gets set to the given value for each and every record in the collection
 
 
 ## Notes
