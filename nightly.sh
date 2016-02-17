@@ -21,10 +21,6 @@ if [ -f ./nightly-tonight-only.sh ]; then
   rm nightly-tonight-only.sh
 fi
 
-# check out the latest master branch
-"$GIT" checkout master
-"$GIT" pull
-
 if [[ "$FORCE_UPDATE" ]]; then
   echo "$PHP" "${DIR}/sharedshelf-to-solr.php --force"
 else
