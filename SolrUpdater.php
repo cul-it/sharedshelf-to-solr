@@ -106,9 +106,35 @@ class SolrUpdater {
     return json_encode($data2);
   }
 
+/**
+ * the place to handle fields that we want to add to solr, that are not in the original sharedshelf
+ * field set.
+ * @param array &$asset data values loaded in from sharedshelf, keyed by the names on the
+ * right hand side of field[] declarations in the .ini files, for example
+ * ; Country
+ * fields[fd_1979_multi_s] = "country_location_tesim"
+ * the value in $asset would be
+ * $asset['country_location_tesim'] == the sharedshelf value for fd_1979_multi_s
+ *
+ * copy fields
+ * copy_field[another_country] = "country_location_tesim"
+ * would copy the solr value from $asset['country_location_tesim'] into $asset['another_country'] for the
+ * current record
+ *
+ * set fields
+ * set_solr_field[my_country] = "tis of Thee"
+ * would set the value of $asset['my_country'] to the string "tis of Thee"
+ * for all records
+ *
+ * other ones
+ * set_location and set_geojson set up really custom values involving multiple $asset fields
+ * and store them in new $asset fields
+ */
   function add_custom_fields(&$asset) {
     if (isset($this->ini['copy_field'])) {
       foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
+        /* copy_field - dupicate of the values stored under
+        */
         if (!isset($asset["$ss_solr_key"])) {
           $asset["$solr_key"] = "ERROR: copy_field missing: $solr_key <- $ss_solr_key";
         }
@@ -168,7 +194,9 @@ class SolrUpdater {
     // $assets have names converted to solr already
     $json = '';
     foreach ($assets as $asset) {
+      debug($asset, 'before add_custom_fields', false);
       $this->add_custom_fields($asset);
+      debug($asset, 'after add_custom_fields', true);
       $json .= $this->format_add_asset_field_values($asset);
     }
     $json = $this->post_json('/update/json', $json);
