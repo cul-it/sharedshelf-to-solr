@@ -3,4 +3,4 @@ ssUser.ini
 dummy_cookie.txt
 *.tab
 iiif-static-images/*
-nightly-tonight-only.sh
+nightly-use-force.sh
