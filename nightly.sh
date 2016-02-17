@@ -18,10 +18,12 @@ GIT=`which git`
 if [ -f ./nightly-tonight-only.sh ]; then
   . ./nightly-tonight-only.sh
 # the file gets deleted after a singe use!!!
+  echo "Removing $DIR/nightly-tonight-only.sh"
   rm nightly-tonight-only.sh
 fi
 
 if [[ "$FORCE_UPDATE" ]]; then
+  echo "Running sharedshelf-to-solr.php with the --force option"
   "$PHP" "${DIR}/sharedshelf-to-solr.php --force"
 else
   "$PHP" "${DIR}/sharedshelf-to-solr.php"
