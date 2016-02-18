@@ -194,9 +194,7 @@ class SolrUpdater {
     // $assets have names converted to solr already
     $json = '';
     foreach ($assets as $asset) {
-      debug($asset, 'before add_custom_fields', false);
       $this->add_custom_fields($asset);
-      debug($asset, 'after add_custom_fields', true);
       $json .= $this->format_add_asset_field_values($asset);
     }
     $json = $this->post_json('/update/json', $json);
