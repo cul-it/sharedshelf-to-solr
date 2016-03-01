@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# if the user supplies a -t argument, the current branch is used instead of the master branch
 USE_MASTER_BRANCH=1
 while getopts ":t" opt; do
   case $opt in
