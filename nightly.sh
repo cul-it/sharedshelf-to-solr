@@ -1,13 +1,30 @@
 #!/bin/bash
+
+USE_MASTER_BRANCH=1
+while getopts ":t" opt; do
+  case $opt in
+    t)
+      echo "-t was triggered! using current branch" >&2
+      USE_MASTER_BRANCH=
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 0
+      ;;
+  esac
+done
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
 PHP=`which php`
 GIT=`which git`
 
-# check out the latest master branch
-"$GIT" checkout master
-"$GIT" pull
+if [[ "$USE_MASTER_BRANCH" == 1 ]]; then
+  # check out the latest master branch
+  "$GIT" checkout master
+  "$GIT" pull
+fi
 
 # run the task list
 . ./nightly-task-list.sh
