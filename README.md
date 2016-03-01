@@ -1,6 +1,6 @@
 # ss2solr - migrate metadata from sharedshelf to solr
 
-version: beta22
+version: beta23
 
 ## What it does:
 - moves metadata from sharedshelf into a solr index
