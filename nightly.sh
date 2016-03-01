@@ -9,3 +9,5 @@ GIT=`which git`
 "$GIT" checkout master
 "$GIT" pull
 
+# run the task list
+. ./nightly-task-list.sh
