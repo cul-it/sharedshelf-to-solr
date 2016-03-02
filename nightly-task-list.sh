@@ -1,5 +1,5 @@
 # commands for the nightly sharedshelf to solr run
-# sharedshelf-to-solr.php [--help] [--force] [--no-write] [-p NNN] [-s NNN] [-n NNN]
+# sharedshelf-to-solr.php [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]
 # projects (-p):
 # x means in production (see sharedshelf-status.ini)
 # x 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
