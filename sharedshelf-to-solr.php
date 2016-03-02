@@ -59,7 +59,7 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
   return $assets;
 }
 
-$log = TRUE;
+$log = FALSE;
 
 $options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip"));
 
