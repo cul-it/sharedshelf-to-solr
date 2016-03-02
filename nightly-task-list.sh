@@ -3,13 +3,14 @@
 # projects (-p):
 # see sharedshelf-to-solr.ini projects - commented out ones are NOT in production - use --skip flag
 # 370 - Reps Slides - asset count: 1357
-# x 522 - Tamang - asset count: 2539
-# x 589 - Reps Bastides - asset count: 2652
-# x 616 - Gamelan - asset count: 565
-# x 746 - Ragamala Paintings - asset count: 4123
-# x 78 - NYS Aerial Photographs - asset count: 3390
-# x 659 - PJ Mode Map Collection - asset count: 310
-# x 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
+# 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
+# 522 - Tamang - asset count: 2539
+# 589 - Reps Bastides - asset count: 2652
+# 616 - Gamelan - asset count: 565
+# 659 - PJ Mode Map Collection - asset count: 310
+# 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
+# 746 - Ragamala Paintings - asset count: 4123
+# 78 - NYS Aerial Photographs - asset count: 3390
 
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
