@@ -18,10 +18,12 @@ function debug($item, $description = '', $die = TRUE) {
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skipdeb[-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
+  echo "--use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" . PHP_EOL;
+  echo "--skip - do not process this collection (only when -p is specified)" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
@@ -57,15 +59,18 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
   return $assets;
 }
 
-$log = TRUE;
+$log = FALSE;
 
-$options = getopt("p:s:n:",array("help", "force", "no-write"));
+$options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip"));
 
-if (isset($options['help'])) {
+if ($options === false || isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
+$skip_this_collection = isset($options["skip"]);
 $do_not_write_to_solr = isset($options["no-write"]);
+$solr_collection_override = isset($options["use-dev-solr"]) ?
+  "http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" : false;
 if (isset($options['p'])) {
   if (is_numeric($options['p'])) {
     $single_collection = $options['p'];
@@ -115,11 +120,6 @@ try {
     exit (1);
   }
 
-  $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
-
-  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
-
-  $log->task('ssUser');
   // sharedshelf user
   $user = parse_ini_file('ssUser.ini');
   if ($user === FALSE) {
@@ -130,11 +130,9 @@ try {
     throw new Exception("Expecting cookie_jar_path in .ini file", 1);
   }
 
-  $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
   foreach($task['configuration_files']['config'] as $config) {
-    $log->task($config);
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
@@ -144,13 +142,26 @@ try {
         echo PHP_EOL . "Skipping collection " . $project['project'] . " as it was not selected on the command line" . PHP_EOL;
         continue;
       }
+      if ($skip_this_collection) {
+        echo PHP_EOL . "Skipping collection " . $project['project'] . " due to --skip" . PHP_EOL;
+        continue;
+      }
     }
+
+    $project_id = $project['project'];
+
+    // create a log file for this collection
+    $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
+    $log = new SharedShelfToSolrLogger($log_file_prefix);
+    echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
+    $log->task("$config-$project_id");
+
     $log->note('SolrUpdater');
-    $solr_url = $project['solr'];
+    $solr_url = ($solr_collection_override !== false) ? $solr_collection_override : $project['solr'];
+    $log->note($solr_url);
     $solr = new SolrUpdater($solr_url, $config);
 
     // list of the ids already in solr
-    $project_id = $project['project'];
     $solr_asset_id_list = $solr->get_all_ids($project_id);
     $solr_asset_ids_to_delete = array_flip($solr_asset_id_list);
 
