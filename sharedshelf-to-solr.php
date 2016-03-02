@@ -120,11 +120,6 @@ try {
     exit (1);
   }
 
-  $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
-
-  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
-
-  $log->task('ssUser');
   // sharedshelf user
   $user = parse_ini_file('ssUser.ini');
   if ($user === FALSE) {
@@ -135,11 +130,9 @@ try {
     throw new Exception("Expecting cookie_jar_path in .ini file", 1);
   }
 
-  $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
   foreach($task['configuration_files']['config'] as $config) {
-    $log->task($config);
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
@@ -154,13 +147,21 @@ try {
         continue;
       }
     }
+
+    $project_id = $project['project'];
+
+    // create a log file for this collection
+    $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
+    $log = new SharedShelfToSolrLogger($log_file_prefix);
+    echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
+    $log->task("$config-$project_id");
+
     $log->note('SolrUpdater');
     $solr_url = ($solr_collection_override !== false) ? $solr_collection_override : $project['solr'];
     $log->note($solr_url);
     $solr = new SolrUpdater($solr_url, $config);
 
     // list of the ids already in solr
-    $project_id = $project['project'];
     $solr_asset_id_list = $solr->get_all_ids($project_id);
     $solr_asset_ids_to_delete = array_flip($solr_asset_id_list);
 
