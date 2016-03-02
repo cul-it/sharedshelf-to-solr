@@ -63,7 +63,7 @@ $log = FALSE;
 
 $options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip"));
 
-if (isset($options['help'])) {
+if ($options === false || isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
