@@ -17,6 +17,9 @@
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 --skip
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
