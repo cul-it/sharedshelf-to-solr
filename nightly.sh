@@ -17,6 +17,7 @@ done
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
+echo "$DIR"
 
 PHP=`which php`
 GIT=`which git`
