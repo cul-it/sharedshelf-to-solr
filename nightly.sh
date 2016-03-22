@@ -28,4 +28,4 @@ if [[ "$USE_MASTER_BRANCH" == 1 ]]; then
 fi
 
 # run the task list
-. ./nightly-task-list.sh
+#. ./nightly-task-list.sh
