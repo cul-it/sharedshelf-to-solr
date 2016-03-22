@@ -27,17 +27,14 @@ GIT=`which git`
 
 if [[ "$USE_MASTER_BRANCH" == 1 ]]; then
   # check out the latest master branch
-  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" checkout master
-  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" pull
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" checkout master
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull
 else
   # pull the latest changes on the current branch
-  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" pull
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull
 fi
 
 # run the task list
 #. ./nightly-task-list.sh
 
-# test comment to be pulled from git on the next cron run with -t option
-# test comment to be pulled from git on the next cron run with -t option
-# test comment to be pulled from git on the next cron run with -t option
 # test comment to be pulled from git on the next cron run with -t option
