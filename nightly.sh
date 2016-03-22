@@ -32,3 +32,5 @@ fi
 
 # run the task list
 #. ./nightly-task-list.sh
+
+# test comment to be pulled from git on the next cron run with -t option
