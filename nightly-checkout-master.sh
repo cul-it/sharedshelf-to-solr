@@ -8,5 +8,5 @@ cd "${DIR}"
 GIT=`which git`
 
 # check out the latest master branch
-"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" checkout feature/test_pull_of_master_branch_on_nightly_cron
-"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull origin feature/test_pull_of_master_branch_on_nightly_cron
+"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" checkout master
+"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull origin master
