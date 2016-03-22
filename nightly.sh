@@ -18,7 +18,9 @@ done
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
-echo "$DIR"
+echo --git-dir="${DIR}/.git"
+echo "${DIR}/.git"
+echo  --work-tree="$DIR"
 
 PHP=`which php`
 GIT=`which git`
