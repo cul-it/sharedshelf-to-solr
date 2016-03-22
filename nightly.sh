@@ -25,11 +25,11 @@ GIT=`which git`
 
 if [[ "$USE_MASTER_BRANCH" == 1 ]]; then
   # check out the latest master branch
-  "$GIT" checkout master
-  "$GIT" pull
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" checkout master
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" pull
 else
   # pull the latest changes on the current branch
-  "$GIT" pull
+  "$GIT" --git-dir="${DIR}/.git" --work-tree="$DIR" pull
 fi
 
 # run the task list
