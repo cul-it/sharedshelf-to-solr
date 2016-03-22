@@ -12,6 +12,11 @@
 # 746 - Ragamala Paintings - asset count: 4123
 # 78 - NYS Aerial Photographs - asset count: 3390
 
+PHP=`which php`
+
+# find the directory this script is in
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
