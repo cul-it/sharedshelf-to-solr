@@ -18,6 +18,8 @@ version: beta27
   - listPublicationTargets.php - list the id of the publication targets for each project
   - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif
   - ssGeoTagExtract.php - Grab Geotags from sharedshelf image
+  - nightly.sh - cron job that runs the commands in nightly-task-list.sh
+  - nightly-checkout-master.sh - cron job that runs BEFORE nightly.sh to pull down the latest master branch
 
 ## Run:
 - php sharedshelf-to-solr.php --help
