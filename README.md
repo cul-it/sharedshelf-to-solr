@@ -25,10 +25,12 @@ version: beta27
 - php sharedshelf-to-solr.php --help
 
   <pre>
-  Usage: php sharedshelf-to-solr.php [--help] [--force] [-p NNN] [-s NNN] [-n NNN]
+  Usage: php sharedshelf-to-solr.php [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]
   --help - show this info
   --force - ignore timestamps and rewrite all solr records
   --no-write - do everything EXCEPT writing the solr records
+  --use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev
+  --skip - do not process this collection (only when -p is specified)
   -p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php
   -s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)
   -n - process only this many (integer) assets
