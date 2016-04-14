@@ -105,6 +105,11 @@ else {
   $max_processing_count = false; // this means process them all
 }
 
+$option_text = $single_collection ? "project $single_collection " : 'all ';
+$option_text .= $force_replacement ? 'force ' : '';
+$option_text .= $do_not_write_to_solr ? 'no-write ' : '';
+$option_text .= $solr_collection_override ? 'use-dev-solr ' : '';
+
 try {
 
   // batch process information
@@ -139,11 +144,11 @@ try {
     }
     if ($single_collection !== FALSE) {
       if ($project['project'] != $single_collection) {
-        echo PHP_EOL . "Skipping collection " . $project['project'] . " as it was not selected on the command line" . PHP_EOL;
+        // skip any other collection if one is listed on the command line
         continue;
       }
       if ($skip_this_collection) {
-        echo PHP_EOL . "Skipping collection " . $project['project'] . " due to --skip" . PHP_EOL;
+        // skip any collection with the --skip flag
         continue;
       }
     }
@@ -168,7 +173,7 @@ try {
     $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
-    echo "$config asset count: $asset_count\n";
+    echo "Processing: $option_text $config asset count: $asset_count\n";
     $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
     // extract list of sharedshelf field names that need special array treatment
