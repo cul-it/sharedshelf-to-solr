@@ -105,10 +105,10 @@ else {
   $max_processing_count = false; // this means process them all
 }
 
-$option_text = $force_replacement ? 'force ' : '';
+$option_text = $single_collection ? "project $single_collection " : 'all ';
+$option_text .= $force_replacement ? 'force ' : '';
 $option_text .= $do_not_write_to_solr ? 'no-write ' : '';
 $option_text .= $solr_collection_override ? 'use-dev-solr ' : '';
-$option_text .= $single_collection ? "project $single_collection " : 'all ';
 
 try {
 
