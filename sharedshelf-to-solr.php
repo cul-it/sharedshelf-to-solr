@@ -173,7 +173,7 @@ try {
     $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
-    echo "$config asset count: $asset_count\n";
+    echo "Processing: $option_text $config asset count: $asset_count\n";
     $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
     // extract list of sharedshelf field names that need special array treatment
