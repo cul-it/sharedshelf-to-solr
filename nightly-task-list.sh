@@ -2,6 +2,7 @@
 # sharedshelf-to-solr.php [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]
 # projects (-p):
 # see sharedshelf-to-solr.ini projects - commented out ones are NOT in production - use --skip flag
+# 167 - Hip Hop Flyers - asset count: 494
 # 370 - Reps Slides - asset count: 1357
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 522 - Tamang - asset count: 2539
@@ -17,6 +18,7 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
