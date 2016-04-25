@@ -51,7 +51,10 @@ try {
     exit (1);
   }
 
-  $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
+  // create a log file for this collection
+  $log_file_prefix = $task['process']['log_file_prefix'];
+  $log = new SharedShelfToSolrLogger($log_file_prefix);
+  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
 
   $log->task('ssUser');
   // sharedshelf user
