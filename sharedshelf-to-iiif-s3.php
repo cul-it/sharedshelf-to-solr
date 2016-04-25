@@ -51,7 +51,10 @@ try {
     exit (1);
   }
 
-  $log = new SharedShelfToSolrLogger($task['process']['log_file_prefix']);
+  // create a log file for this collection
+  $log_file_prefix = $task['process']['log_file_prefix'];
+  $log = new SharedShelfToSolrLogger($log_file_prefix);
+  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
 
   $log->task('ssUser');
   // sharedshelf user
@@ -75,7 +78,6 @@ try {
     }
     if ($single_collection !== FALSE) {
       if ($project['project'] != $single_collection) {
-        echo PHP_EOL . "Skipping collection " . $project['project'] . " as it was not selected on the command line" . PHP_EOL;
         continue;
       }
     }
@@ -118,7 +120,6 @@ try {
     }
   }
 
-  print_r($task);
   $log->task('Done.');
 }
 catch (Exception $e) {
