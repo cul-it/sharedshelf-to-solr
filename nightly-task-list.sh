@@ -12,6 +12,7 @@
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
 # 78 - NYS Aerial Photographs - asset count: 3390
+# 97 - Cornell Cast Collection - asset count: 897
 
 PHP=`which php`
 
@@ -28,6 +29,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97 --force
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 48
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 97
