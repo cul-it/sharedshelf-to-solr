@@ -408,9 +408,6 @@ class SharedShelfService {
           if (isset($v['display_value'])) {
             $flat["$k"] = trim($v['display_value']);
           }
-          else {
-            throw new Exception("Missing display_value: $k " . print_r($v, TRUE), 1);
-          }
         }
         else {
           $children = FALSE;
