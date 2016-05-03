@@ -50,14 +50,12 @@ try {
     echo "User is logged in\n";
   }
 
-  $assets = array(
-    3853124,
-    201647,
-    );
-
-  foreach ($assets as $id) {
+  $id = $starting_asset;
+  for ($i = 0; $i < $max_processing_count; $i++) {
     $asset = $ss->asset($id);
+    echo "\n\n************************** Asset: $id *********************************\n";
     print_r($asset);
+    $id++;
   }
 }
 catch (Exception $e) {
