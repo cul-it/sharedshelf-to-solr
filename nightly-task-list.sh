@@ -10,7 +10,7 @@
 # 589 - Reps Bastides - asset count: 2652
 # 616 - Gamelan - asset count: 565
 # 659 - PJ Mode Map Collection - asset count: 310
-# 678 - Andrew Dickson White Architectural Photographs Collection - asset count: 1364
+# 685 - Andrew Dickson White Architectural Photographs Collection - asset count: 1364
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
 # 78 - NYS Aerial Photographs - asset count: 3390
@@ -29,7 +29,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 678 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
