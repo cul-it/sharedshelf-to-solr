@@ -53,7 +53,9 @@ try {
   $id = $starting_asset;
   for ($i = 0; $i < $max_processing_count; $i++) {
     $asset = $ss->asset($id);
+    $url = $ss->media_url($id);
     echo "\n\n************************** Asset: $id *********************************\n";
+    print_r(array('media url', $url));
     print_r($asset);
     $id++;
   }
