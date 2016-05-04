@@ -15,7 +15,7 @@ function image_to_iiif_s3_mkdir($path) {
 function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $save_tmp_files = FALSE) {
 
   $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
-  $s3_url_prefix = 'http://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
+  $s3_url_prefix = 'https://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
 
   if (OUTPUT) echo "Checking pre-existing.\n";
 
