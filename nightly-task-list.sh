@@ -21,7 +21,7 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
