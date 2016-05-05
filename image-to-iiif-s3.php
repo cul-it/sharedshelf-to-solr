@@ -80,7 +80,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
   $lastline = exec($command, $output, $return_var);
   if ($return_var != 0) {
     $output[] = 'Command failed: ' .  $command;
-    $out = implode("PHP_EOL", $output);
+    $out = implode(PHP_EOL, $output);
     throw new Exception("Error Processing iiif: $out", 1);
   }
 
