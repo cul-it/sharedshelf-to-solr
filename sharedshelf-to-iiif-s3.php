@@ -80,6 +80,7 @@ try {
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
     $log = new SharedShelfToSolrLogger($log_file_prefix);
     echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
+    $log->task("$config-$project_id-iiif");
 
     $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
