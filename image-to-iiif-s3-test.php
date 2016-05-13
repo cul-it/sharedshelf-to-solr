@@ -51,21 +51,38 @@ function usage() {
   echo "--force - ignore existing image and rewrite all iiif tiles (otherwise assumes if it's there it's good)" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--save - do not delete temp files afterwards" . PHP_EOL;
-  echo "--url - url of image file" . PHP_EOL;
-  echo "--s3path - where to put image tiles on S3 (unique directory name)" . PHP_EOL;
+  echo "--url - url of image file (do not use -s)" . PHP_EOL;
+  echo "--s3path - where to put image tiles on S3 (unique directory name) REQUIRED" . PHP_EOL;
+  echo "-s NNN - process only asset NNN (do not use --url)" . PHP_EOL;
   exit (0);
 }
 
 
-$options = getopt("",array("help", "url:", "s3path:", "force", "save"));
+$options = getopt("s:",array("help", "url:", "s3path:", "force", "save"));
 
 if (isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
 $save_tmp_files = isset($options["save"]);
-$image_url = isset($options["url"]) ? $options["url"] : usage();
+$image_url = isset($options["url"]) ? $options["url"] : false;
 $s3_path = isset($options["s3path"]) ? $options["s3path"] : usage();
+$single_asset = isset($options['s']) ? $options['s'] : false;
+if ($single_asset === false) {
+  if ($image_url === false) {
+    usage();
+  }
+}
+else {
+  if (is_numeric($single_asset)) {
+
+    // find asset in sharedshelf
+    $image_url = find_ss_image($single_asset);
+  }
+  else {
+    usage();
+  }
+}
 
 try {
   image_to_iiif_s3($image_url, $s3_path, $force_replacement, $save_tmp_files);
