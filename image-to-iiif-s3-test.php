@@ -65,24 +65,24 @@ if (isset($options['help'])) {
 }
 $force_replacement = isset($options["force"]);
 $save_tmp_files = isset($options["save"]);
-$image_url = isset($options["url"]) ? $options["url"] : false;
 $s3_path = isset($options["s3path"]) ? $options["s3path"] : usage();
+$image_url = isset($options["url"]) ? $options["url"] : false;
 $single_asset = isset($options['s']) ? $options['s'] : false;
-if ($single_asset === false) {
-  if ($image_url === false) {
-    usage();
-  }
+if (($image_url !== false) && ($single_asset !== false)) {
+  usage();
 }
-else {
+if ($image_url === false) {
   if (is_numeric($single_asset)) {
-
-    // find asset in sharedshelf
+    // find asset image url
     $image_url = find_ss_image($single_asset);
   }
-  else {
-    usage();
-  }
 }
+if ($image_url === false) {
+  usage();
+}
+
+echo "image url:\n";
+echo $image_url . PHP_EOL;
 
 try {
   image_to_iiif_s3($image_url, $s3_path, $force_replacement, $save_tmp_files);
