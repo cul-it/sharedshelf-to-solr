@@ -119,9 +119,9 @@ try {
         }
       }
     }
-  }
 
-  $log->task('Done.');
+    $log->task("Done. Project $project_id.");
+  }
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
