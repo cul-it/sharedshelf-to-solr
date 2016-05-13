@@ -1,7 +1,48 @@
 <?php
 // image-to-iiif-s3-test.php - command line test for functions in image-to-iiif-s3.php
 
+require_once('SharedShelfService.php');
 require_once('image-to-iiif-s3.php');
+
+function find_ss_image($asset_id) {
+  try {
+
+    // batch process information
+    $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
+    if ($task === FALSE) {
+      echo "Need sharedshelf-to-iiif-s3.ini\n";
+      exit (1);
+    }
+
+    // open log
+    if (empty($task['process']['log_file_prefix'])) {
+      echo "Need log_file_prefix\n";
+      exit (1);
+    }
+
+    // sharedshelf user
+    $user = parse_ini_file('ssUser.ini');
+    if ($user === FALSE) {
+      throw new Exception("Need to create ssUser.ini. See README.md", 1);
+    }
+
+    if (!isset($task['process']['cookie_jar_path'])) {
+      throw new Exception("Expecting cookie_jar_path in .ini file", 1);
+    }
+
+    $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
+
+    $url = $ss->media_url($asset_id);
+
+  }
+  catch (Exception $e) {
+    $error = 'Caught exception: ' . $e->getMessage() . "\n";
+    echo $error;
+    exit (1);
+  }
+
+  return $url;
+}
 
 function usage() {
   global $argv;
