@@ -51,12 +51,6 @@ try {
     exit (1);
   }
 
-  // create a log file for this collection
-  $log_file_prefix = $task['process']['log_file_prefix'];
-  $log = new SharedShelfToSolrLogger($log_file_prefix);
-  echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
-
-  $log->task('ssUser');
   // sharedshelf user
   $user = parse_ini_file('ssUser.ini');
   if ($user === FALSE) {
@@ -67,11 +61,9 @@ try {
     throw new Exception("Expecting cookie_jar_path in .ini file", 1);
   }
 
-  $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
   foreach($task['configuration_files']['config'] as $config) {
-    $log->task($config);
     $project = parse_ini_file($config);
     if ($project === FALSE) {
       throw new Exception("Missing configuration file: $config", 1);
@@ -82,8 +74,14 @@ try {
       }
     }
 
-    $log->note('project_asset_ids');
     $project_id = $project['project'];
+
+    // create a log file for this collection
+    $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
+    $log = new SharedShelfToSolrLogger($log_file_prefix);
+    echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
+
+    $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
@@ -118,9 +116,9 @@ try {
         }
       }
     }
-  }
 
-  $log->task('Done.');
+    $log->task("Done. Project $project_id.");
+  }
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
