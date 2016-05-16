@@ -27,7 +27,7 @@ PHP=`which php`
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
