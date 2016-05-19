@@ -41,14 +41,6 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     echo implode("\n",$output) . "\n";
   }
 
-  // find extension of filename in image url
-  $ext = pathinfo($image_url, PATHINFO_EXTENSION);
-  if (empty($ext)) {
-    //throw new Exception("Need image type extension on url: $image_url", 1);
-    // hack: just assume .jpg !!!!
-    $image_url .= '.jpg';
-  }
-
   if (OUTPUT) echo "Create directories.\n";
 
   // create temporary directories
