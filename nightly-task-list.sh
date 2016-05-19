@@ -2,7 +2,9 @@
 # sharedshelf-to-solr.php [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]
 # projects (-p):
 # see sharedshelf-to-solr.ini projects - commented out ones are NOT in production - use --skip flag
+# 108 - Cornell Coins Collection - asset count: 1804
 # 112 - Howell Icelandic - asset count: 416
+# 135 - Billie Jean Isbell - asset count: 1190
 # 166 - Mysteries at Eleusis - asset count: 847
 # 167 - Hip Hop Flyers - asset count: 494
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
@@ -18,6 +20,7 @@
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
 # 78 - NYS Aerial Photographs - asset count: 3390
+# 78 - Alison Mason Kinsbury - asset count: 522
 # 920 - Efraim Racker Art Albums - asset count: 81
 # 97 - Cornell Cast Collection - asset count: 897
 
@@ -26,11 +29,13 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --skip
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
