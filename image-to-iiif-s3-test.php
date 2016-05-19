@@ -34,6 +34,10 @@ function find_ss_image($asset_id) {
 
     $url = $ss->media_url($asset_id);
 
+    $ext = $ss->media_file_extension($asset_id);
+
+    $image = array('url' => $url, 'ext' => $ext);
+
   }
   catch (Exception $e) {
     $error = 'Caught exception: ' . $e->getMessage() . "\n";
@@ -41,7 +45,7 @@ function find_ss_image($asset_id) {
     exit (1);
   }
 
-  return $url;
+  return $image;
 }
 
 function usage() {
@@ -74,18 +78,25 @@ if (($image_url !== false) && ($single_asset !== false)) {
 if ($image_url === false) {
   if (is_numeric($single_asset)) {
     // find asset image url
-    $image_url = find_ss_image($single_asset);
+    $image = find_ss_image($single_asset);
+    $image_url = $image['url'];
+    $image_extension = $image['ext'];
   }
+}
+else {
+  // find extension for full image url
+  $image_extension = pathinfo($image_url, PATHINFO_EXTENSION);
+  $image = array('url' => $image_url, 'ext' => $image_extension);
 }
 if ($image_url === false) {
   usage();
 }
 
 echo "image url:\n";
-echo $image_url . PHP_EOL;
+print_r($image);
 
 try {
-  image_to_iiif_s3($image_url, $s3_path, $force_replacement, $save_tmp_files);
+  image_to_iiif_s3($image_url, $image_extension, $s3_path, $force_replacement, $save_tmp_files);
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
