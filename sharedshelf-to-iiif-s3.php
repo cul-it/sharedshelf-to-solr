@@ -100,9 +100,11 @@ try {
 
           $url = $ss->media_url($ss_id);
 
+          $ext = $ss->media_file_extension($ss_id);
+
           $s3_path = "$project_id/$ss_id";
 
-          image_to_iiif_s3($url, $s3_path, $force_replacement);
+          image_to_iiif_s3($url, $ext, $s3_path, $force_replacement);
 
           if (FALSE) throw new Exception("shortcut to exit", 1);
         }
