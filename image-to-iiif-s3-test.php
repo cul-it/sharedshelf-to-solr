@@ -34,6 +34,10 @@ function find_ss_image($asset_id) {
 
     $url = $ss->media_url($asset_id);
 
+    $ext = $ss->media_file_extension($asset_id);
+
+    $image = array('url' => $url, 'ext' => $ext);
+
   }
   catch (Exception $e) {
     $error = 'Caught exception: ' . $e->getMessage() . "\n";
@@ -41,7 +45,7 @@ function find_ss_image($asset_id) {
     exit (1);
   }
 
-  return $url;
+  return $image;
 }
 
 function usage() {
