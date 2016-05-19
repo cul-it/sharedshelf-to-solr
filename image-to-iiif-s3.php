@@ -12,7 +12,7 @@ function image_to_iiif_s3_mkdir($path) {
   }
 }
 
-function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $save_tmp_files = FALSE) {
+function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement = FALSE, $save_tmp_files = FALSE) {
 
   $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
   $s3_url_prefix = 'https://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
@@ -54,7 +54,7 @@ function image_to_iiif_s3($image_url, $s3_path, $force_replacement = FALSE, $sav
   // create temporary directories
   $temp_dir = "/tmp/image-to-iiif-s3/$s3_path";
   image_to_iiif_s3_mkdir($temp_dir);
-  $local_image = "$temp_dir/image.$ext";
+  $local_image = "$temp_dir/image.$extension";
   $local_iiif_dir = "$temp_dir/iiif";
   image_to_iiif_s3_mkdir($local_iiif_dir);
 
