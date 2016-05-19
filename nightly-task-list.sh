@@ -20,7 +20,7 @@
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
 # 78 - NYS Aerial Photographs - asset count: 3390
-# 78 - Alison Mason Kinsbury - asset count: 522
+# 88 - Alison Mason Kinsbury - asset count: 522
 # 920 - Efraim Racker Art Albums - asset count: 81
 # 97 - Cornell Cast Collection - asset count: 897
 
@@ -47,8 +47,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 
 # example of creating or updating the IIIF images for a Collection
-"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 78
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 88
