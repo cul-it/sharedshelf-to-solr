@@ -135,10 +135,7 @@ class SolrUpdater {
       foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
         /* copy_field - dupicate of the values stored under
         */
-        if (!isset($asset["$ss_solr_key"])) {
-          $asset["$solr_key"] = "ERROR: copy_field missing: $solr_key <- $ss_solr_key";
-        }
-        else {
+        if (isset($asset["$ss_solr_key"])) {
           $asset["$solr_key"] = $asset["$ss_solr_key"];
         }
       }
