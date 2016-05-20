@@ -8,7 +8,7 @@
 # 166 - Mysteries at Eleusis - asset count: 847
 # 167 - Hip Hop Flyers - asset count: 494
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
-# 370 - Reps Slides - asset count: 1357
+# 370 - John Reps Slides - asset count: 1357
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 522 - Tamang - asset count: 2539
 # 531 - Historic Glacial Images of Alaska and Greenland (Tarr) - asset count: 2136
@@ -35,7 +35,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
@@ -52,4 +52,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 88
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 370
