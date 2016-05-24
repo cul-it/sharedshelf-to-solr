@@ -465,6 +465,9 @@ class SharedShelfService {
       throw new Exception("Error Processing media_file_extension Request", 1);
     }
     $details = $this->get_response("/assets/$asset_id/representation/details");
+    if (empty($details['name'])) {
+      throw new Exception("Missing original filename in media_file_extension().", 1);
+    }
     // filename of original file
     $filename = $details['name'];
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
