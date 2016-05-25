@@ -107,13 +107,12 @@ try {
         else {
           $cul_publishing_status  = 'Unpublished';
         }
-        $log->note("$cul_publishing_status");
-        echo "status: $cul_publishing_status\n";
-        if (strcmp($cul_publishing_status, "Published") != 0) {
-          continue;
-        }
 
         try {
+
+          if (strcmp($cul_publishing_status, "Published") != 0) {
+            throw new Exception("Publishing status: $cul_publishing_status", 1);
+          }
 
           $url = $ss->media_url($ss_id);
 
