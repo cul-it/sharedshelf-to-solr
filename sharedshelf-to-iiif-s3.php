@@ -76,6 +76,9 @@ try {
 
     $project_id = $project['project'];
 
+    // find the publishing target id for this project
+    $publishing_target_id = $ss->find_publishing_target_id($project_id);
+
     // create a log file for this collection
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
     $log = new SharedShelfToSolrLogger($log_file_prefix);
@@ -95,6 +98,20 @@ try {
         $log->item("asset $ss_id");
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
+
+        // determine publishing status - status_ssi
+        $asset_full = $ss->asset($ss_id);
+        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+          $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
+        }
+        else {
+          $cul_publishing_status  = 'Unpublished';
+        }
+        $log->note("$cul_publishing_status");
+        echo "status: $cul_publishing_status\n";
+        if (strcmp($cul_publishing_status, "Published") != 0) {
+          continue;
+        }
 
         try {
 
