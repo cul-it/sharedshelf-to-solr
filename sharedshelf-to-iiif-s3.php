@@ -92,7 +92,6 @@ try {
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
     $per_page = 25;
-    $supported_image_formats = array('png', 'jpg', 'gif');
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       $counter = $start;
