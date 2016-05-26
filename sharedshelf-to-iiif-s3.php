@@ -109,11 +109,12 @@ try {
           $cul_publishing_status  = 'Unpublished';
         }
 
-        try {
+        if (strcmp($cul_publishing_status, "Published") != 0) {
+          $log->note("Publishing status: $cul_publishing_status  - skipping this asset");
+          continue;
+        }
 
-          if (strcmp($cul_publishing_status, "Published") != 0) {
-            throw new Exception("Publishing status: $cul_publishing_status", 1);
-          }
+        try {
 
           $url = $ss->media_url($ss_id);
 
