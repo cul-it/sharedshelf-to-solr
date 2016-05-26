@@ -38,6 +38,8 @@ else {
 
 try {
 
+  $supported_image_formats = array('png', 'jpg', 'gif', 'tif');
+
   // batch process information
   $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
   if ($task === FALSE) {
@@ -108,15 +110,19 @@ try {
           $cul_publishing_status  = 'Unpublished';
         }
 
-        try {
+        if (strcmp($cul_publishing_status, "Published") != 0) {
+          $log->note("Publishing status: $cul_publishing_status  - skipping this asset");
+          continue;
+        }
 
-          if (strcmp($cul_publishing_status, "Published") != 0) {
-            throw new Exception("Publishing status: $cul_publishing_status", 1);
-          }
+        try {
 
           $url = $ss->media_url($ss_id);
 
           $ext = $ss->media_file_extension($ss_id);
+          if (!in_array(strtolower($ext), $supported_image_formats)) {
+            throw new Exception("Unsupported image format: '$ext' ", 1);
+          }
 
           $s3_path = "$project_id/$ss_id";
 
