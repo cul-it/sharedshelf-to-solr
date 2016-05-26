@@ -38,6 +38,8 @@ else {
 
 try {
 
+  $supported_image_formats = array('png', 'jpg', 'gif', 'tif');
+
   // batch process information
   $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
   if ($task === FALSE) {
