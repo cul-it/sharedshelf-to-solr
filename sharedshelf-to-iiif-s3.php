@@ -90,6 +90,7 @@ try {
     $log->note("asset_count:$asset_count");
     echo "$config asset count: $asset_count\n";
     $per_page = 25;
+    $supported_image_formats = array('png', 'jpg', 'gif');
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
       $counter = $start;
@@ -117,6 +118,9 @@ try {
           $url = $ss->media_url($ss_id);
 
           $ext = $ss->media_file_extension($ss_id);
+          if (!in_array(strtolower($ext), $supported_image_formats)) {
+            throw new Exception("Unsupported image format: '$ext' ", 1);
+          }
 
           $s3_path = "$project_id/$ss_id";
 
