@@ -443,6 +443,36 @@ class SharedShelfService {
     }
     return $flat;
   }
+
+  /**
+   * returns the related information for the asset. It is assumed that
+   * the asset is published to SSC.
+   * @param  integer $asset_id asset id
+   * @return string  iiif json url for main image of this asset
+   */
+  function media_iiif_info($asset_id) {
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_iiif_url Request", 1);
+    }
+    $details = $this->get_response_nocookie("/iiifmap/ss/$asset_id", false);
+    if (empty($details['info_url'])) {
+      throw new Exception("IIIF image not found", 1);
+    }
+    return $details;   
+  }
+  
+  /**
+   * returns the URL for the iiif json url of the asset. It is assumed that
+   * the asset is published to SSC.
+   * @param  integer $asset_id asset id
+   * @return string  iiif json url for main image of this asset
+   */
+  function media_iiif_url($asset_id) {
+  $detail = $this->media_iiif_info($asset_id);
+    $url = $details['info_url'];
+    return $url;   
+  }
+
   /**
    * track down the url for this asset's sharedshelf image
    * @param  integer $asset_id asset id
