@@ -37,9 +37,11 @@ try {
   $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
-  $ss_id = 200624;
-  //$ss_id = 2877862;
-  $ss_id = 201856;
+  $ss_id = 3317772;
+  echo $url, "\n";
+  $iiif_info = $ss->media_iiif_info($ss_id);
+  print_r($iiif_info);
+
   $url = $ss->media_url($ss_id);
   print_r($url);
   echo $url, "\n";
