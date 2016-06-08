@@ -271,6 +271,7 @@ try {
             $solr_out['img_width_tesim'] = $dim['width'];
             $solr_out['img_height_tesim'] = $dim['height'];
           }
+          
         }
 
         // add in the publishing status field

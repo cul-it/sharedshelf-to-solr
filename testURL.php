@@ -42,6 +42,9 @@ try {
   $ss_id = 201856;
   $url = $ss->media_url($ss_id);
   print_r($url);
+  echo $url, "\n";
+  $iiif_info = $ss->media_iiif_info($ss_id);
+  print_r($iiif_info);
   echo "\n\n";
 }
 catch (Exception $e) {
