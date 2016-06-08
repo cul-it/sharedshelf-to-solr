@@ -457,12 +457,13 @@ class SharedShelfService {
     if (empty($asset_id)) {
       throw new Exception("Error Processing media_iiif_url Request", 1);
     }
+    $details = $this->get_response("/iiifmap/ss/$asset_id", false);
     if (empty($details['info_url'])) {
-      throw new Exception("IIIF image not found", 1);
-    }
-    return $details;   
+        throw new Exception("IIIF image not found", 1);
+      }
+    return $details;
   }
-  
+
   /**
    * returns the URL for the iiif json url of the asset. It is assumed that
    * the asset is published to SSC.
