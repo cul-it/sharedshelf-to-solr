@@ -279,8 +279,6 @@ try {
           }
          }
 
-        }
-
         // add in the publishing status field
         $solr_out['status_ssi'] = $cul_publishing_status;
 
