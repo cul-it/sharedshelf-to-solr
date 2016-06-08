@@ -471,9 +471,9 @@ class SharedShelfService {
    * @return string  iiif json url for main image of this asset
    */
   function media_iiif_url($asset_id) {
-  $detail = $this->media_iiif_info($asset_id);
+    $details = $this->media_iiif_info($asset_id);
     $url = $details['info_url'];
-    return $url;   
+    return $url;
   }
   /**
    * track down the url for this asset's sharedshelf image
