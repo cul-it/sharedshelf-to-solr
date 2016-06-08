@@ -271,12 +271,12 @@ try {
             $solr_out['img_width_tesim'] = $dim['width'];
             $solr_out['img_height_tesim'] = $dim['height'];
           }
-        $jsondetails = $ss->media_iiif_info($ss_id);
-        if (!empty($jsondetails)) {
-          $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
-          $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
-          $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
-          }
+          $jsondetails = $ss->media_iiif_info($ss_id);
+          if (!empty($jsondetails)) {
+            $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
+            $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
+            $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
+            }
          }
 
         // add in the publishing status field
