@@ -4,9 +4,33 @@
 require_once('SharedShelfService.php');
 require_once('SharedShelfToSolrLogger.php');
 
+function usage() {
+  global $argv;
+  echo PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [-a NNN]" . PHP_EOL;
+  echo "--help - show this info" . PHP_EOL;
+  echo "-a - process SharedShelf asset ID NNN (NNN must be numeric)" . PHP_EOL;
+  exit (0);
+}
+
 $log = FALSE;
 
 try {
+
+  $options = getopt("a:",array("help"));
+
+  if ($options === false || isset($options['help'])) {
+    usage();
+  }
+  $ss_id = 3317772;
+  if (isset($options['a'])) {
+    if (is_numeric($options['a'])) {
+      $ss_id = $options['a'];
+    }
+    else {
+      usage();
+    }
+  }
 
   // batch process information
   $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
