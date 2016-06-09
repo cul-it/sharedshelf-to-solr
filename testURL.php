@@ -4,9 +4,33 @@
 require_once('SharedShelfService.php');
 require_once('SharedShelfToSolrLogger.php');
 
+function usage() {
+  global $argv;
+  echo PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [-a NNN]" . PHP_EOL;
+  echo "--help - show this info" . PHP_EOL;
+  echo "-a - process SharedShelf asset ID NNN (NNN must be numeric)" . PHP_EOL;
+  exit (0);
+}
+
 $log = FALSE;
 
 try {
+
+  $options = getopt("a:",array("help"));
+
+  if ($options === false || isset($options['help'])) {
+    usage();
+  }
+  $ss_id = 3317772;
+  if (isset($options['a'])) {
+    if (is_numeric($options['a'])) {
+      $ss_id = $options['a'];
+    }
+    else {
+      usage();
+    }
+  }
 
   // batch process information
   $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
@@ -37,11 +61,12 @@ try {
   $log->task('SharedShelfService');
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
-  $ss_id = 200624;
-  //$ss_id = 2877862;
-  $ss_id = 201856;
+  echo $url, "\n";
+  $iiif_info = $ss->media_iiif_info($ss_id);
+  print_r($iiif_info);
+
   $url = $ss->media_url($ss_id);
-  print_r($url);
+  echo $url, "\n";
   echo "\n\n";
 }
 catch (Exception $e) {
