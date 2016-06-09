@@ -37,19 +37,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --skip
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 108
+#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 522
