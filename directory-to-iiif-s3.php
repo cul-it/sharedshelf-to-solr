@@ -36,18 +36,26 @@ else {
 }
 
 try {
-  $dir = new DirectoryIterator($directory);
-  foreach ($dir as $fileinfo) {
-    if ($fileinfo->isFile()) {
-      $extension = $fileinfo->getExtension();
-      if (in_array($extension, array('png', 'jpg', 'gif', 'tif'))) {
-        $image_url = $fileinfo->getPathname();
-        $filename = $fileinfo->getBasename(".$extension");
+
+  if (!is_dir($directory)) {
+    throw new Exception("Not a directory: $directory", 1);
+  }
+
+  if ($handle = opendir($directory)) {
+    while (false !== ($file = readdir($handle))) {
+        if ('.' === $file) continue;
+        if ('..' === $file) continue;
+
+        $image_url = "$directory/$file";
+        $path_parts = pathinfo($image_url);
+        $extension = $path_parts['extension'];
+        $filename = $path_parts['filename'];
         $s3_path = "$collection/$filename";
         print "$image_url -> $s3_path\n";
         image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement);
-      }
+
     }
+    closedir($handle);
   }
 }
 catch (Exception $e) {
