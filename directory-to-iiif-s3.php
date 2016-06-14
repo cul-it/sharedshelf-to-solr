@@ -50,6 +50,9 @@ try {
         $path_parts = pathinfo($image_url);
         $extension = $path_parts['extension'];
         $filename = $path_parts['filename'];
+        if (empty(trim($filename)) || empty(trim($extension))) {
+          continue;
+        }
         $s3_path = "$collection/$filename";
         print "$image_url -> $s3_path\n";
         image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement);
