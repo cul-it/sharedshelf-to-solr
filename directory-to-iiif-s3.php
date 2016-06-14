@@ -48,9 +48,9 @@ try {
 
         $image_url = "$directory/$file";
         $path_parts = pathinfo($image_url);
-        $extension = $path_parts['extension'];
-        $filename = $path_parts['filename'];
-        if (empty(trim($filename)) || empty(trim($extension))) {
+        $extension = trim($path_parts['extension']);
+        $filename = trim($path_parts['filename']);
+        if (empty($filename) || empty($extension)) {
           continue;
         }
         $s3_path = "$collection/$filename";
