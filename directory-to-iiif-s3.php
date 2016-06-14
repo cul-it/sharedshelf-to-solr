@@ -37,6 +37,8 @@ else {
 
 try {
 
+  $supported_image_formats = array('png', 'jpg', 'gif', 'tif');
+
   if (!is_dir($directory)) {
     throw new Exception("Not a directory: $directory", 1);
   }
@@ -49,8 +51,11 @@ try {
         $image_url = "$directory/$file";
         $path_parts = pathinfo($image_url);
         $extension = trim($path_parts['extension']);
+        if (!in_array($extension, $supported_image_formats)) {
+          continue;
+        }
         $filename = trim($path_parts['filename']);
-        if (empty($filename) || empty($extension)) {
+        if (empty($filename)) {
           continue;
         }
         $s3_path = "$collection/$filename";
