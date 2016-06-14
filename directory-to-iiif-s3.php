@@ -50,6 +50,9 @@ try {
 
         $image_url = "$directory/$file";
         $path_parts = pathinfo($image_url);
+        if (!isset($path_parts['extension'])) {
+          continue;
+        }
         $extension = trim($path_parts['extension']);
         if (!in_array($extension, $supported_image_formats)) {
           continue;
