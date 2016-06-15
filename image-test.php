@@ -2,19 +2,29 @@
 
 ini_set('memory_limit', '64M');
 
-$images = new Imagick(glob('/tmp/jgr25/image-test/*.tif'));
+try {
 
-foreach($images as $image) {
+  $images = new Imagick(glob('/tmp/jgr25/image-test/*.tif'));
 
-    // Providing 0 forces thumbnailImage to maintain aspect ratio
-    $image->thumbnailImage(128,0);
+  foreach($images as $image) {
 
-    //$image->setImageFormat("png");
+      // Providing 0 forces thumbnailImage to maintain aspect ratio
+      $image->thumbnailImage(128,0);
 
-    break;
+      //$image->setImageFormat("png");
 
+      break;
+
+  }
+  //$images->writeImages('test.png');
 }
 
-//$images->writeImages('test.png');
+catch (Exception $e) {
+  $error = 'Caught exception: ' . $e->getMessage() . "\n";
+  echo $error;
+  exit (1);
+}
+exit (0);
+
 
 ?>
