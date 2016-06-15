@@ -7,12 +7,12 @@ foreach($images as $image) {
     // Providing 0 forces thumbnailImage to maintain aspect ratio
     $image->thumbnailImage(128,0);
 
-    $image->setImageFormat("png");
+    //$image->setImageFormat("png");
 
     break;
 
 }
 
-$images->writeImages('test.png');
+//$images->writeImages('test.png');
 
 ?>
