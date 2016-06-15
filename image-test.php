@@ -1,6 +1,6 @@
 <?php
 
-$images = new Imagick(glob('/tmp/jgr25/RAC_017/*.tif'));
+$images = new Imagick(glob('/tmp/jgr25/image-test/*.tif'));
 
 foreach($images as $image) {
 
