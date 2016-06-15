@@ -1,5 +1,7 @@
 <?php
 
+ini_set('memory_limit', '64M');
+
 $images = new Imagick(glob('/tmp/jgr25/image-test/*.tif'));
 
 foreach($images as $image) {
