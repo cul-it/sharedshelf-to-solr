@@ -29,9 +29,9 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
@@ -42,13 +42,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659 
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 
 # example of creating or updating the IIIF images for a Collection
