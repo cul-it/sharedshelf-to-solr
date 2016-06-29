@@ -145,6 +145,13 @@ class SolrUpdater {
         $asset["$solr_key"] = $value;
       }
     }
+
+    if (isset($this->ini['set_date'])) {
+      foreach($this->ini['set_date'] as $solr_key => $value) {
+       $value = explode('T',$asset["$value"])[0];
+       $asset["$solr_key"] = $value;
+      }
+    }
     if (isset($this->ini['set_location'])) {
       foreach($this->ini['set_location'] as $solr_key => $value) {
         // grab solr field names for lat and lon
