@@ -44,9 +44,14 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
         $items = explode($delimiter, $value);
         $items_trim = array();
         foreach ($items as $item) {
-          $items_trim[] = trim($item);
+          $trimmed = trim($item);
+          if (!empty($trimmed)) {
+            $items_trim[] = $trimmed;
+          }
         }
-        $flattened_asset["$key"] = $items_trim;
+        if (!empty($items_trim)) {
+          $flattened_asset["$key"] = $items_trim;
+        }
       }
     }
   }
