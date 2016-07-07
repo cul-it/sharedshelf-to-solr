@@ -35,7 +35,10 @@ function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) 
     if (!empty($flattened_asset["$key"])) {
       $value = $flattened_asset["$key"];
       if (strpos($value, $delimiter) === FALSE) {
-        $flattened_asset["$key"] = trim($value);
+        $trimmed = trim($item);
+        if (!empty($trimmed)) {
+          $flattened_asset["$key"] = $trimmed;
+        }
       }
       else {
         $items = explode($delimiter, $value);
