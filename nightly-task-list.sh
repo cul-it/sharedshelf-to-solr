@@ -9,6 +9,7 @@
 # 167 - Hip Hop Flyers - asset count: 494
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
 # 319 - Loewentheil African American Photographs - asset count: 1482
+# 3321 - Test Project - asset count: 12
 # 370 - John Reps Slides - asset count: 1357
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 522 - Tamang - asset count: 2539
@@ -38,6 +39,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
@@ -56,4 +58,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 319
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3321
