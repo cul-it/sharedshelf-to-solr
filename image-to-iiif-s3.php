@@ -3,12 +3,14 @@
 
 define('OUTPUT', FALSE);
 
-function image_to_iiif_s3_mkdir($path) {
+function image_to_iiif_s3_mkdir($path, $group) {
   // make a directory at the given path
   if (!is_dir($path)) {
     if (mkdir($path, 0775, TRUE) === FALSE) {
       throw new Exception("Can't create directory : $path", 1);
     }
+    chgrp($path, $group);
+    clearstatcache();
   }
 }
 
@@ -16,6 +18,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
 
   $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
   $s3_url_prefix = 'https://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
+  $developer_group = 'lib_web_dev_role';
 
   if (OUTPUT) echo "Checking pre-existing.\n";
 
@@ -43,12 +46,18 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
 
   if (OUTPUT) echo "Create directories.\n";
 
+  // force temp dir group ownership
+  $tmp_iiif = "/tmp/image-to-iiif-s3";
+  image_to_iiif_s3_mkdir($tmp_iiif, $developer_group);
+  chgrp($tmp_iiif, $developer_group);
+  clearstatcache();
+
   // create temporary directories
-  $temp_dir = "/tmp/image-to-iiif-s3/$s3_path";
-  image_to_iiif_s3_mkdir($temp_dir);
+  $temp_dir = "$tmp_iiif/$s3_path";
+  image_to_iiif_s3_mkdir($temp_dir, $developer_group);
   $local_image = "$temp_dir/image.$extension";
   $local_iiif_dir = "$temp_dir/iiif";
-  image_to_iiif_s3_mkdir($local_iiif_dir);
+  image_to_iiif_s3_mkdir($local_iiif_dir, $developer_group);
 
   if (OUTPUT) echo "$temp_dir\n";
 
