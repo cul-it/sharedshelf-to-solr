@@ -3,12 +3,14 @@
 
 define('OUTPUT', FALSE);
 
-function image_to_iiif_s3_mkdir($path) {
+function image_to_iiif_s3_mkdir($path, $group) {
   // make a directory at the given path
   if (!is_dir($path)) {
     if (mkdir($path, 0775, TRUE) === FALSE) {
       throw new Exception("Can't create directory : $path", 1);
     }
+    chgrp($path, $group);
+    clearstatcache();
   }
 }
 
