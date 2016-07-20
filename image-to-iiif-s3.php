@@ -46,6 +46,12 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
 
   if (OUTPUT) echo "Create directories.\n";
 
+  // force temp dir group ownership
+  $tmp_iiif = "/tmp/image-to-iiif-s3";
+  image_to_iiif_s3_mkdir($tmp_iiif, $developer_group);
+  chgrp($tmp_iiif, $developer_group);
+  clearstatcache();
+
   // create temporary directories
   $temp_dir = "$tmp_iiif/$s3_path";
   image_to_iiif_s3_mkdir($temp_dir, $developer_group);
