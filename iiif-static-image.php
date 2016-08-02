@@ -12,6 +12,13 @@ function iiif_static_mkdir($path) {
 
 function iiif_static_image($url, $collection_id, $image_id) {
 
+  // batch process information
+  $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
+  if ($task === FALSE) {
+    echo "Need sharedshelf-to-iiif-s3.ini\n";
+    exit (1);
+  }
+
   // create local directory
   $dir = realpath(dirname(__FILE__));
   $path = "$dir/iiif-static-images/$collection_id/$image_id";
@@ -27,7 +34,7 @@ function iiif_static_image($url, $collection_id, $image_id) {
     throw new Exception("Can't copy $url to local", 1);
   }
 
-  $script = "/cul/share/iiif/iiif/iiif_static.py";
+  $script = $task['paths']['simeons_iiif_code'];
   $command = "python $script -d $path $local_copy";
   $output = '';
   $return_var = 0;
