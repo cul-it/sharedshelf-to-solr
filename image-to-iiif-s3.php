@@ -15,6 +15,12 @@ function image_to_iiif_s3_mkdir($path, $group) {
 }
 
 function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement = FALSE, $save_tmp_files = FALSE) {
+  // batch process information
+  $task = parse_ini_file("sharedshelf-to-iiif-s3.ini", TRUE);
+  if ($task === FALSE) {
+    echo "Need sharedshelf-to-iiif-s3.ini\n";
+    exit (1);
+  }
 
   $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
   $s3_url_prefix = 'https://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
@@ -71,7 +77,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   if (OUTPUT) echo "Making iiif tiles.\n";
 
   // generate the static iiif tiles
-  $script = "/cul/share/iiif/iiif/iiif_static.py";
+  $script = $task['paths']['simeons_iiif_code'];
   $s3path = "$s3_url_prefix/$s3_path";
   //$command = "python $script -d $local_iiif_dir --tilesize 800 $local_image";
   //$command = "python $script -d $local_iiif_dir $local_image";
