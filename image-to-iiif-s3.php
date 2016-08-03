@@ -74,6 +74,22 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     throw new Exception("Can't copy $image_url to local", 1);
   }
 
+  $standard_format = 'jpg';
+  if ($extension != $standard_format) {
+    // convert copy of image to standard form with imagemagick mogrify
+    if (OUTPUT) echo "Converting image format to jpg.\n";
+    $command = "mogrify -format $standard_format $local_image";
+    $output = '';
+    $return_var = 0;
+    $lastline = exec($command, $output, $return_var);
+    if ($return_var != 0) {
+      $output[] = 'Command failed: ' .  $command;
+      $out = implode(PHP_EOL, $output);
+      throw new Exception("Error Processing iiif: $out", 1);
+    }
+    $local_image = "$temp_dir/image.$standard_format";
+  }
+
   if (OUTPUT) echo "Making iiif tiles.\n";
 
   // generate the static iiif tiles
@@ -90,17 +106,6 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     $out = implode(PHP_EOL, $output);
     throw new Exception("Error Processing iiif: $out", 1);
   }
-
-  //hack: rewrite the @id from 'iiif' to the s3 path to info.json
-  // $s3path = "$s3_url_prefix/$s3_path";
-  // $info_file = "$local_iiif_dir/info.json";
-  // if (($json = file_get_contents($info_file)) === FALSE) {
-  //   throw new Exception("can't get file contents: $info_file", 1);
-  //   }
-  // $json2 = preg_replace('/"@id": "([^"]+)"/', '"@id": "' . $s3path . '"', $json);
-  // if (file_put_contents($info_file, $json2) === FALSE) {
-  //   throw new Exception("Can not write file: $info_file", 1);
-  //   }
 
   if (OUTPUT) echo "Moving tiles to S3.\n";
 
