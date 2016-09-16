@@ -8,6 +8,7 @@
 # 166 - Mysteries at Eleusis - asset count: 847
 # 167 - Hip Hop Flyers - asset count: 494
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
+# 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
 # 370 - John Reps Slides - asset count: 1357
