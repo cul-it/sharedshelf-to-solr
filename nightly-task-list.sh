@@ -12,6 +12,7 @@
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
 # 370 - John Reps Slides - asset count: 1357
+# 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 522 - Tamang - asset count: 2539
 # 531 - Historic Glacial Images of Alaska and Greenland (Tarr) - asset count: 2136
@@ -39,9 +40,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
