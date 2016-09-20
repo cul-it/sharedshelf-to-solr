@@ -28,6 +28,7 @@
 # 88 - Alison Mason Kinsbury - asset count: 522
 # 920 - Efraim Racker Art Albums - asset count: 81
 # 97 - Cornell Cast Collection - asset count: 897
+# 98 - Claire Holt Papers - asset count: 1785
 
 PHP=`which php`
 
@@ -44,7 +45,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
@@ -60,7 +61,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 273
 "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 452
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 98
