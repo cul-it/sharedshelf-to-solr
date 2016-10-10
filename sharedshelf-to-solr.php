@@ -166,7 +166,6 @@ try {
     // create a log file for this collection
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
     $log = new SharedShelfToSolrLogger($log_file_prefix);
-    echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
     $log->task("$config-$project_id");
 
     $log->note('SolrUpdater');
@@ -181,7 +180,7 @@ try {
     $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
-    echo "Processing: $option_text $config asset count: $asset_count\n";
+    echo "Processing: $option_text $config asset count: $asset_count " . $log->log_file_name() . PHP_EOL;
     $asset_list = get_ss_asset_list($ss, $project_id, 'updated_on');
 
     // extract list of sharedshelf field names that need special array treatment
