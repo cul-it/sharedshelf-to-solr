@@ -12,6 +12,7 @@
 # 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
+# 3462 - Punk Flyers - asset count: 95
 # 370 - John Reps Slides - asset count: 1357
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
