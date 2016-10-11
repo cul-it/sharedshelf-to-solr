@@ -459,7 +459,7 @@ class SharedShelfService {
     }
     $details = $this->get_response("/iiifmap/ss/$asset_id", false);
     if (empty($details['info_url'])) {
-        throw new Exception("IIIF image not found", 1);
+        return array();  // empty
       }
     return $details;
   }
@@ -471,8 +471,13 @@ class SharedShelfService {
    * @return string  iiif json url for main image of this asset
    */
   function media_iiif_url($asset_id) {
-    $details = $this->media_iiif_info($asset_id);
-    $url = $details['info_url'];
+    try {
+      $details = $this->media_iiif_info($asset_id);
+      $url = $details['info_url'];
+    } catch (Exception $e) {
+      // tolerate missing sharedshelf iiif links
+      $url = array();  // empty
+    }
     return $url;
   }
   /**
