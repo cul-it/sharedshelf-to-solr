@@ -84,13 +84,12 @@ try {
     // create a log file for this collection
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
     $log = new SharedShelfToSolrLogger($log_file_prefix);
-    echo "Logging to: \ntail -50 " . $log->log_file_name() . PHP_EOL;
     $log->task("$config-$project_id-iiif");
 
     $log->note('project_asset_ids');
     $asset_count = $ss->project_assets_count($project_id);
     $log->note("asset_count:$asset_count");
-    echo "$config asset count: $asset_count\n";
+    echo "IIIF: $config asset count: $asset_count " . $log->log_file_name() . PHP_EOL;
     $per_page = 25;
     for ($start = 0; $start < $asset_count; $start += $per_page) {
       $assets =  $ss->project_assets($project_id, $start, $per_page);
@@ -111,8 +110,7 @@ try {
         }
 
         if (strcmp($cul_publishing_status, "Published") != 0) {
-          $log->note("Publishing status: $cul_publishing_status  - skipping this asset");
-          continue;
+          $log->note("Publishing status: $cul_publishing_status");
         }
 
         try {
