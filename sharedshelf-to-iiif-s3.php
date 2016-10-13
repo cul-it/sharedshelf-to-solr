@@ -110,8 +110,7 @@ try {
         }
 
         if (strcmp($cul_publishing_status, "Published") != 0) {
-          $log->note("Publishing status: $cul_publishing_status  - skipping this asset");
-          continue;
+          $log->note("Publishing status: $cul_publishing_status");
         }
 
         try {
