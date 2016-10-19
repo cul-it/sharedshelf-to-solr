@@ -155,6 +155,26 @@ class SolrUpdater {
           $asset["$solr_key"] = $value;
         }
       }
+    }
+    // solr needs author and title to be single valued
+    // if an asset has more than one title/author
+    // send only the first one to solr for the sort field
+    if (isset($this->ini['set_single_value'])) {
+        foreach($this->ini['set_single_value'] as $solr_key => $value) {
+        // grab solr field names for lat and lon
+        list($authors) = explode(',', $value);
+        if (isset($asset["$authors"])) {
+          // set the value of the field to the two field values separated by a comma
+          if (is_array($asset["$authors"])) {
+          $value = $asset["$authors"][0];}
+          else {
+            $value = $asset["$authors"];
+          }
+          $asset["$solr_key"] = $value;
+        }
+      }
+    }
+
     if (isset($this->ini['set_geojson'])) {
       foreach($this->ini['set_geojson'] as $solr_key => $value) {
         // grab solr field names for lat and lon
@@ -167,7 +187,7 @@ class SolrUpdater {
       }
     }
   }
-}
+
   function update($assets) {
     // $assets have names converted to solr already
     $json = '';
