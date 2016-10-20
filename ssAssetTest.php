@@ -56,9 +56,9 @@ try {
     $url = $ss->media_url($id);
     $extension = $ss->media_file_extension($id);
     echo "\n\n************************** Asset: $id *********************************\n";
+    print_r($asset);
     print_r(array('media url', $url));
     print_r(array('extension', $extension));
-    print_r($asset);
     $id++;
   }
 }
