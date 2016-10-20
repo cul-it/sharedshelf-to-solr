@@ -55,10 +55,12 @@ try {
     $asset = $ss->asset($id);
     $url = $ss->media_url($id);
     $extension = $ss->media_file_extension($id);
+    $iiif = $ss->media_iiif_info($id);
     echo "\n\n************************** Asset: $id *********************************\n";
+    print_r($asset);
     print_r(array('media url', $url));
     print_r(array('extension', $extension));
-    print_r($asset);
+    print_r(array('iiif', $iiif));
     $id++;
   }
 }
