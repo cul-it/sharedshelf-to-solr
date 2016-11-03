@@ -10,10 +10,11 @@ function usage() {
   echo "--help - show this info" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
+  echo "--meta - include project metadata" . PHP_EOL;
   exit (0);
 }
 
-$options = getopt("s:n:",array("help"));
+$options = getopt("s:n:",array("help","meta"));
 
 if ($options === false || isset($options['help'])) {
   usage();
@@ -37,6 +38,8 @@ else {
   $max_processing_count = 1; // this means process just one
 }
 
+$include_metadata = isset($options['meta']));
+
 
 try {
   $user = parse_ini_file('ssUser.ini');
@@ -56,11 +59,15 @@ try {
     $url = $ss->media_url($id);
     $extension = $ss->media_file_extension($id);
     $iiif = $ss->media_iiif_info($id);
-    echo "\n\n************************** Asset: $id *********************************\n";
+     echo "\n\n************************** Asset: $id *********************************\n";
     print_r($asset);
     print_r(array('media url', $url));
     print_r(array('extension', $extension));
     print_r(array('iiif', $iiif));
+    if ($include_metadata) {
+      $metadata = $ss->project_metadata($asset['project_id']);
+      print_r(array('metadata', $metadata));
+    }
     $id++;
   }
 }
