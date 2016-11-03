@@ -38,8 +38,7 @@ else {
   $max_processing_count = 1; // this means process just one
 }
 
-$include_metadata = isset($options['meta']));
-
+$include_metadata = isset($options['meta']);
 
 try {
   $user = parse_ini_file('ssUser.ini');
