@@ -247,7 +247,10 @@ try {
         $asset_full = $ss->asset($asset_id);
 
         // determine publishing status - status_ssi
-        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+        if (isset($project['publish_these_punks'])) {
+          $cul_publishing_status = project['publish_these_punks'];
+        }
+        elseif (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
           $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
         }
         else {
