@@ -187,7 +187,13 @@ try {
     $delimited_fields = empty($project['delimited_field']) ? array() : $project['delimited_field'];
 
     // find the publishing target id for this project
-    $publishing_target_id = $ss->find_publishing_target_id($project_id);
+    if (empty($project['publishing_target_id'])) {
+      $publishing_target_id = $ss->find_publishing_target_id($project_id);
+    }
+    else {
+      // this comes from the publishing_target_id of the publishing_status field
+      $publishing_target_id = $project['publishing_target_id'];
+    }
 
     $solr_assets = array(); // accumulate assets for solr here
 
