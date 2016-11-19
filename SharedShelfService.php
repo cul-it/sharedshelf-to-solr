@@ -86,8 +86,20 @@ class SharedShelfService {
 
   private function get_url($url_suffix = '/account', $require_extension = TRUE) {
     // sometimes the first time gets the url without an extension
-    $url = $this->sharedshelf_url . $url_suffix;
-    $ch = curl_init($url);
+    $url_list = array();
+    $url_list[] = $this->sharedshelf_url . $url_suffix;
+
+    for ($redirects = 0; $this->follow_redirects($url_list); $redirects++) ;
+    $url = end($url_list);
+
+    if ($require_extension) {
+      $extension = pathinfo($url, PATHINFO_EXTENSION);
+      if (empty($extension)) {
+        throw new Exception("Missing required extension: $url", 1);
+      }
+    }
+    return $url;
+  }
     if ($ch === FALSE) {
       curl_close($ch);
       throw new Exception("Bad request url in get_url: $url", 1);
