@@ -89,8 +89,16 @@ class SharedShelfService {
     $url_list = array();
     $url_list[] = $this->sharedshelf_url . $url_suffix;
 
-    for ($redirects = 0; $this->follow_redirects($url_list); $redirects++) ;
+    $ch = curl_init();
+    if ($ch === FALSE) {
+      curl_close($ch);
+      throw new Exception("Bad request url in get_url: $url", 1);
+    }
+
+    for ($redirects = 0; $this->follow_redirects($ch, $url_list); $redirects++) ;
     $url = end($url_list);
+
+    curl_close($ch);
 
     if ($require_extension) {
       $extension = pathinfo($url, PATHINFO_EXTENSION);
