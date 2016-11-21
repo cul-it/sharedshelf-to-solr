@@ -123,12 +123,8 @@ class SharedShelfService {
       throw new Exception("follow_redirects empty array", 1);
     }
 
-    $ch = curl_init($last_url);
-    if ($ch === FALSE) {
-      curl_close($ch);
-      throw new Exception("Bad request url in get_url: $url", 1);
-    }
     $options = array(
+      CURLOPT_URL => $last_url,
       CURLOPT_CONNECTTIMEOUT => 120,
       CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
       CURLOPT_FOLLOWLOCATION => FALSE,  // We want to just get redirect url but not to follow it.
@@ -149,7 +145,6 @@ class SharedShelfService {
       $redirected = TRUE;
       $url_array[] = trim($matches[1][0]); // append the url redirected to to the array
     }
-    curl_close($ch);
 
     return $redirected;
   }
