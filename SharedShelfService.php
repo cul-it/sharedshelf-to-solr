@@ -114,7 +114,7 @@ class SharedShelfService {
    * @param  array $url_array urls
    * @return boolean            return TRUE if last url redirects
    */
-  private function follow_redirects(&$url_array) {
+  private function follow_redirects(&$ch, &$url_array) {
     if (!is_array($url_array)) {
       throw new Exception("follow_redirects array required", 1);
     }
