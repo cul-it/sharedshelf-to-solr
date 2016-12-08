@@ -26,6 +26,7 @@
 # 657 - John Clair Miller - asset count: 240
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
+# 757 - Ernie Paniccioli - asset count: 5688
 # 78 - NYS Aerial Photographs - asset count: 3390
 # 88 - Alison Mason Kinsbury - asset count: 522
 # 920 - Efraim Racker Art Albums - asset count: 81
@@ -61,6 +62,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
@@ -68,4 +70,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3462
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 757
