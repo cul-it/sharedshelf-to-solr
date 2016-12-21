@@ -131,12 +131,14 @@ class SharedShelfService {
       CURLOPT_HEADER => TRUE,    // We'll parse redirect url from header.
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_TIMEOUT => 120,
+      CURLOPT_NOBODY => TRUE, //exclude the body from the output
       );
     $allswell = curl_setopt_array($ch, $options);
     if ($allswell === FALSE) {
       throw new Exception("follow_redirects failed to set curl options", 1);
     }
     $response = curl_exec($ch);
+
     preg_match_all('/^Location:(.*)$/mi', $response, $matches);
     if (empty($matches[1])) {
       $redirected = FALSE;
