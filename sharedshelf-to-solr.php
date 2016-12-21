@@ -1,6 +1,8 @@
 <?php
 // sharedshelf-to-solr - update all sharedshelf collections in solr
 
+ini_set('memory_limit', '512M');
+
 require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
