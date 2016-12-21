@@ -9,16 +9,17 @@ require_once('image-to-iiif-s3.php');
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [-p NNN] [-s NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
+  echo "-s - only process one of the images in the collection - id NNN" . PHP_EOL;;
   exit (0);
 }
 
 $log = FALSE;
 
-$options = getopt("p:",array("help", "force"));
+$options = getopt("p:s:",array("help", "force", "one"));
 
 if (isset($options['help'])) {
   usage();
@@ -34,6 +35,17 @@ if (isset($options['p'])) {
 }
 else {
   $single_collection = FALSE;
+}
+if (isset($options['s'])) {
+  if (is_numeric($options['s'])) {
+    $single_item = $options['s'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $single_item = FALSE;
 }
 
 try {
@@ -96,6 +108,9 @@ try {
       $counter = $start;
       foreach ($assets as $asset) {
         $ss_id = $asset['id'];
+        if ($single_item && $ss_id != $single_item) {
+          continue;
+        }
         $log->item("asset $ss_id");
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
