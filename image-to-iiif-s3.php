@@ -29,7 +29,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   if (OUTPUT) echo "Checking pre-existing.\n";
 
   // check if it already exists on S3
-  $command = "s3cmd ls $s3_bucket/$s3_path";
+  $command = "/cul/share/miniconda/bin/s3cmd ls $s3_bucket/$s3_path";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
@@ -110,7 +110,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   if (OUTPUT) echo "Moving tiles to S3.\n";
 
   // rsync tiles to s3
-  $command = "s3cmd sync $local_iiif_dir/ $s3_bucket/$s3_path/";
+  $command = "/cul/share/miniconda/bin/s3cmd sync $local_iiif_dir/ $s3_bucket/$s3_path/";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
