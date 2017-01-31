@@ -130,7 +130,7 @@ try {
           $s3_bucket = 's3://sharedshelftosolr.library.cornell.edu/public';
           $s3_url_prefix = 'http://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public';
 
-          $command = "s3cmd ls $s3_bucket/$s3_path";
+          $command = "/cul/share/miniconda/bin/s3cmd ls $s3_bucket/$s3_path";
           $output = '';
           $return_var = 0;
           $lastline = exec($command, $output, $return_var);
