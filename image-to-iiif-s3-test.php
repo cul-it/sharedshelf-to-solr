@@ -72,7 +72,17 @@ $force_replacement = isset($options["force"]);
 $save_tmp_files = isset($options["save"]);
 $s3_path = isset($options["s3path"]) ? $options["s3path"] : usage();
 $image_url = isset($options["url"]) ? $options["url"] : false;
-$single_asset = isset($options['s']) ? $options['s'] : false;
+if (isset($options['s'])) {
+  if (is_numeric($options['s'])) {
+    $single_asset = $options['s'];
+  }
+  else {
+    usage();
+  }
+}
+else {
+  $single_asset = FALSE;
+}
 if (($image_url !== false) && ($single_asset !== false)) {
   usage();
 }
