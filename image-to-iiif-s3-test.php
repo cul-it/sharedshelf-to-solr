@@ -56,7 +56,8 @@ function usage() {
   echo "--help - show this info" . PHP_EOL;
   echo "--save - do not delete temp files afterwards" . PHP_EOL;
   echo "--url - url of image file (do not use -s)" . PHP_EOL;
-  echo "--s3path - where to put image tiles on S3 (unique directory name) REQUIRED" . PHP_EOL;
+  echo "--s3path - where to put image tiles on S3 (unique directory name) REQUIRED e.g. use 893/9468722" . PHP_EOL;
+  echo "         for https://s3.amazonaws.com/sharedshelftosolr.library.cornell.edu/public/893/9468722" . PHP_EOL;
   echo "-s NNN - process only asset NNN (do not use --url)" . PHP_EOL;
   exit (0);
 }
