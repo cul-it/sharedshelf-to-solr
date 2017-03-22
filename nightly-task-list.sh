@@ -43,41 +43,41 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
 # "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 893
