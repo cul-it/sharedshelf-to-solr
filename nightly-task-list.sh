@@ -33,6 +33,7 @@
 # 757 - Ernie Paniccioli - asset count: 5688
 # 78 - NYS Aerial Photographs - asset count: 3390
 # 88 - Alison Mason Kinsbury - asset count: 522
+# 89 - Willard D. Straight in Korea - asset count: 176
 # 893 - Bill Adler Archive - asset count: 2432
 # 920 - Efraim Racker Art Albums - asset count: 81
 # 97 - Cornell Cast Collection - asset count: 897
@@ -74,6 +75,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
