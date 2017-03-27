@@ -16,6 +16,7 @@
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
 # 3462 - Punk Flyers - asset count: 95
+# 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
 # 370 - John Reps Slides - asset count: 1357
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
@@ -58,6 +59,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
