@@ -59,7 +59,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
@@ -84,4 +84,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3609
+# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3609
