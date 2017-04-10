@@ -11,6 +11,7 @@
 # 167 - Hip Hop Flyers - asset count: 494
 # 174 - Images from the Rare Book and Manuscript Collections - asset count: 17232
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
+# 1146 - Sri Lankan Vernacular - asset count: 537
 # 256 - Obama Visual Iconography - asset count: 200
 # 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
 # 319 - Loewentheil African American Photographs - asset count: 1482
@@ -54,6 +55,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
@@ -84,4 +86,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3609
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 1146
