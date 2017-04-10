@@ -18,6 +18,7 @@
 # 3321 - Test Project - asset count: 12
 # 3462 - Punk Flyers - asset count: 95
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
+# 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
@@ -62,6 +63,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
@@ -87,3 +89,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # example of creating or updating the IIIF images for a Collection
 "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 1146
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3686
