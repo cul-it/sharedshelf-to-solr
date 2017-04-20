@@ -20,6 +20,7 @@
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
+# 3786 - Blaschka Glass Invertibrate Models - asset count: 50
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 50 - Theatre Prints and Books from Early Modern Japan - asset count: 1076
@@ -65,6 +66,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
@@ -88,4 +90,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3686
+# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3786
