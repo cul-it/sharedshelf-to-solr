@@ -14,6 +14,7 @@
 # 1146 - Sri Lankan Vernacular - asset count: 537
 # 256 - Obama Visual Iconography - asset count: 200
 # 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
+# 2895 - The J. R. Sitlington Sterrett Collection of Archaeological Photographs - asset count: 545
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
 # 3462 - Punk Flyers - asset count: 95
@@ -60,6 +61,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
