@@ -49,7 +49,7 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
@@ -61,7 +61,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
@@ -69,12 +69,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657
@@ -88,7 +88,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
