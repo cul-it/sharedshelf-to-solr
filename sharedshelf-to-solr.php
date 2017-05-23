@@ -327,8 +327,15 @@ try {
         if ($do_not_write_to_solr === false) {
           // add this asset to solr
           $log->note('adding to solr');
-          $solr_assets = array($solr_out_full);
-          $result = $solr->add($solr_assets);
+          // merge sharedshelf stuff into what was already in the solr document
+          if (empty($solr_in)) {
+            $merged = $solr_out_full;
+          }
+          else {
+            $merged = array_merge($solr_in,$solr_out_full);
+          }
+          $solr_assets = array($merged);
+          $result = $solr->add($solr_assets, FALSE);
         }
       }
       catch (Exception $e) {
