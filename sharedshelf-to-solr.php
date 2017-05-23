@@ -222,12 +222,16 @@ try {
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
 
+        /**
+         * Find any existing solr asset so we can preserve
+         * data others may have stored there
+         */
+        $solr_in = $solr->get_item($solr_id);
+
         if ($force_replacement) {
           $log->note('Job:Replace');
         }
         else {
-          // is it in solr already?
-          $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
             $log->note('Job:AddNew');
           }
