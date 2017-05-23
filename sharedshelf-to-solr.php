@@ -335,7 +335,7 @@ try {
             $merged = array_merge($solr_in,$solr_out_full);
           }
           $solr_assets = array($merged);
-          $result = $solr->add($solr_assets, FALSE);
+          $result = $solr->add($solr_assets);
         }
       }
       catch (Exception $e) {
