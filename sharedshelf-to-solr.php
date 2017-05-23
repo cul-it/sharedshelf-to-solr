@@ -222,12 +222,16 @@ try {
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
 
+        /**
+         * Find any existing solr asset so we can preserve
+         * data others may have stored there
+         */
+        $solr_in = $solr->get_item($solr_id);
+
         if ($force_replacement) {
           $log->note('Job:Replace');
         }
         else {
-          // is it in solr already?
-          $solr_in = $solr->get_item($solr_id);
           if (empty($solr_in)) {
             $log->note('Job:AddNew');
           }
@@ -323,7 +327,14 @@ try {
         if ($do_not_write_to_solr === false) {
           // add this asset to solr
           $log->note('adding to solr');
-          $solr_assets = array($solr_out_full);
+          // merge sharedshelf stuff into what was already in the solr document
+          if (empty($solr_in)) {
+            $merged = $solr_out_full;
+          }
+          else {
+            $merged = array_merge($solr_in,$solr_out_full);
+          }
+          $solr_assets = array($merged);
           $result = $solr->add($solr_assets);
         }
       }
