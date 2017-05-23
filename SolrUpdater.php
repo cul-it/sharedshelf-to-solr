@@ -207,12 +207,20 @@ class SolrUpdater {
     return $status;
   }
 
-  function add($assets) {
+  function add($assets, $atomic_updates = FALSE) {
     // $assets have names converted to solr already
     $json = '';
     foreach ($assets as $asset) {
       $this->add_custom_fields($asset);
       $json .= $this->format_add_asset_field_values($asset);
+    }
+    if ($atomic_updates) {
+      // modify the document so all fields except id use
+      // the "set" syntax described here:
+      // https://cwiki.apache.org/confluence/display/solr/Updating+Parts+of+Documents#UpdatingPartsofDocuments-AtomicUpdates
+      $this->atomic_updates($json);
+      $err = print_r($json, TRUE);
+      throw new Exception("before atomic updates: $err", 1);
     }
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
@@ -222,6 +230,14 @@ class SolrUpdater {
       throw new Exception("Error Processing add Request: $err", 1);
     }
     return $status;
+  }
+
+  function atomic_updates($json) {
+    //convert json document to atomic update format
+    $statement = json_decode($json);
+    $err = print_r($statement, true);
+    throw new Exception("statement: $err", 1);
+    $doc = $statement['add']['doc'];
   }
 
   function get_item($id) {
