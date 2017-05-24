@@ -226,27 +226,8 @@ try {
         $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $asset_count);
         $log->note("Completed:$pct");
 
-        /**
-         * Find any existing solr asset so we can preserve
-         * data others may have stored there
-         */
-        $solr_in = $solr->get_item($solr_id);
-
-        if ($force_replacement) {
-          $log->note('Job:Replace');
-        }
-        else {
-          if (empty($solr_in)) {
-            $log->note('Job:AddNew');
-          }
-          else {
-            // compare the dates
-            if (empty($solr_in['updated_on_ss'])) {
-              $log->note('solr missing updated_on');
-              $solr_date = '';
-            }
-            else {
-              $solr_date = trim($solr_in['updated_on_ss']);
+        for ($attempt = 1; $attempt < 3; $attempt++) {
+          $log->note("Attempt:$attempt");
             }
             if (strcmp($ss_date,$solr_date) == 0) {
               // dates match - skip this record
