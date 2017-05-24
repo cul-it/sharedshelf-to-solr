@@ -240,13 +240,10 @@ try {
               $fake_index = 'jgr25_content_test_tesim';
               $fake_value = 'flibberdejibbit 897';
               if ($attempt == 1) {
-              // writing back at this point to
-              // bump solr's version number
-              // need to change the content
-              //print_r ($solr_in);
-              //ßdie('solr_in');
-              $solr->add($solr_in);
-
+                // writing back at this point to
+                // bump solr's version number
+                $solr_assets = array($solr_in);
+                $solr->add($solr_assets);
               }
             }
 
