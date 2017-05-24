@@ -249,98 +249,133 @@ try {
 
               }
             }
-            if (strcmp($ss_date,$solr_date) == 0) {
-              // dates match - skip this record
-              $log->note('Job:Skip-DatesMatch');
-              continue; // <--------- go on to the next asset_id !!!
+
+            if ($force_replacement) {
+              $log->note('Job:Replace');
             }
             else {
-              $log->note('Job:Update');
-            }
-          }
-        }
-
-        // grab the record from sharedshelf
-        $asset_full = $ss->asset($asset_id);
-
-        // determine publishing status - status_ssi
-        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
-          $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
-        }
-        else {
-          $cul_publishing_status  = 'Unpublished';
-        }
-        $log->note(print_r($cul_publishing_status, true));
-
-        // prepare the sharedshelf record for solr
-        $asset = $ss->asset_field_values($asset_full);
-
-        split_delimited_fields($asset, $delimited_fields);
-        $solr_out = $solr->convert_ss_names_to_solr($asset);
-
-        // check if we need images and their derivatives
-        $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
-        if ($need_images) {
-          $log->note('get media');
-          $url = $ss->media_url($ss_id);
-          $solr_out['media_URL_tesim'] = $url;
-          $log->note('get derivatives');
-          for ($size = 0; $size <= 4; $size++) {
-            $fld = 'media_URL_size_' . $size . "_tesim";
-            $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
-          }
-
-          $log->note('get dimensions');
-          if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
-            $solr_out['img_width_tesim'] = $dim['width'];
-            $solr_out['img_height_tesim'] = $dim['height'];
-          }
-          $jsondetails = $ss->media_iiif_info($ss_id);
-          if (!empty($jsondetails)) {
-            $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
-            $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
-            $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
-            }
-         }
-
-        // add in the publishing status field
-        $solr_out['status_ssi'] = $cul_publishing_status;
-
-        // be sure the id field is the solr id not the sharedshelf one
-        $solr_out['id'] =  $solr_id;
-
-        // remove any fields that will become "" in solr
-        $solr_out_full = array();
-        foreach ($solr_out as $key => $value) {
-          if (!empty($value) || $value === FALSE) {
-            if (!is_array($value)) {
-             $value = trim($value);
-              // just a pair of double quotes?
-              if (strcmp($value, '""') == 0) {
-                $value = '';
+              if (empty($solr_in)) {
+                $log->note('Job:AddNew');
               }
               else {
-                // attempt to remove double quotes from decimal numbers (used to prevent rounding in SS)
-                $value = preg_replace('/^\"([0-9]*\.[0-9]*)\"$/', '\1', $value);
+                // compare the dates
+                if (empty($solr_in['updated_on_ss'])) {
+                  $log->note('solr missing updated_on');
+                  $solr_date = '';
+                }
+                else {
+                  $solr_date = trim($solr_in['updated_on_ss']);
+                }
+                if (strcmp($ss_date,$solr_date) == 0) {
+                  // dates match - skip this record
+                  $log->note('Job:Skip-DatesMatch');
+                  throw new DatesMatchException("Skip-DatesMatch", 1);
+                }
+                else {
+                  $log->note('Job:Update');
+                }
               }
             }
-            if (!empty($value)) {
-              $solr_out_full["$key"] = $value;
+
+            // grab the record from sharedshelf
+            $asset_full = $ss->asset($asset_id);
+
+            // determine publishing status - status_ssi
+            if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+              $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
             }
+            else {
+              $cul_publishing_status  = 'Unpublished';
+            }
+            $log->note(print_r($cul_publishing_status, true));
+
+            // prepare the sharedshelf record for solr
+            $asset = $ss->asset_field_values($asset_full);
+
+            split_delimited_fields($asset, $delimited_fields);
+            $solr_out = $solr->convert_ss_names_to_solr($asset);
+
+            // check if we need images and their derivatives
+            $need_images = (isset($project['has_images']) && (strcmp($project['has_images'], 'no') == 0)) ? FALSE : TRUE;
+            if ($need_images) {
+              $log->note('get media');
+              $url = $ss->media_url($ss_id);
+              $solr_out['media_URL_tesim'] = $url;
+              $log->note('get derivatives');
+              for ($size = 0; $size <= 4; $size++) {
+                $fld = 'media_URL_size_' . $size . "_tesim";
+                $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+              }
+
+              $log->note('get dimensions');
+              if (($dim = $ss->media_dimensions($ss_id)) !== FALSE) {
+                $solr_out['img_width_tesim'] = $dim['width'];
+                $solr_out['img_height_tesim'] = $dim['height'];
+              }
+              $jsondetails = $ss->media_iiif_info($ss_id);
+              if (!empty($jsondetails)) {
+                $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
+                $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
+                $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
+                }
+             }
+
+            // add in the publishing status field
+            $solr_out['status_ssi'] = $cul_publishing_status;
+
+            // be sure the id field is the solr id not the sharedshelf one
+            $solr_out['id'] =  $solr_id;
+
+            // remove any fields that will become "" in solr
+            $solr_out_full = array();
+            foreach ($solr_out as $key => $value) {
+              if (!empty($value) || $value === FALSE) {
+                if (!is_array($value)) {
+                 $value = trim($value);
+                  // just a pair of double quotes?
+                  if (strcmp($value, '""') == 0) {
+                    $value = '';
+                  }
+                  else {
+                    // attempt to remove double quotes from decimal numbers (used to prevent rounding in SS)
+                    $value = preg_replace('/^\"([0-9]*\.[0-9]*)\"$/', '\1', $value);
+                  }
+                }
+                if (!empty($value)) {
+                  $solr_out_full["$key"] = $value;
+                }
+              }
+            }
+            if ($do_not_write_to_solr === false) {
+              // add this asset to solr
+              $log->note('adding to solr');
+              // merge sharedshelf stuff into what was already in the solr document
+              $merged = empty($solr_in) ? $solr_out_full : array_merge($solr_in,$solr_out_full);
+              $solr_assets = array($merged);
+              $result = $solr->add($solr_assets);
+            }
+
+            // if we reach here, the record has been written to solr
+            // during this attempt, or we're not writing,
+            // so we just continue with the foreach loop
+            $log->note('add to solr done');
+            break;
           }
-        }
-        if ($do_not_write_to_solr === false) {
-          // add this asset to solr
-          $log->note('adding to solr');
-          // merge sharedshelf stuff into what was already in the solr document
-          if (empty($solr_in)) {
-            $merged = $solr_out_full;
+          catch (DatesMatchException $e) {
+            // no change in the sharedshelf record, so
+            // continue with the outer foreach loop
+            // grabbing the next sharedshelf record
+            break;
           }
-          else {
-            $merged = array_merge($solr_in,$solr_out_full);
+          catch (VersionConflictException $e) {
+            // someone else changed the solr record while
+            // we were processing it - try again
+            continue;
           }
-          $solr_assets = array($merged);
-          $result = $solr->add($solr_assets);
+          catch (Exception $e) {
+            // just pass on other exceptions
+            throw $e;
+          }
         }
       }
       catch (Exception $e) {
