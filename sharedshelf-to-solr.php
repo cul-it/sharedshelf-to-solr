@@ -7,6 +7,8 @@ require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
+class DatesMatchException extends Exception {}
+
 function debug($item, $description = '', $die = TRUE) {
   if (!empty($description)) {
     print PHP_EOL . 'DEBUG: ' . $description . PHP_EOL;
