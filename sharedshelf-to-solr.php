@@ -9,7 +9,7 @@ require_once('SharedShelfToSolrLogger.php');
 
 class DatesMatchException extends Exception {}
 
-define("TESTING_VERSION_CONFLICT", TRUE);
+define("TESTING_VERSION_CONFLICT", FALSE);
 
 function debug($item, $description = '', $die = TRUE) {
   if (!empty($description)) {
