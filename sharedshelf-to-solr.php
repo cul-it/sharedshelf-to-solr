@@ -9,6 +9,8 @@ require_once('SharedShelfToSolrLogger.php');
 
 class DatesMatchException extends Exception {}
 
+define("TESTING_VERSION_CONFLICT", TRUE);
+
 function debug($item, $description = '', $die = TRUE) {
   if (!empty($description)) {
     print PHP_EOL . 'DEBUG: ' . $description . PHP_EOL;
