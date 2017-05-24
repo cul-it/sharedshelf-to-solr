@@ -228,6 +228,19 @@ try {
 
         for ($attempt = 1; $attempt < 3; $attempt++) {
           $log->note("Attempt:$attempt");
+            if (TESTING_VERSION_CONFLICT === TRUE && !empty($solr_in)) {
+              $log->note("version conflict test $attempt");
+              $fake_index = 'jgr25_content_test_tesim';
+              $fake_value = 'flibberdejibbit 897';
+              if ($attempt == 1) {
+              // writing back at this point to
+              // bump solr's version number
+              // need to change the content
+              //print_r ($solr_in);
+              //ßdie('solr_in');
+              $solr->add($solr_in);
+
+              }
             }
             if (strcmp($ss_date,$solr_date) == 0) {
               // dates match - skip this record
