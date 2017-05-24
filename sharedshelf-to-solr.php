@@ -228,6 +228,13 @@ try {
 
         for ($attempt = 1; $attempt < 3; $attempt++) {
           $log->note("Attempt:$attempt");
+          try {
+            /**
+             * Find any existing solr asset so we can preserve
+             * data others may have stored there
+             */
+            $solr_in = $solr->get_item($solr_id);
+
             if (TESTING_VERSION_CONFLICT === TRUE && !empty($solr_in)) {
               $log->note("version conflict test $attempt");
               $fake_index = 'jgr25_content_test_tesim';
