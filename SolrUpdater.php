@@ -1,4 +1,7 @@
 <?php
+
+class VersionConflictException extends Exception {}
+
 class SolrUpdater {
 
   private $solr_url = '';
