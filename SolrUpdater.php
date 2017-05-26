@@ -1,4 +1,7 @@
 <?php
+
+class VersionConflictException extends Exception {}
+
 class SolrUpdater {
 
   private $solr_url = '';
@@ -217,7 +220,12 @@ class SolrUpdater {
     $json = $this->post_json('/update/json', $json);
     $result = json_decode($json);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
-    if ($status != "0") {
+    if ($status == "409") {
+      // version conflict detected (someone else changed solr record
+      // while we were processing it)
+      throw new VersionConflictException("Version conflict",1);
+    }
+    elseif ($status != "0") {
       $err = print_r($result, TRUE);
       throw new Exception("Error Processing add Request: $err", 1);
     }
