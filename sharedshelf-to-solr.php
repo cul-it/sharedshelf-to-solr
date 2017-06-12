@@ -346,8 +346,8 @@ try {
             if ($do_not_write_to_solr === false) {
               // add this asset to solr
               $log->note('adding to solr');
-              // merge sharedshelf stuff into what was already in the solr document
-              $merged = empty($solr_in) ? $solr_out_full : array_merge($solr_in,$solr_out_full);
+              // ignore current contents of solr document ($solr_in)
+              $merged = $solr_out_full;
               $solr_assets = array($merged);
               $result = $solr->add($solr_assets);
             }
