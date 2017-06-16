@@ -52,6 +52,10 @@ contents of ssUser.ini (your sharedshelf user name (email) and password):
     email = bozo@cornell.edu
     password = thisisnotreallymypassword
 
+For the CSV stuff:
+- composer require league/csv
+- composer update
+
 ## .ini files
 - one for each collection
 - named like ss2solr.aerial.ini where aerial is the collection
