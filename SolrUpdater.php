@@ -282,8 +282,7 @@ class SolrUpdater {
     return $status;
   }
 
-  function get_all_ids($project_id) {
-    $max_to_find = 99999;
+  function get_all_ids($project_id, $max_to_find = 99999) {
     $q = "q=project_id_ssi:$project_id&wt=json&start=0&rows=$max_to_find&fl=id";
     $json = $this->get('/select', $q);
     $result = json_decode($json);
@@ -301,6 +300,58 @@ class SolrUpdater {
     else {
       return array();
     }
+  }
+
+  function get_all_ids_prefix($id_prefix, $start = 0, $max_to_find = 10) {
+    $prefix = $id_prefix . '*';
+    $q = "q=id:$prefix&wt=json&start=$start&rows=$max_to_find&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $ids = array();
+    if (!empty($result->response->docs)) {
+      foreach ($result->response->docs as $doc) {
+        $ids[] = $doc->id;
+        }
+    }
+    return $ids;
+   }
+
+  function get_all_ids_prefix_type($id_prefix, $type = 'Book', $start = 0, $max_to_find = 10) {
+    $prefix = $id_prefix . '*';
+    $q = "q=id:$prefix human_readable_type_tesim:$type&wt=json&start=$start&rows=$max_to_find&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $ids = array();
+    if (!empty($result->response->docs)) {
+      foreach ($result->response->docs as $doc) {
+        $ids[] = $doc->id;
+        }
+    }
+    return $ids;
+   }
+
+  function add_without_custom($assets) {
+    // $assets have names converted to solr already
+    $json = '';
+    foreach ($assets as $asset) {
+      $json .= $this->format_add_asset_field_values($asset);
+    }
+    echo 'prepost';
+    $json = $this->post_json('/update/json', $json);
+     echo ' postpost';
+    $result = json_decode($json);
+    print_r($result);
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status == "409") {
+      // version conflict detected (someone else changed solr record
+      // while we were processing it)
+      throw new VersionConflictException("Version conflict",1);
+    }
+    elseif ($status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("7 Error Processing add_without_custom Request: $status", 1);
+    }
+    return $status;
   }
 
 }
