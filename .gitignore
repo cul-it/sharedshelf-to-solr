@@ -5,3 +5,4 @@ dummy_cookie.txt
 iiif-static-images/*
 nightly-use-force.sh
 vendor
+*.log

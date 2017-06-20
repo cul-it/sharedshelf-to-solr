@@ -282,6 +282,29 @@ class SolrUpdater {
     return $status;
   }
 
+  function get_count($query_override = FALSE) {
+    $query = $query_override === FALSE ? '*:*' : $query_override;
+    $q = "$query&wt=json&start=0&rows=1&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $found = isset($result->response->numFound) ? $result->response->numFound : 0;
+    return $found;
+  }
+
+  function get_ids($start = 0, $max_to_find = 99999, $query_override = FALSE) {
+    $query = $query_override === FALSE ? '*:*' : $query_override;
+    $q = "q=$query&wt=json&start=$start&rows=$max_to_find&fl=id";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $ids = array();
+    if (!empty($result->response->docs)) {
+      foreach ($result->response->docs as $doc) {
+        $ids[] = $doc->id;
+        }
+    }
+    return $ids;
+  }
+
   function get_all_ids($project_id, $max_to_find = 99999) {
     $q = "q=project_id_ssi:$project_id&wt=json&start=0&rows=$max_to_find&fl=id";
     $json = $this->get('/select', $q);
@@ -336,11 +359,8 @@ class SolrUpdater {
     foreach ($assets as $asset) {
       $json .= $this->format_add_asset_field_values($asset);
     }
-    echo 'prepost';
     $json = $this->post_json('/update/json', $json);
-     echo ' postpost';
     $result = json_decode($json);
-    print_r($result);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status == "409") {
       // version conflict detected (someone else changed solr record
