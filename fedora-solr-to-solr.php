@@ -3,11 +3,17 @@
  * fedora-solr-to-solr.php - copy Fedora solr documents into the portal solr
  */
 
+// has_model_ssim:("Page" OR "FileSet" OR "Article" OR "Issue" OR "Book" OR "Journal" OR "Collection")
+// has_model_ssim:(Page OR FileSet OR Article OR Issue OR Book OR Journal OR Collection)
+// has_model_ssim:(-Hydra* -ActiveFedora*)
+
 require_once('SolrUpdater.php');
 require_once('SharedShelfToSolrLogger.php');
 
 $fedora_ini = 'fedora-solr.ini';
 $portal_ini = 'fedora-portal-solr.ini';
+
+$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
 
 try {
   $vars = parse_ini_file($fedora_ini);
