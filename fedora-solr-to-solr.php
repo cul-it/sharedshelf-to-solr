@@ -43,13 +43,14 @@ try {
     foreach ($ids as $id) {
       $doc = $solr_in->get_item($id);
       $assets[] = $doc;
-      echo 'id: ' . $doc['id'] . PHP_EOL;
+      //echo 'id: ' . $doc['id'] . PHP_EOL;
     }
 
     $solr->add_without_custom($assets);
 
     $log->item("Last item $id");
-    $pct = sprintf("%01.2f", $counter++ * 100.0 / (float) $count);
+    $counter += $per_call;
+    $pct = sprintf("%01.2f", $counter * 100.0 / (float) $count);
     $log->note("Completed:$pct");
   }
   $log->task('Done.');
