@@ -28,7 +28,7 @@ try {
   $log = new SharedShelfToSolrLogger('Fedora-to-solr');
   $log->task('Import_All');
 
-  $count = $solr_in->get_count();
+  $count = $solr_in->get_count($selection);
   $per_call = 10;
   $log->note("asset_count:$count at $per_call per call");
 
