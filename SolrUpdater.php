@@ -282,16 +282,18 @@ class SolrUpdater {
     return $status;
   }
 
-  function get_count() {
-    $q = "*:*&wt=json&start=0&rows=1&fl=id";
+  function get_count($query_override = FALSE) {
+    $query = $query_override === FALSE ? '*:*' : $query_override;
+    $q = "$query&wt=json&start=0&rows=1&fl=id";
     $json = $this->get('/select', $q);
     $result = json_decode($json);
     $found = isset($result->response->numFound) ? $result->response->numFound : 0;
     return $found;
   }
 
-  function get_ids($start = 0, $max_to_find = 99999) {
-    $q = "q=*:*&wt=json&start=$start&rows=$max_to_find&fl=id";
+  function get_ids($start = 0, $max_to_find = 99999, $query_override = FALSE) {
+    $query = $query_override === FALSE ? '*:*' : $query_override;
+    $q = "q=$query&wt=json&start=$start&rows=$max_to_find&fl=id";
     $json = $this->get('/select', $q);
     $result = json_decode($json);
     $ids = array();
