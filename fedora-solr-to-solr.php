@@ -4,6 +4,7 @@
  */
 
 require_once('SolrUpdater.php');
+require_once('SharedShelfToSolrLogger.php');
 
 $fedora_ini = 'fedora-solr.ini';
 $portal_ini = 'fedora-portal-solr.ini';
