@@ -37,7 +37,7 @@ try {
   $counter = 0;
   for ($start = 0; $start < $count; $start += $per_call) {
 
-    $ids = $solr_in->get_all_ids_prefix_type('chla', 'Book', $start, $per_call);
+    $ids = $solr_in->get_ids($start, $per_call, $selection);
 
     $assets = array();
     foreach ($ids as $id) {
