@@ -359,11 +359,8 @@ class SolrUpdater {
     foreach ($assets as $asset) {
       $json .= $this->format_add_asset_field_values($asset);
     }
-    echo 'prepost';
     $json = $this->post_json('/update/json', $json);
-     echo ' postpost';
     $result = json_decode($json);
-    print_r($result);
     $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
     if ($status == "409") {
       // version conflict detected (someone else changed solr record
