@@ -292,7 +292,7 @@ class SolrUpdater {
   }
 
   function get_ids($start = 0, $max_to_find = 99999, $query_override = FALSE) {
-    $query = $query_override === FALSE ? '*:*' : $query_override;
+    $query = ($query_override === FALSE) ? '*:*' : $query_override;
     $q = "q=$query&wt=json&start=$start&rows=$max_to_find&fl=id";
     $json = $this->get('/select', $q);
     $result = json_decode($json);
