@@ -16,6 +16,12 @@ $portal_ini = 'fedora-portal-solr.ini';
 $selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
 
 try {
+
+  $log = new SharedShelfToSolrLogger('Fedora-to-solr');
+  echo "Log file: " . $log->log_file_name() . PHP_EOL;
+  $log->task('Import_All');
+  $log->item("First");
+
   $vars = parse_ini_file($fedora_ini);
   $fedora_solr = $vars['solr'];
   $project = $vars['project'];
