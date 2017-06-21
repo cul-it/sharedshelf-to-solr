@@ -32,6 +32,7 @@
 # 616 - Gamelan - asset count: 565
 # 659 - PJ Mode Map Collection - asset count: 310
 # 685 - Andrew Dickson White Architectural Photographs Collection - asset count: 1364
+# 686 - Hill  Ornithology Collection - asset count: 202
 # 657 - John Clair Miller - asset count: 240
 # 687 - Beyond the Taj: Architectural Traditions and Landscape Experience in South Asia - asset count: 6688
 # 746 - Ragamala Paintings - asset count: 4123
@@ -80,6 +81,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757
