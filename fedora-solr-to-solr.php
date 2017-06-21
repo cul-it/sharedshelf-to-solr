@@ -69,6 +69,7 @@ try {
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
   echo $error;
+  $log->task('Done with ERROR.');
   exit (1);
 }
 exit (0);
