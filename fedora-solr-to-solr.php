@@ -35,10 +35,6 @@ try {
   echo implode(PHP_EOL, $status) . PHP_EOL;
 
   $count = $solr_in->get_count($selection);
-  if ($count > 2454052) {
-    throw new Exception("Count $count > 2454052", 1);
-  }
-  die ('now');
 
   $per_call = 10;
   $log->note("asset_count:$count at $per_call per call");
