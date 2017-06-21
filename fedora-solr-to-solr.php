@@ -16,6 +16,12 @@ $portal_ini = 'fedora-portal-solr.ini';
 $selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
 
 try {
+
+  $log = new SharedShelfToSolrLogger('Fedora-to-solr');
+  echo "Log file: " . $log->log_file_name() . PHP_EOL;
+  $log->task('Import_All');
+  $log->item("First");
+
   $vars = parse_ini_file($fedora_ini);
   $fedora_solr = $vars['solr'];
   $project = $vars['project'];
@@ -25,14 +31,15 @@ try {
   $portal_solr = $vars['solr'];
   $solr = new SolrUpdater($portal_solr, $portal_ini);
 
-  $log = new SharedShelfToSolrLogger('Fedora-to-solr');
-  $log->task('Import_All');
+  $status = array("Project: $project", "Fedora: $fedora_solr", "Portal: $portal_solr", "Select: $selection");
+  echo implode(PHP_EOL, $status) . PHP_EOL;
 
   $count = $solr_in->get_count($selection);
+
   $per_call = 10;
   $log->note("asset_count:$count at $per_call per call");
 
-  echo "Processing: $project asset count: $count " . $log->log_file_name() . PHP_EOL;
+  echo "Processing: $project asset count: $count " . PHP_EOL;
 
   $counter = 0;
   for ($start = 0; $start < $count; $start += $per_call) {
@@ -58,6 +65,7 @@ try {
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
   echo $error;
+  $log->task('Done with ERROR.');
   exit (1);
 }
 exit (0);
