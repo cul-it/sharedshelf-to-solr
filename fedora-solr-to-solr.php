@@ -31,8 +31,8 @@ try {
   $portal_solr = $vars['solr'];
   $solr = new SolrUpdater($portal_solr, $portal_ini);
 
-  $log = new SharedShelfToSolrLogger('Fedora-to-solr');
-  $log->task('Import_All');
+  $status = array("Project: $project", "Fedora: $fedora_solr", "Portal: $portal_solr", "Select: $selection");
+  echo implode(PHP_EOL, $status) . PHP_EOL;
 
   $count = $solr_in->get_count($selection);
   $per_call = 10;
