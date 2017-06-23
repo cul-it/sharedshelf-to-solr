@@ -41,24 +41,20 @@ try {
 
   echo "Processing: $project asset count: $count " . PHP_EOL;
 
-  $counter = 0;
-  for ($start = 0; $start < $count; $start += $per_call) {
+  $start = 0;
+  $assets = $solr_in->get_documents($start, $per_call, $selection);
+  while (count($assets) > 0) {
 
-    $ids = $solr_in->get_ids($start, $per_call, $selection);
-
-    $assets = array();
-    foreach ($ids as $id) {
-      $doc = $solr_in->get_item($id);
-      $assets[] = $doc;
-      //echo 'id: ' . $doc['id'] . PHP_EOL;
-    }
+    $id = $assets[0]['id'];
+    $log->item("id: $id");
 
     $solr->add_without_custom($assets);
 
-    $log->item("Last item $id");
-    $counter += $per_call;
-    $pct = sprintf("%01.2f", $counter * 100.0 / (float) $count);
+    $pct = sprintf("%01.2f", $start * 100.0 / (float) $count);
     $log->note("Completed:$pct");
+
+    $start += $per_call;
+    $assets = $solr_in->get_documents($start, $per_call, $selection);
   }
   $log->task('Done.');
 }
