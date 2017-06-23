@@ -251,6 +251,21 @@ class SolrUpdater {
     }
   }
 
+  function get_documents($start = 0, $max_to_find = 99999, $query_override = FALSE) {
+    $query = ($query_override === FALSE) ? '*:*' : $query_override;
+    $q = "q=$query&wt=json&start=$start&rows=$max_to_find";
+    $json = $this->get('/select', $q);
+    $result = json_decode($json);
+    $documents = array();
+    if (!empty($result->response->docs)) {
+      foreach ($result->response->docs as $doc) {
+        // the docs come out as stdClass Object
+        $documents[] = (array) $doc;
+      }
+    }
+    return $documents;
+  }
+
   function convert_ss_names_to_solr($asset) {
     $fields = $this->ini['fields'];
     $solr_asset = array();
