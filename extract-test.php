@@ -12,6 +12,9 @@ try {
   $project = $vars['project'];
   $solr = new SolrUpdater($dev_solr, $ini);
 
+  // reload changes in schema and config
+  $solr->reload('dev');
+
   // confirm current contents of doc1
   $doc1 = $solr->get_item('doc1');
   print_r($doc1);
