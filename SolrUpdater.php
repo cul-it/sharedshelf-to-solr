@@ -393,9 +393,22 @@ class SolrUpdater {
     return $this->get($url_suffix, $query);
   }
 
+  /**
+   * sets a commit message to solr
+   * @return nothing
+   */
   function commit() {
     $q = 'stream.body=%3Ccommit/%3E';
     $this->get('/update', $q);
+  }
+
+  /**
+   * Re-loads schema.xml and solrconfig.xml
+   * @return nothing
+   */
+  function reload($core = 'digitalcollections') {
+    $q = 'action=RELOAD&core=' . $core;
+    $this->get('/admin/cores', $q);
   }
 
 }
