@@ -389,4 +389,13 @@ class SolrUpdater {
     return $status;
   }
 
+  function raw_get($url_suffix, $query) {
+    return $this->get($url_suffix, $query);
+  }
+
+  function commit() {
+    $q = 'stream.body=%3Ccommit/%3E';
+    $this->get('/update', $q);
+  }
+
 }
