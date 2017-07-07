@@ -19,7 +19,7 @@ try {
   $doc1 = $solr->get_item('doc1');
   print_r($doc1);
 
-  $q="literal.id=doc2&stream.file=/tmp/jgr25/FacultyGrants_2013.pdf&stream.contentType=application/pdf&wt=json&debugQuery=on";
+  $q="literal.id=doc2&stream.file=/cul/app/solr/solr-6.3.0/example/exampledocs/solr-word.pdf&stream.contentType=application/pdf&wt=json&debugQuery=on";
   $json = $solr->raw_get('/update/extract', $q);
   $result = json_decode($json);
   print_r(array('result', 'json' => $json, 'php' => $result));
