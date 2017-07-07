@@ -352,6 +352,20 @@ try {
               $merged = $solr_out_full;
               $solr_assets = array($merged);
               $result = $solr->add($solr_assets);
+
+              if ($extract_files) {
+                $extension = $ss->media_file_extension($ss_id);
+                if ($extension == 'pdf') {
+                  $log->note('extracting file content');
+                  $url = $ss->media_url($ss_id);
+                  $result = $solr->extract($ss_id, $url);
+                  $solr->commit();
+                }
+                else {
+                  $log->note("No extract for $extension");
+                }
+              }
+
             }
 
             // if we reach here, the record has been written to solr
