@@ -19,10 +19,11 @@ try {
   $doc1 = $solr->get_item('doc1');
   print_r($doc1);
 
-  $q="literal.id=doc2&stream.file=/cul/app/solr/solr-6.3.0/example/exampledocs/solr-word.pdf&stream.contentType=application/pdf&wt=json&debugQuery=on";
-  $json = $solr->raw_get('/update/extract', $q);
-  $result = json_decode($json);
-  print_r(array('result', 'json' => $json, 'php' => $result));
+  // $q="literal.id=doc2&stream.file=/cul/app/solr/solr-6.3.0/example/exampledocs/solr-word.pdf&stream.contentType=application/pdf&wt=json&debugQuery=on";
+  // $json = $solr->raw_get('/update/extract', $q);
+  // $result = json_decode($json);
+  // print_r(array('result', 'json' => $json, 'php' => $result));
+  $solr->extract('doc2', 'http://stor.artstor.org/stor/6a1f61b7-44f8-4422-aa51-6c96f7123aa9.pdf');
 
   $solr->commit();
 
