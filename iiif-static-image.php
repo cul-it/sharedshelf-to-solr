@@ -35,7 +35,7 @@ function iiif_static_image($url, $collection_id, $image_id) {
   }
 
   $script = $task['paths']['simeons_iiif_code'];
-  $command = "python $script -d $path $local_copy";
+  $command = "/cul/share/miniconda/bin/python $script -d $path $local_copy";
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
