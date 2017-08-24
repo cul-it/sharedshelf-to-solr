@@ -13,7 +13,8 @@ require_once('SharedShelfToSolrLogger.php');
 $fedora_ini = 'fedora-solr.ini';
 $portal_ini = 'fedora-portal-solr.ini';
 
-$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
+//$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
+$selection = 'id:chla* AND (has_model_ssim:"Page" OR has_model_ssim:"Book" OR has_model_ssim:"Journal" OR has_model_ssim:"Article")';
 
 try {
 
@@ -47,6 +48,11 @@ try {
 
     $id = $assets[0]['id'];
     $log->item("id: $id");
+
+    // avoid version conflict when copying from one solr to another
+    for ($i = 0; $i < count($assets); $i++) {
+      unset($assets[$i]['_version_']);
+    }
 
     $solr->add_without_custom($assets);
 
