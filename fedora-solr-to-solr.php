@@ -49,6 +49,11 @@ try {
     $id = $assets[0]['id'];
     $log->item("id: $id");
 
+    // avoid version conflict when copying from one solr to another
+    for ($i = 0; $i < count($assets); $i++) {
+      unset($assets[$i]['_version_']);
+    }
+
     $solr->add_without_custom($assets);
 
     $pct = sprintf("%01.2f", $start * 100.0 / (float) $count);
