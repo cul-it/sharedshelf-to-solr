@@ -13,7 +13,8 @@ require_once('SharedShelfToSolrLogger.php');
 $fedora_ini = 'fedora-solr.ini';
 $portal_ini = 'fedora-portal-solr.ini';
 
-$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
+//$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
+$selection = 'id:chla* AND (has_model_ssim:"Page" OR has_model_ssim:"Book" OR has_model_ssim:"Journal" OR has_model_ssim:"Article")';
 
 try {
 
