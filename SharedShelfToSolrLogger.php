@@ -117,6 +117,11 @@ class SharedShelfToSolrLogger {
     // add seconds to $hms (with a leading 0 if needed)
     $hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
 
+    // get two decimal digits from the seconds
+    $dec = number_format((float)$sec, 2, '.', '');
+    $dec = substr($dec, strpos($dec, '.'));
+    $hms .= $dec;
+
     // done!
     return $hms;
 
