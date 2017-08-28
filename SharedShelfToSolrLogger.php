@@ -29,13 +29,14 @@ class SharedShelfToSolrLogger {
     $this->end_task();
     $this->write();
     $this->task = $taskname;
-    $this->task_start = array_sum( explode( ' ' , microtime() ) );
+    $this->task_start = microtime(TRUE);  // floating point version as of php 5
   }
 
   private function end_task() {
     if ($this->task_start != FALSE) {
-      $elapsed = array_sum( explode( ' ' , microtime() ) ) - $this->task_start;
-      $this->note("TaskTook:$elapsed");
+      $elapsed = microtime(TRUE) - $this->task_start;
+      $elapsed = $this->sec2hms($elapsed, TRUE);
+      $this->note("TaskTook: $elapsed");
       $this->task_start = FALSE;
     }
   }
@@ -44,13 +45,14 @@ class SharedShelfToSolrLogger {
     $this->end_item();
     $this->write();
     $this->item = $itemname;
-    $this->item_start = array_sum( explode( ' ' , microtime() ) );
+    $this->item_start = microtime(TRUE);  // floating point version as of php 5
   }
 
   private function end_item() {
     if ($this->item_start != FALSE) {
-      $elapsed = array_sum( explode( ' ' , microtime() ) ) - $this->item_start;
-      $this->note("ItemTook:$elapsed");
+      $elapsed = microtime(TRUE) - $this->item_start;
+      $elapsed = $this->sec2hms($elapsed, TRUE);
+      $this->note("ItemTook: $elapsed");
       $this->item_start = FALSE;
     }
   }
