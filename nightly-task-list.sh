@@ -8,7 +8,8 @@
 # 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
-# 166 - Mysteries at Eleusis - asset count: 847
+# 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
+# 166 - Mysteries at Eleusis - asset count: 139
 # 167 - Hip Hop Flyers - asset count: 494
 # 174 - Images from the Rare Book and Manuscript Collections - asset count: 17232
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
@@ -58,6 +59,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 143
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
