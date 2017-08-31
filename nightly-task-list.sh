@@ -5,6 +5,7 @@
 # 108 - Cornell Coins Collection - asset count: 1804
 # 111 - Divine Comedy - asset count: 1898
 # 112 - Howell Icelandic - asset count: 416
+# 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
 # 166 - Mysteries at Eleusis - asset count: 847
@@ -54,6 +55,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
