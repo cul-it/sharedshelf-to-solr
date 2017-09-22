@@ -46,6 +46,7 @@
 # 89 - Willard D. Straight in Korea - asset count: 176
 # 893 - Bill Adler Archive - asset count: 2432
 # 920 - Efraim Racker Art Albums - asset count: 81
+# 922 - Political Americana - asset count: 3899
 # 97 - Cornell Cast Collection - asset count: 897
 # 98 - Claire Holt Papers - asset count: 1785
 
@@ -98,8 +99,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
 
 # example of creating or updating the IIIF images for a Collection
-"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3596
+# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3596
