@@ -5,9 +5,11 @@
 # 108 - Cornell Coins Collection - asset count: 1804
 # 111 - Divine Comedy - asset count: 1898
 # 112 - Howell Icelandic - asset count: 416
+# 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
-# 166 - Mysteries at Eleusis - asset count: 847
+# 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
+# 166 - Mysteries at Eleusis - asset count: 139
 # 167 - Hip Hop Flyers - asset count: 494
 # 174 - Images from the Rare Book and Manuscript Collections - asset count: 17232
 # 190 - Joe Conzo Jr. Archive - asset count: 7620
@@ -19,6 +21,7 @@
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3321 - Test Project - asset count: 12
 # 3462 - Punk Flyers - asset count: 95
+# 3596 - U.S. President's Railroad Commission Photographs - asset count: 1654
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
@@ -43,6 +46,7 @@
 # 89 - Willard D. Straight in Korea - asset count: 176
 # 893 - Bill Adler Archive - asset count: 2432
 # 920 - Efraim Racker Art Albums - asset count: 81
+# 922 - Political Americana - asset count: 3899
 # 97 - Cornell Cast Collection - asset count: 897
 # 98 - Claire Holt Papers - asset count: 1785
 
@@ -54,8 +58,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 143
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
@@ -68,7 +74,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3596
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
@@ -92,8 +99,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3450
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 2849
+# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3596
