@@ -30,6 +30,7 @@ function usage() {
   echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
   echo "--use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" . PHP_EOL;
   echo "--skip - do not process this collection (only when -p is specified)" . PHP_EOL;
+  echo "--extract - index the contents of any pdf files" . PHP_EOL;
   echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
   echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
   echo "-n - process only this many (integer) assets" . PHP_EOL;
@@ -75,13 +76,14 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
 
 $log = FALSE;
 
-$options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip"));
+$options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip", "extract"));
 
 if ($options === false || isset($options['help'])) {
   usage();
 }
 $force_replacement = isset($options["force"]);
 $skip_this_collection = isset($options["skip"]);
+$extract_files = isset($options["extract"]);
 $do_not_write_to_solr = isset($options["no-write"]);
 $solr_collection_override = isset($options["use-dev-solr"]) ?
   "http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" : false;
@@ -350,6 +352,20 @@ try {
               $merged = $solr_out_full;
               $solr_assets = array($merged);
               $result = $solr->add($solr_assets);
+
+              if ($extract_files) {
+                $extension = $ss->media_file_extension($ss_id);
+                if ($extension == 'pdf') {
+                  $log->note('extracting file content');
+                  $url = $ss->media_url($ss_id);
+                  $result = $solr->extract($ss_id, $url);
+                  $solr->commit();
+                }
+                else {
+                  $log->note("No extract for $extension");
+                }
+              }
+
             }
 
             // if we reach here, the record has been written to solr
