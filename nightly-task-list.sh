@@ -8,6 +8,7 @@
 # 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
+# 141 - CUL Map Collection - asset count: 1531
 # 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
 # 166 - Mysteries at Eleusis - asset count: 139
 # 167 - Hip Hop Flyers - asset count: 494
@@ -105,4 +106,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3450
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3596
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 922
