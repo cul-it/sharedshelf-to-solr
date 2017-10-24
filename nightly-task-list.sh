@@ -10,6 +10,7 @@
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
 # 141 - CUL Map Collection - asset count: 1531
 # 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
+# 155 - Reuleaux Kinematic Mechanisms Collection - asset count: 223
 # 166 - Mysteries at Eleusis - asset count: 139
 # 167 - Hip Hop Flyers - asset count: 494
 # 174 - Images from the Rare Book and Manuscript Collections - asset count: 17232
@@ -29,6 +30,7 @@
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
+# 49 - Kroch Asia Rare Materials Archive - asset count: 935
 # 50 - Theatre Prints and Books from Early Modern Japan - asset count: 1076
 # 522 - Tamang - asset count: 2539
 # 531 - Historic Glacial Images of Alaska and Greenland (Tarr) - asset count: 2136
@@ -62,7 +64,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 141
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 143
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 155
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
@@ -82,6 +86,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
