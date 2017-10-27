@@ -398,7 +398,7 @@ class SolrUpdater {
    * @return nothing
    */
   function commit() {
-    $q = 'stream.body=%3Ccommit/%3E';
+    $q = 'stream.body=%3Ccommit waitFlush="false"/%3E';
     $this->get('/update', $q);
   }
 
@@ -412,12 +412,13 @@ class SolrUpdater {
   }
 
   function extract($id, $url, $content_type = 'application/pdf') {
+    // this replaces the solr document with contents from the extract
     $flds = array(
       'literal.id' => $id,
       'stream.url' => $url,
       'stream.contentType' => $content_type,
       'wt' => 'json',
-      'fmap.content' => 'text_teiv',
+      'fmap.content' => 'text_tsimv',
       'commit' => 'true',
       );
     $q = http_build_query($flds);
@@ -429,6 +430,29 @@ class SolrUpdater {
       throw new Exception("8 Error Processing extract Request: $status", 1);
     }
     return $status;
+  }
+
+  function extract_only($url, $content_type = 'application/pdf') {
+    // this returns the content of the extracted document
+    $flds = array(
+      'extractOnly' => 'true',
+      'extractFormat' => 'text',
+      'stream.url' => $url,
+      'stream.contentType' => $content_type,
+      'wt' => 'json',
+      );
+    $q = http_build_query($flds);
+    $json = $this->get('/update/extract', $q);
+    $result = json_decode($json);
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("9 Error Processing extract Request: $status", 1);
+    }
+    $text = $result->$url;
+    //$metadata = $result["$url_metadata"]
+    return $text;
+
   }
 
 }
