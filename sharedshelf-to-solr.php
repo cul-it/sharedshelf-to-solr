@@ -24,7 +24,7 @@ function debug($item, $description = '', $die = TRUE) {
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [--extract] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
@@ -346,25 +346,25 @@ try {
               }
             }
             if ($do_not_write_to_solr === false) {
+              if ($extract_files) {
+                $extension = $ss->media_file_extension($ss_id);
+                if ($extension == 'pdf') {
+                  $log->note('extracting file content');
+                  $url = $ss->media_url($ss_id);
+                  $extracted_text = $solr->extract_only($url);
+                  $solr_out_full['text_tsimv'] = $extracted_text;
+                }
+                else {
+                  $log->note("No extract for $extension");
+                }
+              }
+
               // add this asset to solr
               $log->note('adding to solr');
               // ignore current contents of solr document ($solr_in)
               $merged = $solr_out_full;
               $solr_assets = array($merged);
               $result = $solr->add($solr_assets);
-
-              if ($extract_files) {
-                $extension = $ss->media_file_extension($ss_id);
-                if ($extension == 'pdf') {
-                  $log->note('extracting file content');
-                  $url = $ss->media_url($ss_id);
-                  $result = $solr->extract($ss_id, $url);
-                  $solr->commit();
-                }
-                else {
-                  $log->note("No extract for $extension");
-                }
-              }
 
             }
 
