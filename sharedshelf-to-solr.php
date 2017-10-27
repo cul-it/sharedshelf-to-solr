@@ -24,7 +24,7 @@ function debug($item, $description = '', $die = TRUE) {
 function usage() {
   global $argv;
   echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
+  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [--extract] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
   echo "--help - show this info" . PHP_EOL;
   echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
   echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
