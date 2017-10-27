@@ -412,12 +412,13 @@ class SolrUpdater {
   }
 
   function extract($id, $url, $content_type = 'application/pdf') {
+    // this replaces the solr document with contents from the extract
     $flds = array(
       'literal.id' => $id,
       'stream.url' => $url,
       'stream.contentType' => $content_type,
       'wt' => 'json',
-      'fmap.content' => 'text_teiv',
+      'fmap.content' => 'text_tsimv',
       'commit' => 'true',
       );
     $q = http_build_query($flds);
