@@ -432,4 +432,27 @@ class SolrUpdater {
     return $status;
   }
 
+  function extract_only($url, $content_type = 'application/pdf') {
+    // this returns the content of the extracted document
+    $flds = array(
+      'extractOnly' => 'true',
+      'extractFormat' => 'text',
+      'stream.url' => $url,
+      'stream.contentType' => $content_type,
+      'wt' => 'json',
+      );
+    $q = http_build_query($flds);
+    $json = $this->get('/update/extract', $q);
+    $result = json_decode($json);
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("9 Error Processing extract Request: $status", 1);
+    }
+    $text = $result->$url;
+    //$metadata = $result["$url_metadata"]
+    return $text;
+
+  }
+
 }
