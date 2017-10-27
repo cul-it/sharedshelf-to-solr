@@ -398,7 +398,7 @@ class SolrUpdater {
    * @return nothing
    */
   function commit() {
-    $q = 'stream.body=%3Ccommit/%3E';
+    $q = 'stream.body=%3Ccommit waitFlush="false"/%3E';
     $this->get('/update', $q);
   }
 
