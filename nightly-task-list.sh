@@ -28,6 +28,8 @@
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
+# 4409 - Rudin Antislavery Collection - asset count: 513
+# 4411 - Lindsay Cooper Digital Archive - asset count: 589
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 49 - Kroch Asia Rare Materials Archive - asset count: 935
@@ -84,6 +86,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
@@ -111,4 +115,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3450
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 922
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4409
