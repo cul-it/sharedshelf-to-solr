@@ -32,7 +32,7 @@
 # 4411 - Lindsay Cooper Digital Archive - asset count: 589
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
-# 49 - Kroch Asia Rare Materials Archive - asset count: 935
+# 49 - Kroch Asia Rare Materials Archive - asset count: 3782
 # 50 - Theatre Prints and Books from Early Modern Japan - asset count: 1076
 # 522 - Tamang - asset count: 2539
 # 531 - Historic Glacial Images of Alaska and Greenland (Tarr) - asset count: 2136
@@ -90,7 +90,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
