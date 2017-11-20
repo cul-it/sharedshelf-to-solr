@@ -364,6 +364,7 @@ try {
               // ignore current contents of solr document ($solr_in)
               $merged = $solr_out_full;
               $solr_assets = array($merged);
+              debug($solr_assets, 'solr_assets', false);
               $result = $solr->add($solr_assets);
 
             }
