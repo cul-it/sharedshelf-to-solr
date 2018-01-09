@@ -32,6 +32,7 @@
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
 # 4409 - Rudin Antislavery Collection - asset count: 513
 # 4411 - Lindsay Cooper Digital Archive - asset count: 589
+# 4497 - Art 2301 Printmaking Student Portfolios - asset count: 29
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 49 - Kroch Asia Rare Materials Archive - asset count: 3782
@@ -92,6 +93,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
@@ -119,4 +121,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 3262
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4497
