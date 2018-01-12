@@ -26,12 +26,8 @@ class eCommonsService {
           throw new Exception("1 Error Processing Request: " . $url, 1);
         }
         $output = json_decode($output, true);
-        if ($check_success) {
-          if (!(isset($output['success']) && ($output['success'] === TRUE))) {
-            throw new Exception("Error Processing Request - no success: " . $url, 1);
-          }
-        }
         return $output;
     }
+     
 }
   
