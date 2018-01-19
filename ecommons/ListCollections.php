@@ -4,9 +4,6 @@ require_once('eCommonsService.php');
 try {
     $ecommons = new eCommonsService();
 
-    $test = $ecommons->get_response('/test', FALSE);
-    print_r($test);
-
     $communities = $ecommons->get_response('/communities', FALSE);
     $indent = '    ';
     foreach ($communities as $id => $community) {
