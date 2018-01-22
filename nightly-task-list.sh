@@ -23,7 +23,7 @@
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3262 - Charlie Ahearn Archive - asset count: 909
 # 3321 - Test Project - asset count: 12
-# 3450 - IWO/JPFO - asset count: 
+# 3450 - IWO/JPFO - asset count:
 # 3462 - Punk Flyers - asset count: 95
 # 3596 - U.S. President's Railroad Commission Photographs - asset count: 1654
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
@@ -121,4 +121,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # example of creating or updating the IIIF images for a Collection
-# "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4497
+ "$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 659
