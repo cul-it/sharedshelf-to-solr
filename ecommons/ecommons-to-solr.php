@@ -73,6 +73,9 @@ try {
     else {
         $max_processing_count = false; // this means process them all
     }
+
+    $ecommons = new eCommonsService();
+    
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
