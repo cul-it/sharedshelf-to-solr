@@ -66,7 +66,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 141 --force
@@ -74,13 +74,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 155 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3262 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
@@ -88,7 +88,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3596
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409
@@ -98,9 +98,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657 --force
@@ -112,7 +112,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88 --force
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 --force
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922 --force
