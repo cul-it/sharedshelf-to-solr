@@ -74,6 +74,55 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
   return $assets;
 }
 
+function copy_pdf_to_s3($projectid, $filename, $source_url, $method) {
+  try {
+    $s3_bucket = "s3://adler.library.cornell.edu";
+    $s3_path = "$projectid/$filename.pdf";
+    $s3_target = "$s3_bucket/$s3_path";
+    $s3cmd = '/cul/share/miniconda/bin/s3cmd';
+    if ($method == 'update') {
+      // check if it already exists on S3
+      $command = "$s3cmd ls $s3_target";
+      $output = '';
+      $return_var = 0;
+      $lastline = exec($command, $output, $return_var);
+      if ($return_var != 0) {
+        $output[] = 'Command failed: ' .  $command;
+        $out = implode("PHP_EOL", $output);
+        throw new Exception("Error Processing checking for pdf on s3: $out", 1);
+      }
+      if (strpos($lastline, $s3_path) !== FALSE) {
+        // assume this image has already been processed
+        return;
+        }
+      }
+
+    // make a local copy of the file
+    $tmpfname = tempnam("/tmp", "UL_IMAGE");
+    $img = file_get_contents($source_url);
+    file_put_contents($tmpfname, $img);
+  
+    // copy the file
+    $command = "$s3cmd put $tmpfname $s3_target";
+    $output = '';
+    $return_var = 0;
+    $lastline = exec($command, $output, $return_var);
+    // delete temp file
+    unlink($tmpfname);
+
+    if ($return_var != 0) {
+      $output[] = 'Command failed: ' .  $command;
+      $out = implode("PHP_EOL", $output);
+      throw new Exception("Error Processing putting pdf on s3: $out", 1);
+    }
+  }
+  catch (Exception $e) {
+    $error = 'Caught exception: ' . $e->getMessage() . "\n";
+    return FALSE;
+  }
+  return TRUE;
+}
+
 $log = FALSE;
 
 $options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip", "extract"));
