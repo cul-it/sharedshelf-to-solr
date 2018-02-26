@@ -529,6 +529,23 @@ class SharedShelfService {
     return $ext;
   }
 
+  function media_filename($asset_id) {
+    if (empty($asset_id)) {
+      throw new Exception("Error Processing media_file_extension Request", 1);
+    }
+    $details = $this->get_response("/assets/$asset_id/representation/details");
+    if (empty($details['name'])) {
+      throw new Exception("Missing original filename in media_file_extension().", 1);
+    }
+    // filename of original file
+    $filename = $details['name'];
+    $file = pathinfo($filename, PATHINFO_FILENAME);
+    if (empty($file)) {
+      throw new Exception("Empty filename: $filename", 1);
+    }
+    return $file;
+  }
+
  function media_derivative_url($asset_id, $size) {
     if (empty($asset_id)) {
       throw new Exception("Error Processing media_derivative_url Request", 1);
