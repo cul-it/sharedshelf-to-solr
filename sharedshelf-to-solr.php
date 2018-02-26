@@ -366,7 +366,17 @@ try {
                 $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
                 $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
                 }
-             }
+              
+              if(!empty($project['copy_pdf_to_s3'])) {
+                $log->note('copying pdf to s3');
+                $extension = $ss->media_file_extension($ss_id);
+                if ($extension == 'pdf') {
+                  $method = $project['copy_pdf_to_s3'];
+                  $filename = media_filename($ss_id);
+                  copy_pdf_to_s3($project_id, $filename, $url, $method);
+                }
+              }
+            }
 
             // add in the publishing status field
             $solr_out['status_ssi'] = $cul_publishing_status;
