@@ -397,12 +397,17 @@ try {
                 }
               
               if(!empty($project['copy_pdf_to_s3'])) {
-                $log->note('copying pdf to s3');
                 $extension = $ss->media_file_extension($ss_id);
                 if ($extension == 'pdf') {
+                  $log->note('copying pdf to s3');
                   $method = $project['copy_pdf_to_s3'];
-                  $filename = media_filename($ss_id);
-                  copy_pdf_to_s3($project_id, $filename, $url, $method);
+                  $filename = $ss->media_filename($ss_id);
+                  if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
+                    throw new Exception("Failed to copy pdf to s3", 1);
+                  }
+                }
+                else {
+                  $log->note("not a pdf: $extension");
                 }
               }
             }
