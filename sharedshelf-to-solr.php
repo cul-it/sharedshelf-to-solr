@@ -74,7 +74,7 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
   return $assets;
 }
 
-function copy_pdf_to_s3($projectid, $filename, $source_url, $method) {
+function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
   try {
     $s3_bucket = "s3://adler.library.cornell.edu";
     $s3_path = "$projectid/$filename.pdf";
