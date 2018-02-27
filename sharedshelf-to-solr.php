@@ -234,6 +234,21 @@ try {
 
     $project_id = $project['project'];
 
+    // check valid values for flags
+    if (!empty($project['copy_pdf_to_s3'])) {
+      $value = $project['copy_pdf_to_s3'];
+      switch ($value) {
+        case 'update':
+        case 'overwrite':
+          # good options
+          break;
+        
+        default:
+          throw new Exception("invalid copy_pdf_to_s3 value for project  $project_id: $value", 1);         
+          break;
+      }
+    }
+
     // create a log file for this collection
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
     $log = new SharedShelfToSolrLogger($log_file_prefix);
