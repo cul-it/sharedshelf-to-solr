@@ -96,9 +96,9 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
       }
       if (strpos($lastline, $s3_path) !== FALSE) {
         // assume this image has already been processed
-        return;
-        }
+        return TRUE;
       }
+    }
 
     // make a local copy of the file
     $tmpfname = tempnam("/tmp", "UL_IMAGE");
