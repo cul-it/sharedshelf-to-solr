@@ -101,14 +101,24 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
     }
 
     // make a local copy of the file
-    $tmpfname = tempnam("/tmp", "UL_IMAGE");
-    $img = file_get_contents($source_url);
-    file_put_contents($tmpfname, $img);
+    if (($img = file_get_contents($source_url)) === FALSE) {
+      throw new Exception("Unable to read file $source_url", 1);     
+    }
+    $tmpfname = '/tmp/' . md5($projectid . $filename) . '.pdf';
+    if (($fd = fopen($tmpfname, "x+")) === FALSE) {
+      throw new Exception("Cannot create temp file $tmpfname", 1);
+    }
+    $bytes = fwrite($fd, $img);
+    fclose($fd);
+    if ($bytes === FALSE) {
+      throw new Exception("Cannot write to temp file", 1);
+    }
   
     // copy the file
     $command = "$s3cmd put $tmpfname $s3_target";
     $output = '';
     $return_var = 0;
+    //$log->note("put: $command");
     $lastline = exec($command, $output, $return_var);
     // delete temp file
     unlink($tmpfname);
@@ -121,6 +131,7 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
   }
   catch (Exception $e) {
     $error = 'Caught exception: ' . $e->getMessage() . "\n";
+    $log->note($error);
     return FALSE;
   }
   return TRUE;
