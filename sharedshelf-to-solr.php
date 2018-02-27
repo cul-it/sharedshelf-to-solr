@@ -80,11 +80,14 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
     $s3_path = "$projectid/$filename.pdf";
     $s3_target = "$s3_bucket/$s3_path";
     $s3cmd = '/cul/share/miniconda/bin/s3cmd';
+    //$s3cmd = '/usr/local/bin/s3cmd';  // local testing version
+    //$log->note("method: $method");
     if ($method == 'update') {
       // check if it already exists on S3
       $command = "$s3cmd ls $s3_target";
       $output = '';
       $return_var = 0;
+      //$log->note("list: $command");
       $lastline = exec($command, $output, $return_var);
       if ($return_var != 0) {
         $output[] = 'Command failed: ' .  $command;
