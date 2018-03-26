@@ -74,6 +74,69 @@ function get_ss_asset_list(&$ss, $project_id, $date_field) {
   return $assets;
 }
 
+function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
+  try {
+    $s3_bucket = "s3://digital-assets.library.cornell.edu";
+    $s3_path = "$projectid/$filename.pdf";
+    $s3_target = "$s3_bucket/$s3_path";
+    $s3cmd = '/cul/share/miniconda/bin/s3cmd';
+    //$s3cmd = '/usr/local/bin/s3cmd';  // local testing version
+    //$log->note("method: $method");
+    if ($method == 'update') {
+      // check if it already exists on S3
+      $command = "$s3cmd ls $s3_target";
+      $output = '';
+      $return_var = 0;
+      //$log->note("list: $command");
+      $lastline = exec($command, $output, $return_var);
+      if ($return_var != 0) {
+        $output[] = 'Command failed: ' .  $command;
+        $out = implode("PHP_EOL", $output);
+        throw new Exception("Error Processing checking for pdf on s3: $out", 1);
+      }
+      if (strpos($lastline, $s3_path) !== FALSE) {
+        // assume this image has already been processed
+        return TRUE;
+      }
+    }
+
+    // make a local copy of the file
+    if (($img = file_get_contents($source_url)) === FALSE) {
+      throw new Exception("Unable to read file $source_url", 1);     
+    }
+    $tmpfname = '/tmp/' . md5($projectid . $filename) . '.pdf';
+    if (($fd = fopen($tmpfname, "x+")) === FALSE) {
+      throw new Exception("Cannot create temp file $tmpfname", 1);
+    }
+    $bytes = fwrite($fd, $img);
+    fclose($fd);
+    if ($bytes === FALSE) {
+      throw new Exception("Cannot write to temp file", 1);
+    }
+  
+    // copy the file
+    $command = "$s3cmd put $tmpfname $s3_target";
+    $output = '';
+    $return_var = 0;
+    //$log->note("put: $command");
+    $lastline = exec($command, $output, $return_var);
+    // delete temp file
+    unlink($tmpfname);
+
+    if ($return_var != 0) {
+      $output[] = 'Command failed: ' .  $command;
+      $out = implode("PHP_EOL", $output);
+      throw new Exception("Error Processing putting pdf on s3: $out", 1);
+    }
+  }
+  catch (Exception $e) {
+    $error = 'Caught exception: ' . $e->getMessage() . "\n";
+    $log->note($error);
+    return FALSE;
+  }
+  return TRUE;
+}
+
 $log = FALSE;
 
 $options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip", "extract"));
@@ -170,6 +233,21 @@ try {
     }
 
     $project_id = $project['project'];
+
+    // check valid values for flags
+    if (!empty($project['copy_pdf_to_s3'])) {
+      $value = $project['copy_pdf_to_s3'];
+      switch ($value) {
+        case 'update':
+        case 'overwrite':
+          # good options
+          break;
+        
+        default:
+          throw new Exception("invalid copy_pdf_to_s3 value for project  $project_id: $value", 1);         
+          break;
+      }
+    }
 
     // create a log file for this collection
     $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
@@ -317,7 +395,22 @@ try {
                 $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
                 $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
                 }
-             }
+              
+              if(!empty($project['copy_pdf_to_s3'])) {
+                $extension = $ss->media_file_extension($ss_id);
+                if ($extension == 'pdf') {
+                  $log->note('copying pdf to s3');
+                  $method = $project['copy_pdf_to_s3'];
+                  $filename = $ss->media_filename($ss_id);
+                  if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
+                    throw new Exception("Failed to copy pdf to s3", 1);
+                  }
+                }
+                else {
+                  $log->note("not a pdf: $extension");
+                }
+              }
+            }
 
             // add in the publishing status field
             $solr_out['status_ssi'] = $cul_publishing_status;
