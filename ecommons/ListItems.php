@@ -35,7 +35,41 @@ try {
 
     $ecommons = new eCommonsService();
 
-    $items = $ecommons->get_response('/items/' . $single_collection . '/metadata', FALSE);
+    // get collection info
+    $collection = $ecommons->get_response('/collections/' . $single_collection);
+    if (empty($collection)) {
+        throw new Exception("No info for collection $single_collection", 1);               
+    }
+    if (empty($collection['numberItems'])) {
+        throw new Exception("Collection $single_collection has no items", 1);               
+    }
+    $numberItems = $collection['numberItems'];
+
+    $pagecount = 10;
+    for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
+        $items = $ecommons->get_response("/collections/$single_collection/items?limit=$pagecount&offset=$offset");
+        if (empty($items)) {
+            throw new Exception("No items from offset $offset on collection $single_collection", 1);
+        }
+        foreach ($items as $item) {
+            $metadata = $metadata = $ecommons->get_response('/items/' . $item['id'] . '/metadata');
+            if (empty($metadata)) {
+                throw new Exception("No metadata for item " . $item['id'], 1);               
+            }
+            print_r(array('item' => $item, 'metadata' => $metadata));
+        }
+    }
+    die('here');
+    
+    $metadata = $ecommons->get_response('/items/' . $single_collection . '/metadata', FALSE);
+    if (empty($metadata)) {
+        throw new Exception("No metadata for item $single_collection", 1);               
+    }
+
+    $items = $ecommons->get_response('/items/' . $single_collection, FALSE);
+    if (empty($items)) {
+        throw new Exception("No metadata for item $single_collection", 1);               
+    }
     $fields = array();
     foreach ($items as $item) {
         $key = $item['key'];
