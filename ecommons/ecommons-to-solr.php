@@ -5,7 +5,8 @@ ini_set('memory_limit', '512M');
 
 require_once('eCommonsService.php');
 require_once('../SolrUpdater.php');
-require_once('../SharedShelfToSolrLogger.php');
+
+define("ECOMMONS_ID_PREFIX", 'ec:');
 
 class DatesMatchException extends Exception {}
 
