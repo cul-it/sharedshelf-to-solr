@@ -6,3 +6,9 @@ iiif-static-images/*
 nightly-use-force.sh
 vendor
 *.log
+
+# build
+!build/phpmd.xml
+!build/phpunit.xml
+!build/phpdox.xml
+build/*
