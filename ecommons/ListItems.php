@@ -31,7 +31,7 @@ try {
     }
     else {
         usage("The -c parameter is required");
-    }
+    }    
 
     $ecommons = new eCommonsService();
 
