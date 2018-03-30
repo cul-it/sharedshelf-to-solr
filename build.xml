@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sharedshelf-to-solr" default="full-build">
  <!-- By default, we assume all tools to be on the $PATH -->
+ <property name="toolsdir" value="bin/" />
+ 
  <property name="pdepend" value="pdepend"/>
  <property name="phpcpd"  value="phpcpd"/>
  <property name="phpcs"   value="phpcs"/>
