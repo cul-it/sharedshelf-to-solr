@@ -30,6 +30,7 @@
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
+# 4210 - Eugene B. Dynkin Collection of Mathematics Interviews - asset count: 916
 # 4409 - Rudin Antislavery Collection - asset count: 513
 # 4411 - Lindsay Cooper Digital Archive - asset count: 589
 # 4497 - Art 2301 Printmaking Student Portfolios - asset count: 29
@@ -91,6 +92,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4210
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4406
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411
@@ -122,4 +124,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # example of creating or updating the IIIF images for a Collection
- #"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 659
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4210
