@@ -15,7 +15,7 @@ $portal_ini = 'fedora-portal-solr.ini';
 
 //$selection = 'has_model_ssim:(-Hydra* -ActiveFedora*)';
 //$selection = '(id:chla* OR id:hive*) AND (has_model_ssim:"Issue" OR has_model_ssim:"Journal" OR has_model_ssim:"Article" OR id:*_1_fs OR has_model_ssim:"Issue")';
-$selection = '(id:chla* OR id:hive*) AND (has_model_ssim:"Issue" OR has_model_ssim:"Journal" OR has_model_ssim:"Article" OR id:*_1_fs OR has_model_ssim:"Book")';
+$selection = '(id:chla* OR id:hive* OR id:hearth*) AND (has_model_ssim:"Issue" OR has_model_ssim:"Journal" OR has_model_ssim:"Article" OR id:*_1_fs OR has_model_ssim:"Book")';
 
 try {
 
