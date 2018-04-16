@@ -36,6 +36,7 @@
 # 4497 - Art 2301 Printmaking Student Portfolios - asset count: 29
 # 452 - Cornell Gems Collection - asset count: 3794
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
+# 4803 - Seneca Haudenosaunee Archaeological Materials, circa 1688-1754 - asset count: 1183
 # 49 - Kroch Asia Rare Materials Archive - asset count: 3782
 # 50 - Theatre Prints and Books from Early Modern Japan - asset count: 1076
 # 522 - Tamang - asset count: 2539
@@ -99,6 +100,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
@@ -124,4 +126,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # example of creating or updating the IIIF images for a Collection
-"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4210
+"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4803
