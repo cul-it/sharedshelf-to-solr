@@ -100,7 +100,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803 --force
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
