@@ -60,12 +60,7 @@ if ($options === false || empty($options) || isset($options['help'])) {
 $force_replacement = isset($options["force"]);
 $do_not_write_to_solr = isset($options["no-write"]);
 if (isset($options['c'])) {
-    if (is_numeric($options['c'])) {
-        $single_collection = $options['c'];
-    }
-    else {
-        usage();
-    }
+    $single_collection = $options['c'];
 }
 else {
     usage();
