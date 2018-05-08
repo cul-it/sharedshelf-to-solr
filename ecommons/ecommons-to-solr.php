@@ -37,7 +37,17 @@ function flatten($asset_array) {
     $asset = array();
     foreach($asset_array as $item) {
         $key = $item['key'];
-        $asset["$key"] = $item['value'];
+        if (isset($asset["$key"])) {
+            if (is_array($asset["$key"])) {
+                $asset["$key"][] = $item['value'];
+            }
+            else {
+                $asset["$key"] = array($asset["$key"], $item['value']);
+            }
+        }
+        else {
+            $asset["$key"] = $item['value'];
+        }
     }
     return $asset;
 }
