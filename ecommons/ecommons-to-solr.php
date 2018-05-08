@@ -130,7 +130,7 @@ try {
             throw new Exception("No items from offset $offset on collection $single_collection", 1);
         }
         foreach ($items as $item) {
-            $asset_id = $item['id'];
+            $asset_id = $item['uuid'];
             $solr_id = ECOMMONS_ID_PREFIX . $asset_id;
             // track ids dropped from ecommons
             unset($solr_asset_ids_to_delete["$solr_id"]);
