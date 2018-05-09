@@ -1,5 +1,21 @@
 {
-    "require": {
-        "league/csv": "^8.2"
+    "name": "jgr25/sharedshelf-to-solr",
+    "description": "Moves items from external archives into the solr used for digital.library.cornell.edu",
+    "type": "project",
+    "authors": [
+        {
+            "name": "James Reidy",
+            "email": "jreidy@cornell.edu"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "1.5.*",
+        "phpmd/phpmd": "2.1.*",
+        "sebastian/phpcpd": "2.0.*",
+        "pdepend/pdepend": "2.0.*",
+        "phploc/phploc": "2.0.*",
+        "phpunit/phpunit": "4.3.*",
+        "theseer/phpdox": "0.7.*"
     }
 }
