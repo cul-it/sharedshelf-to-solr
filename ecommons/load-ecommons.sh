@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # prior to this, run this:
 # $> php generate-collection-list.php > collection-list.txt
 
