@@ -2,6 +2,12 @@
 # prior to this, run this:
 # $> php generate-collection-list.php > collection-list.txt
 
+PHP=`which php`
+
+# find the directory this script is in
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# read each collection name and load the collection into solr
 while read col; do
-    php ecommons-to-solr.php -c "$col"
-done <collection-list.txt
+    "$PHP" "${DIR}/ecommons-to-solr.php" -c "$col"
+done <"${DIR}/collection-list.txt"
