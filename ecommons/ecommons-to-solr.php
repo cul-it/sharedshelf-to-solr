@@ -3,6 +3,9 @@
 
 ini_set('memory_limit', '512M');
 
+// to make relative paths work in require
+chdir( dirname ( __FILE__ ) );
+
 require_once('eCommonsService.php');
 require_once('../SolrUpdater.php');
 
