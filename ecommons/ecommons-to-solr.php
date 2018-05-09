@@ -106,11 +106,6 @@ try {
     $solr_url = $task['solr'];
     $solr = new SolrUpdater($solr_url, $config);
 
-    // list of the ids already in solr
-    $solr_asset_id_list = $solr->get_all_ids($project_id);
-    $solr_asset_ids_to_delete = array_flip($solr_asset_id_list);
-    echo("Ids in solr for project $project_id: " . count($solr_asset_id_list) . PHP_EOL);
-
     $ecommons = new eCommonsService();
 
     // get collection info
@@ -135,15 +130,27 @@ try {
         foreach ($items as $item) {
             $asset_id = $item['uuid'];
             $solr_id = ECOMMONS_ID_PREFIX . $asset_id;
-            // track ids dropped from ecommons
-            unset($solr_asset_ids_to_delete["$solr_id"]);
 
             $asset = $ecommons->get_response('/items/' . $asset_id . '/metadata');
             if (empty($asset)) {
                 throw new Exception("No metadata for item $asset_id", 1);               
             }
-            echo("Solr id: $solr_id\n");
+            //echo("Solr id: $solr_id\n");
+            
             $asset = flatten($asset);
+            if (!$force_replacement) {                
+                $solr_in = $solr->get_item($solr_id);
+                if (!empty($solr_in)) {
+                    $ecommons_datestamp = $asset['dc.date.accessioned'];
+                    $solr_datestamp = empty($solr_in['accessioned_dts']) ? '' : $solr_in['accessioned_dts'];
+                    if (strcmp($ecommons_datestamp, $solr_datestamp) == 0) {
+                        // dates match - skip the rest
+                        //echo("Skipping $solr_id\n");
+                        continue;
+                    }
+                }
+            }
+
             $merged = array_merge($asset, $item); // item and metadata in one flat array
             $solr_out = $solr->convert_ss_names_to_solr($merged);
             $solr_out['id'] = $solr_id; // switch to solr id from ecommons
@@ -151,15 +158,6 @@ try {
             $solr_assets = array($solr_out);
             $result = $solr->add($solr_assets);
         }
-    }
-
-    if (!empty($solr_asset_ids_to_delete)) {
-        $ids = array_flip($solr_asset_ids_to_delete);
-        echo("Deleting solr ids: " . implode(', ', $ids));
-        $solr->delete_items($ids);
-    }
-    else {
-        echo("No solr asssets to delete for project $project_id.\n");
     }
 }
 catch (Exception $e) {
