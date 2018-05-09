@@ -117,9 +117,9 @@ try {
         throw new Exception("Collection $project_id  has no items", 1);               
     }
     $numberItems = $collection['numberItems'];
-    echo("Items in collection: $numberItems\n");
+    //echo("Items in collection: $numberItems\n");
     $collectionName = $collection['name'];
-    echo("Collection name: $collectionName\n");
+    echo("Id: $project_id Items: $numberItems Collection name: $collectionName\n");
     
     $pagecount = min(10, $numberItems);
     for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
