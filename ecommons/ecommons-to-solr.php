@@ -138,9 +138,18 @@ try {
             //echo("Solr id: $solr_id\n");
             
             $asset = flatten($asset);
+
+            // fix problem records
+            if (is_array($asset['dc.date.accessioned'])) {
+                $asset['dc.date.accessioned'] = array_pop($asset['dc.date.accessioned']);
+            }
+            // date format must be 2006-09-13T23:08:42Z
+            if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
+                $asset['dc.date.accessioned'] = date("Y-m-d\TH:i:s\Z");
+            }
             if (!$force_replacement) {                
                 $solr_in = $solr->get_item($solr_id);
-                if (!empty($solr_in)) {
+                if (!empty($solr_in) && !empty($asset['dc.date.accessioned'])) {
                     $ecommons_datestamp = $asset['dc.date.accessioned'];
                     $solr_datestamp = empty($solr_in['accessioned_dts']) ? '' : $solr_in['accessioned_dts'];
                     if (strcmp($ecommons_datestamp, $solr_datestamp) == 0) {
