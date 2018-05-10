@@ -31,6 +31,7 @@ function usage() {
     echo "-c - only process eCommons collection (collection number) NNN (NNN must be numeric) - see listCollections.php" . PHP_EOL;
     echo "-s - start processing at the given eCommons item number NNN (NNN must be numeric) (item numbers ascend during processing)" . PHP_EOL;
     echo "-n - process only this many (integer) items" . PHP_EOL;
+    echo "with no arguments, it reads all collections from collection-list.txt and processes them all\n";
     exit (0);
 }
 
