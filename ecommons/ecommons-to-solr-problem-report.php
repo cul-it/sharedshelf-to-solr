@@ -152,18 +152,18 @@ try {
 
                     // find problem records
                     if (empty($asset['dc.date.accessioned'])) {
-                        $output = "\nProblem: eCommons item id: $asset_id - ";
+                        $output = "eCommons item id: $asset_id - ";
                         $output .= "Missing dc.date.accessioned field";
                         throw new Exception($output, 1);
                     }
                     if (is_array($asset['dc.date.accessioned'])) {
-                        $output = "\nProblem: eCommons item id: $asset_id - ";
+                        $output = "eCommons item id: $asset_id - ";
                         $output .= "Multiple dc.date.accessioned fields";
                         throw new Exception($output, 1);
                     }
                     // date format must be 2006-09-13T23:08:42Z
                     if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                        $output = "\nProblem: eCommons item id: $asset_id - ";
+                        $output = "eCommons item id: $asset_id - ";
                         $output .= "Bad date format: " . $asset['dc.date.accessioned'];
                         throw new Exception($output, 1);
                     }
