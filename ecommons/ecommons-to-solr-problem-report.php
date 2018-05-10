@@ -93,7 +93,6 @@ else {
 
 try {
 
-
     // load the mapping
     $config = "ecommons.ini";
     $task = parse_ini_file($config, TRUE);
@@ -126,7 +125,8 @@ try {
             throw new Exception("No info for collection $project_id ", 1);               
         }
         if (empty($collection['numberItems'])) {
-            $output = "\nCollection $project_id  has no items";
+            $output = "\nProblem: Collection $project_id  has no items";
+            echo $output;
             continue;               
         }
         $numberItems = $collection['numberItems'];
@@ -152,18 +152,18 @@ try {
 
                 // find problem records
                 if (empty($asset['dc.date.accessioned'])) {
-                    $output = "\neCommons item id: $asset_id - ";
+                    $output = "\nProblem: eCommons item id: $asset_id - ";
                     $output .= "Missing dc.date.accessioned field";
                     echo $output;
                 }
                 elseif (is_array($asset['dc.date.accessioned'])) {
-                    $output = "\neCommons item id: $asset_id - ";
+                    $output = "\nProblem: eCommons item id: $asset_id - ";
                     $output .= "Multiple dc.date.accessioned fields";
                     echo $output;
                 }
                 // date format must be 2006-09-13T23:08:42Z
                 elseif (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                    $output = "\neCommons item id: $asset_id - ";
+                    $output = "\nProblem: eCommons item id: $asset_id - ";
                     $output .= "Bad date format: " . $asset['dc.date.accessioned'];
                     echo ($output);
                 }
