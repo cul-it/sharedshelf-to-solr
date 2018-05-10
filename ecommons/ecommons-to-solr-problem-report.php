@@ -124,14 +124,14 @@ try {
         if (empty($collection)) {
             throw new Exception("No info for collection $project_id ", 1);               
         }
+        $numberItems = empty($collection['numberItems']) ? 0 : $collection['numberItems'];
+        $collectionName = $collection['name'];
+        echo "\nId: $project_id Items: $numberItems Collection name: $collectionName";
         if (empty($collection['numberItems'])) {
-            $output = "\nProblem: Collection $project_id  has no items";
+            $output = "\nProblem: Collection $project_id  has no items - $collectionName";
             echo $output;
             continue;               
         }
-        $numberItems = $collection['numberItems'];
-        $collectionName = $collection['name'];
-        echo "\nId: $project_id Items: $numberItems Collection name: $collectionName";
 
         $pagecount = min(10, $numberItems);
         for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
