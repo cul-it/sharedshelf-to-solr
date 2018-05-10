@@ -119,7 +119,7 @@ try {
     $numberItems = $collection['numberItems'];
     //echo("Items in collection: $numberItems\n");
     $collectionName = $collection['name'];
-    $output = "Id: $project_id Items: $numberItems Collection name: $collectionName";
+    $output = "\nId: $project_id Items: $numberItems Collection name: $collectionName";
     
     $pagecount = min(10, $numberItems);
     for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
@@ -140,21 +140,21 @@ try {
 
             // find problem records
             if (empty($asset['dc.date.accessioned'])) {
-                $output .= "\neCommons id: $asset_id - ";
-                $output .= "Missing dc.date.accessioned field\n";
+                $output .= "\neCommons item id: $asset_id - ";
+                $output .= "Missing dc.date.accessioned field";
                 echo ($output);
                 $output = '';                
             }
             elseif (is_array($asset['dc.date.accessioned'])) {
-                $output .= "\neCommons id: $asset_id - ";
-                $output .= "Multiple dc.date.accessioned fields\n";
+                $output .= "\neCommons item id: $asset_id - ";
+                $output .= "Multiple dc.date.accessioned fields";
                 echo ($output);
                 $output = '';
             }
             // date format must be 2006-09-13T23:08:42Z
             elseif (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                $output .= "\neCommons id: $asset_id - ";
-                $output .= "Bad date format: " . $asset['dc.date.accessioned'] ."\n";
+                $output .= "\neCommons item id: $asset_id - ";
+                $output .= "Bad date format: " . $asset['dc.date.accessioned'];
                 echo ($output);
                 $output = '';
             }
