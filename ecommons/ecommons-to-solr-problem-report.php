@@ -28,8 +28,6 @@ function usage() {
     echo PHP_EOL;
     echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [-c NNN] [-s NNN] [-n NNN]" . PHP_EOL;
     echo "--help - show this info" . PHP_EOL;
-    echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
-    echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
     echo "-c - only process eCommons collection (collection number) NNN (NNN must be numeric) - see listCollections.php" . PHP_EOL;
     echo "-s - start processing at the given eCommons item number NNN (NNN must be numeric) (item numbers ascend during processing)" . PHP_EOL;
     echo "-n - process only this many (integer) items" . PHP_EOL;
@@ -55,9 +53,9 @@ function flatten($asset_array) {
     return $asset;
 }
 
-$options = getopt("c:s:n:",array("help", "force", "no-write"));
+$options = getopt("c:s:n:",array("help"));
 
-if ($options === false || empty($options) || isset($options['help'])) {
+if ($options === false || isset($options['help'])) {
     usage();
 }
 $force_replacement = isset($options["force"]);
@@ -66,7 +64,7 @@ if (isset($options['c'])) {
     $single_collection = $options['c'];
 }
 else {
-    usage();
+    $single_collection = FALSE;
 }
 if (isset($options['s'])) {
     if (is_numeric($options['s'])) {
@@ -93,7 +91,7 @@ else {
 
 
 try {
-    $project_id = $single_collection;
+
 
     // load the mapping
     $config = "ecommons.ini";
@@ -108,55 +106,66 @@ try {
 
     $ecommons = new eCommonsService();
 
-    // get collection info
-    $collection = $ecommons->get_response('/collections/' . $project_id );
-    if (empty($collection)) {
-        throw new Exception("No info for collection $project_id ", 1);               
+    if ($single_collection !== FALSE) {
+        $project_ids = array($single_collection);
     }
-    if (empty($collection['numberItems'])) {
-        throw new Exception("Collection $project_id  has no items", 1);               
-    }
-    $numberItems = $collection['numberItems'];
-    //echo("Items in collection: $numberItems\n");
-    $collectionName = $collection['name'];
-    $output = "\nId: $project_id Items: $numberItems Collection name: $collectionName";
-    
-    $pagecount = min(10, $numberItems);
-    for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
-        $items = $ecommons->get_response("/collections/$project_id/items?limit=$pagecount&offset=$offset");
-        if (empty($items)) {
-            throw new Exception("No items from offset $offset on collection $single_collection", 1);
+    else {
+        $filename = 'collection-list.txt';
+        $project_ids = file($filename, FILE_IGNORE_NEW_LINES);
+        if ($project_ids === FALSE) {
+            throw new Exception("Can't read $filename", 1);       
         }
-        foreach ($items as $item) {
-            $asset_id = $item['uuid'];
-            $solr_id = ECOMMONS_ID_PREFIX . $asset_id;
+    }
 
-            $asset = $ecommons->get_response('/items/' . $asset_id . '/metadata');
-            if (empty($asset)) {
-                throw new Exception("No metadata for item $asset_id", 1);               
-            }
-            
-            $asset = flatten($asset);
+    foreach ($project_ids as $key => $project_id) {
 
-            // find problem records
-            if (empty($asset['dc.date.accessioned'])) {
-                $output .= "\neCommons item id: $asset_id - ";
-                $output .= "Missing dc.date.accessioned field";
-                echo ($output);
-                $output = '';                
+        // get collection info
+        $collection = $ecommons->get_response('/collections/' . $project_id );
+        if (empty($collection)) {
+            throw new Exception("No info for collection $project_id ", 1);               
+        }
+        if (empty($collection['numberItems'])) {
+            $output = "\nCollection $project_id  has no items";
+            continue;               
+        }
+        $numberItems = $collection['numberItems'];
+        $collectionName = $collection['name'];
+        echo "\nId: $project_id Items: $numberItems Collection name: $collectionName";
+
+        $pagecount = min(10, $numberItems);
+        for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
+            $items = $ecommons->get_response("/collections/$project_id/items?limit=$pagecount&offset=$offset");
+            if (empty($items)) {
+                throw new Exception("No items from offset $offset on collection $single_collection", 1);
             }
-            elseif (is_array($asset['dc.date.accessioned'])) {
-                $output .= "\neCommons item id: $asset_id - ";
-                $output .= "Multiple dc.date.accessioned fields";
-                echo ($output);
-                $output = '';
-            }
-            // date format must be 2006-09-13T23:08:42Z
-            elseif (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                $output .= "\neCommons item id: $asset_id - ";
-                $output .= "Bad date format: " . $asset['dc.date.accessioned'];
-                echo ($output);
-                $output = '';
+            foreach ($items as $item) {
+                $asset_id = $item['uuid'];
+                $solr_id = ECOMMONS_ID_PREFIX . $asset_id;
+
+                $asset = $ecommons->get_response('/items/' . $asset_id . '/metadata');
+                if (empty($asset)) {
+                    throw new Exception("No metadata for item $asset_id", 1);               
+                }
+                
+                $asset = flatten($asset);
+
+                // find problem records
+                if (empty($asset['dc.date.accessioned'])) {
+                    $output = "\neCommons item id: $asset_id - ";
+                    $output .= "Missing dc.date.accessioned field";
+                    echo $output;
+                }
+                elseif (is_array($asset['dc.date.accessioned'])) {
+                    $output = "\neCommons item id: $asset_id - ";
+                    $output .= "Multiple dc.date.accessioned fields";
+                    echo $output;
+                }
+                // date format must be 2006-09-13T23:08:42Z
+                elseif (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
+                    $output = "\neCommons item id: $asset_id - ";
+                    $output .= "Bad date format: " . $asset['dc.date.accessioned'];
+                    echo ($output);
+                }
             }
         }
     }
