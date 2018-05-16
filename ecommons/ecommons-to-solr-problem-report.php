@@ -144,6 +144,7 @@ try {
             $collectionName = $collection['name'];
             echo "\nId: $project_id Items: $numberItems Collection name: $collectionName";
             if (empty($collection['numberItems'])) {
+                $csv['item_handle'] = $csv['item_name'] = "";
                 $output = "Collection $project_id  has no items - $collectionName";
                 throw new Exception($output, 1);              
             }
@@ -152,6 +153,7 @@ try {
             for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
                 $items = $ecommons->get_response("/collections/$project_id/items?limit=$pagecount&offset=$offset");
                 if (empty($items)) {
+                    $csv['item_handle'] = $csv['item_name'] = "";
                     throw new Exception("No items from offset $offset on collection $single_collection", 1);
                 }
                 foreach ($items as $item) {
