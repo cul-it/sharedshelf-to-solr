@@ -117,18 +117,34 @@ try {
         }
     }
 
+    $handle_prefix = "https://ecommons.cornell.edu/handle/";
+    $cols = array(
+        "col_name","col_handle","col_numberItems",
+        "item_handle", "item_name", "problem",
+    );
+    
+    $filepath = 'reporting-ecommons-to-solr-problems.csv';
+    $myfile = fopen($filepath, 'wb');
+    fputcsv($myfile, $cols);
+
+
     foreach ($project_ids as $project_id) {
         try {
+            $csv = array();
             // get collection info
             $collection = $ecommons->get_response('/collections/' . $project_id );
             if (empty($collection)) {
                 $output = "No info or response for collection $project_id ";               
                 throw new Exception($output, 1);
             }
+            $csv['col_name'] = $collection['name'];
+            $csv['col_handle'] = $handle_prefix . $collection['handle'];
+            $csv['col_numberItems'] = $collection['numberItems'];
             $numberItems = empty($collection['numberItems']) ? 0 : $collection['numberItems'];
             $collectionName = $collection['name'];
             echo "\nId: $project_id Items: $numberItems Collection name: $collectionName";
             if (empty($collection['numberItems'])) {
+                $csv['item_handle'] = $csv['item_name'] = "";
                 $output = "Collection $project_id  has no items - $collectionName";
                 throw new Exception($output, 1);              
             }
@@ -137,9 +153,12 @@ try {
             for ($offset = 0; $offset < $numberItems; $offset += $pagecount) {
                 $items = $ecommons->get_response("/collections/$project_id/items?limit=$pagecount&offset=$offset");
                 if (empty($items)) {
+                    $csv['item_handle'] = $csv['item_name'] = "";
                     throw new Exception("No items from offset $offset on collection $single_collection", 1);
                 }
                 foreach ($items as $item) {
+                    $csv['item_handle'] = $handle_prefix . $item['handle'];
+                    $csv['item_name'] = $item['name'];
                     $asset_id = $item['uuid'];
                     $solr_id = ECOMMONS_ID_PREFIX . $asset_id;
 
@@ -152,19 +171,16 @@ try {
 
                     // find problem records
                     if (empty($asset['dc.date.accessioned'])) {
-                        $output = "eCommons item id: $asset_id - ";
-                        $output .= "Missing dc.date.accessioned field";
+                        $output = "Missing dc.date.accessioned field";
                         throw new Exception($output, 1);
                     }
                     if (is_array($asset['dc.date.accessioned'])) {
-                        $output = "eCommons item id: $asset_id - ";
-                        $output .= "Multiple dc.date.accessioned fields";
+                        $output = "Multiple dc.date.accessioned fields";
                         throw new Exception($output, 1);
                     }
                     // date format must be 2006-09-13T23:08:42Z
                     if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                        $output = "eCommons item id: $asset_id - ";
-                        $output .= "Bad date format: " . $asset['dc.date.accessioned'];
+                        $output = "Bad date format: " . $asset['dc.date.accessioned'];
                         throw new Exception($output, 1);
                     }
                 }
@@ -172,9 +188,12 @@ try {
         }
         catch (Exception $e) {
             echo "\nProblem: ",  $e->getMessage();
+            $csv['problem'] = $e->getMessage();
+            fputcsv($myfile, $csv);            
         }
     }
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
+fclose($myfile);
