@@ -125,17 +125,58 @@ class SharedShelfMetadataApplicationProfile {
     private function project_fields() {
         // map sharedshelf field names to MAP field names
         //print_r($this->metadata);
+        $this->project_fields = array();
         foreach ($this->metadata['columns'] as $column) {
             $map_field = $column['header'];
             $map_field_base = preg_replace('/[0-9]+/', '', $map_field);
+            if ($map_field == $map_field_base) {
+                $map_field_no = 1;
+            }
+            else {
+                $map_field_no = preg_replace('/^.+([0-9]+).*/', '$1', $map_field);
+            }
             $ss_field = $column['dataIndex'];
-            echo "$ss_field is $map_field base $map_field_base\n";
             if (isset($this->map_fields["$map_field_base"])) {
-                echo "found\n";
+                $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                if ($this->map_fields["$map_field_base"]['multivalued']) {
+                    $this->ss2map["$ss_field"] = array('solr' => "$solr_field", 'order' => $map_field_no);
+                }
+                else if (isset($this->project_fields["$map_field_base"])) {
+                    throw new Exception("$map_field_base defined twice: $ss_field", 1);                    
+                }
+                else {
+                    $this->ss2map["$ss_field"] = array('solr' => $solr_field);
+                }
+            }
+            else {
+                echo "Unknown field: $map_field_base -> $ss_field\n";               
             }
         }
+        print_r($this->ss2map);
 
         // eliminate unindexed fields
+    }
+
+    function get_asset($id) {
+        // return the asset with solr keys
+        $solr = array();
+        $asset = $this->sss->asset($id);
+        foreach ($asset as $key => $value) {
+            if (isset($this->ss2map["$key"])) {
+                $solrkey = $this->ss2map["$key"]['solr'];
+                if (isset($this->ss2map["$key"]['order'])) {
+
+                }
+                else {
+                    $solr["$solrkey"] = $value;
+                }
+
+            }
+            else {
+                echo "unknown asset key $key\n";
+            }
+        }
+        print_r($solr);
     }
 
 }
