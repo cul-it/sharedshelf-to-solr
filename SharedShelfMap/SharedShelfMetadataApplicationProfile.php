@@ -7,6 +7,7 @@ class SharedShelfMetadataApplicationProfile {
     private $project = FALSE;
     private $metadata = FALSE;
     private $project_fields = FALSE;
+    private $ss2map = FALSE;
 
     private $map_fields = array(
         "Address" => array( 'map_name' => "Address", 'solr_name' => "map_address", 'multivalued' => TRUE, 'type' => "string" ),
