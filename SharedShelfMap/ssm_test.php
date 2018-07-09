@@ -23,6 +23,9 @@ try {
 
     $map->set_project($project);
 
+    $asset = $map->get_asset($starting_asset);
+    
+
 
     // $id = $starting_asset;
     // for ($i = 0; $i < $max_processing_count; $i++) {
