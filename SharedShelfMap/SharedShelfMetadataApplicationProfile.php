@@ -165,6 +165,10 @@ class SharedShelfMetadataApplicationProfile {
         $solr = array();
         $asset = $this->sss->asset($id);
         foreach ($asset as $key => $value) {
+            if (isset($value['display_value'])) {
+                // handle controlled lists
+                $value = $value['display_value'];
+            }
             if (isset($this->ss2map["$key"])) {
                 $solrkey = $this->ss2map["$key"]['solr'];
                 if (isset($this->ss2map["$key"]['order'])) {
