@@ -169,6 +169,11 @@ class SharedShelfMetadataApplicationProfile {
                 // handle controlled lists
                 $value = $value['display_value'];
             }
+            // handle pipe delimited fields
+            $multi = explode('|', $value);
+            if (count($multi) > 1) {
+                $value = $multi;
+            }
             if (isset($this->ss2map["$key"])) {
                 $solrkey = $this->ss2map["$key"]['solr'];
                 if (isset($this->ss2map["$key"]['order'])) {
