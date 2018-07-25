@@ -26,8 +26,12 @@ try {
 
     $map->set_project($project);
 
+    $ssMap = $map->get_map();
+    print_r($ssMap);
+
     $asset = $map->get_asset($starting_asset);
     
+    print_r($asset);
 
 
     // $id = $starting_asset;
