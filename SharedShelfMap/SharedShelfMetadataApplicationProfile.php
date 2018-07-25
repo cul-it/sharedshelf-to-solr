@@ -151,9 +151,13 @@ class SharedShelfMetadataApplicationProfile {
                 echo "Unknown field: $map_field_base -> $ss_field\n";               
             }
         }
-        print_r($this->ss2map);
+        //print_r($this->ss2map);
 
         // eliminate unindexed fields
+    }
+
+    function get_map() {
+        return $this->ss2map;
     }
 
     function get_asset($id) {
@@ -175,7 +179,8 @@ class SharedShelfMetadataApplicationProfile {
                 echo "unknown asset key $key\n";
             }
         }
-        print_r($solr);
+        //print_r($solr);
+        return $solr;
     }
 
 }
