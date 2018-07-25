@@ -18,6 +18,9 @@ try {
   
     $project = 4803; // Seneca Haudenosaunee
     $starting_asset = 22702858;
+    
+    $project = 9175; // 01 PROJECT TEMPLATE
+    $starting_asset = 23091706;
 
     $map = new SharedShelfMetadataApplicationProfile($ss);
 
