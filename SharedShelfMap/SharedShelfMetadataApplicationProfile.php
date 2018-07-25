@@ -177,7 +177,13 @@ class SharedShelfMetadataApplicationProfile {
             if (isset($this->ss2map["$key"])) {
                 $solrkey = $this->ss2map["$key"]['solr'];
                 if (isset($this->ss2map["$key"]['order'])) {
-
+                    $order = $this->ss2map["$key"]['order'];
+                    if (!is_array($solr["$solrkey"])) {
+                        $solr["$solrkey"] = array("$order" => $value);
+                    }
+                    else {
+                        $solr["$solrkey"]["$order"] = $value;
+                    }
                 }
                 else {
                     $solr["$solrkey"] = $value;
