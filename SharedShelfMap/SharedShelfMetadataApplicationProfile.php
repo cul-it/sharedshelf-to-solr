@@ -6,6 +6,7 @@ class SharedShelfMetadataApplicationProfile {
     private $sss = '';   // instance of SharedShelfService
     private $project = FALSE;
     private $metadata = FALSE;
+    private $raw_fields = FALSE;
     private $project_fields = FALSE;
     private $ss2map = FALSE;
 
@@ -158,6 +159,10 @@ class SharedShelfMetadataApplicationProfile {
 
     function get_map() {
         return $this->ss2map;
+    }
+
+    function get_raw_fields() {
+        return $this->raw_fields;
     }
 
     function get_asset($id) {
