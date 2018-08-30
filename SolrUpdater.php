@@ -295,6 +295,20 @@ class SolrUpdater {
     return $status;
   }
 
+  function delete_matching($query) {
+    // query is like 'project_id_ssi:1234'
+    $cmd = array('delete' => array('query' => $query, 'commitWithin' => 500));
+    $json = json_encode($cmd);
+    $json = $this->post_json('/update/json', $json);
+    $result = json_decode($json);
+    $status = isset($result->responseHeader->status) ? $result->responseHeader->status : 1;
+    if ($status != "0") {
+      $err = print_r($result, TRUE);
+      throw new Exception("6 Error Processing Delete Request: $err", 1);
+    }
+    return $status;
+  }
+  
   function get_count($query_override = FALSE) {
     $query = ($query_override === FALSE) ? '*:*' : $query_override;
     $q = "q=$query&wt=json&fl=id";
