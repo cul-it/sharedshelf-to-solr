@@ -48,6 +48,9 @@ try {
     $ssMap = $map->get_map();
     print_r($ssMap);
 
+    $fields = $map->get_raw_fields();
+    print_r($fields);
+
     $asset = $map->get_asset($starting_asset);
     
     print_r($asset);
