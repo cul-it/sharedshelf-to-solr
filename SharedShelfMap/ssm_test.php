@@ -15,12 +15,31 @@ try {
     if ($ss->logged_in()) {
       echo "User is logged in\n";
     }
+
+    /**
+      * 
+      * These projects use the new MAP:
+      * 4803 - Seneca Haudenosaunee
+      * 9175 - 01 PROJECT TEMPLATE
+      * 4547 - NYS Historical Dendrochronology
+      *
+      */
   
-    $project = 4803; // Seneca Haudenosaunee
-    $starting_asset = 22702858;
+    $collection = 0;
+    if ($collection == 1) {
+      $project = 4803; // Seneca Haudenosaunee
+      $starting_asset = 22702858;
+    }
+    elseif ($collection == 2) {
+      #
+      $project = 4547; // NYS Historical Dendrochronology
+      $starting_asset = 22143997;
+    }
+    else {
+      $project = 9175; // 01 PROJECT TEMPLATE
+      $starting_asset = 23091706;
+    }
     
-    $project = 9175; // 01 PROJECT TEMPLATE
-    $starting_asset = 23091706;
 
     $map = new SharedShelfMetadataApplicationProfile($ss);
 
