@@ -115,11 +115,45 @@ class SharedShelfMetadataApplicationProfile {
         try {
             $this->project = $project_id;
             $this->metadata = $this->sss->project_metadata($this->project);
-            $this->project_fields();
+            $this->project_fields2();
         }
         catch (Exception $e) {
             echo 'set_project caught exception: ',  $e->getMessage(), "\n";
         } 
+    }
+
+    private function project_fields2() {
+        $fields = array();
+        foreach ($this->metadata['columns'] as $column) {
+            $col = array();
+            $col['dataIndex'] = $column['dataIndex'];
+            $col['header'] = $column['header'];
+
+            // repeating fields
+            $map_field = $column['header'];
+            $map_field_base = preg_replace('/[0-9]+/', '', $map_field);
+            if ($map_field == $map_field_base) {
+                $map_field_no = 1;
+            }
+            else {
+                $map_field_no = preg_replace('/^.+([0-9]+).*/', '$1', $map_field);
+            }
+
+            // lookup solr field name
+            if (isset($this->map_fields["$map_field_base"])) {
+                $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                $col['solr'] = $solr_field;
+                if ($this->map_fields["$map_field_base"]['multivalued']) {
+                    $col['order'] = $map_field_no;
+                }
+                $fields[$column['dataIndex']] = $col;
+            }
+            else {
+                echo "Field missing from MAP: $map_field_base\n";
+            }
+
+        }
+        $this->ss2map = $fields;
     }
 
     private function project_fields() {
