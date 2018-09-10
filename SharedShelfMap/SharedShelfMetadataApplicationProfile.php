@@ -39,7 +39,7 @@ class SharedShelfMetadataApplicationProfile {
         "Created On" => array( 'map_name' => "Created On", 'solr_name' => "map_created_on", 'multivalued' => FALSE, 'type' => "date" ),
         "Culture" => array( 'map_name' => "Culture", 'solr_name' => "map_culture", 'multivalued' => TRUE, 'type' => "string" ),
         "Date" => array( 'map_name' => "Date", 'solr_name' => "map_date", 'multivalued' => TRUE, 'type' => "tdate" ),
-        "Date_Type" => array( 'map_name' => "Date_Type", 'solr_name' => "map_date_type", 'multivalued' => FALSE, 'type' => "string" ),
+        "Date_Type" => array( 'map_name' => "Date_Type", 'solr_name' => "map_date_type", 'multivalued' => TRUE, 'type' => "string" ),
         "DCMI Type" => array( 'map_name' => "DCMI Type", 'solr_name' => "map_dcmi_type", 'multivalued' => FALSE, 'type' => "string" ),
         "Description" => array( 'map_name' => "Description", 'solr_name' => "map_description", 'multivalued' => TRUE, 'type' => "string" ),
         "Disable Download" => array( 'map_name' => "Disable Download", 'solr_name' => "map_disable_download", 'multivalued' => FALSE, 'type' => "int" ),
