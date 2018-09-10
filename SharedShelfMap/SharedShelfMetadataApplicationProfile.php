@@ -13,7 +13,7 @@ class SharedShelfMetadataApplicationProfile {
     private $map_fields = array(
         "Address" => array( 'map_name' => "Address", 'solr_name' => "map_address", 'multivalued' => TRUE, 'type' => "string" ),
         "Agent" => array( 'map_name' => "Agent", 'solr_name' => "map_agent", 'multivalued' => TRUE, 'type' => "string" ),
-        "Agent_Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "map_agent_role", 'multivalued' => FALSE, 'type' => "string" ),
+        "Agent_Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "map_agent_role", 'multivalued' => TRUE, 'type' => "string" ),
         "Alternate Title" => array( 'map_name' => "Alternate Title", 'solr_name' => "map_alternate_title", 'multivalued' => FALSE, 'type' => "string" ),
         "Annotation" => array( 'map_name' => "Annotation", 'solr_name' => "map_annotation", 'multivalued' => FALSE, 'type' => "string" ),
         "Archival Collection" => array( 'map_name' => "Archival Collection", 'solr_name' => "map_archival_collection", 'multivalued' => FALSE, 'type' => "string" ),
