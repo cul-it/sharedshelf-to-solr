@@ -63,7 +63,7 @@ class SharedShelfMetadataApplicationProfile {
         "Latest Date" => array( 'map_name' => "Latest Date", 'solr_name' => "map_latest_date", 'multivalued' => FALSE, 'type' => "int" ),
         "Latitude" => array( 'map_name' => "Latitude", 'solr_name' => "map_latitude", 'multivalued' => FALSE, 'type' => "location" ),
         "Legacy_Label" => array( 'map_name' => "Legacy_Label", 'solr_name' => "map_legacy_label", 'multivalued' => TRUE, 'type' => "string" ),
-        "Legacy_Value" => array( 'map_name' => "Legacy_Value", 'solr_name' => "map_legacy_value", 'multivalued' => FALSE, 'type' => "string" ),
+        "Legacy_Value" => array( 'map_name' => "Legacy_Value", 'solr_name' => "map_legacy_value", 'multivalued' => TRUE, 'type' => "string" ),
         "Linked Data Updated On" => array( 'map_name' => "Linked Data Updated On", 'solr_name' => "map_linked_data_updated_on", 'multivalued' => FALSE, 'type' => "date" ),
         "Location" => array( 'map_name' => "Location", 'solr_name' => "map_location", 'multivalued' => TRUE, 'type' => "string" ),
         "Longitude" => array( 'map_name' => "Longitude", 'solr_name' => "map_longitude", 'multivalued' => FALSE, 'type' => "location" ),
