@@ -140,18 +140,20 @@ try {
             $asset = flatten($asset);
 
             // fix problem records - choose earliest accessioned date
-            $accessioned_date = new DateTime();
-            $candidates = is_array($asset['dc.date.accessioned']) ? $asset['dc.date.accessioned'] : array($asset['dc.date.accessioned']);
-            foreach ($candidates as $candidate) {
-                // date format should be 2006-09-13T23:08:42Z
-                if (($test_date = new DateTime($candidate)) !== FALSE) {
-                    if ($test_date < $accessioned_date) {
-                        $accessioned_date = $test_date;
+            if (isset($asset['dc.date.accessioned'])) {
+                $accessioned_date = new DateTime();
+                $candidates = is_array($asset['dc.date.accessioned']) ? $asset['dc.date.accessioned'] : array($asset['dc.date.accessioned']);
+                foreach ($candidates as $candidate) {
+                    // date format should be 2006-09-13T23:08:42Z
+                    if (($test_date = new DateTime($candidate)) !== FALSE) {
+                        if ($test_date < $accessioned_date) {
+                            $accessioned_date = $test_date;
+                        }
                     }
                 }
+                $asset['dc.date.accessioned'] = $accessioned_date->format("Y-m-d\TH:i:s\Z");
             }
-            $asset['dc.date.accessioned'] = $accessioned_date->format("Y-m-d\TH:i:s\Z");
-
+            
             if (!$force_replacement) {                
                 $solr_in = $solr->get_item($solr_id);
                 if (!empty($solr_in) && !empty($asset['dc.date.accessioned'])) {
