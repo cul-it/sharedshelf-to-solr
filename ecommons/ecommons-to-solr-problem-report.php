@@ -174,15 +174,37 @@ try {
                         $output = "Missing dc.date.accessioned field";
                         throw new Exception($output, 1);
                     }
-                    if (is_array($asset['dc.date.accessioned'])) {
-                        $output = "Multiple dc.date.accessioned fields";
-                        throw new Exception($output, 1);
+                                
+                    // fix problem records - choose earliest accessioned date
+                    if (isset($asset['dc.date.accessioned'])) {
+                        $accessioned_date = new DateTime();
+                        $candidates = is_array($asset['dc.date.accessioned']) ? $asset['dc.date.accessioned'] : array($asset['dc.date.accessioned']);
+                        $found_one = false;
+                        foreach ($candidates as $candidate) {
+                            // date format should be 2006-09-13T23:08:42Z
+                            if (($test_date = new DateTime($candidate)) !== FALSE) {
+                                if ($test_date < $accessioned_date) {
+                                    $accessioned_date = $test_date;
+                                    $found_one = true;
+                                }
+                            }
+                        }
+                        if (!$found_one) {
+                            $output = "Could not find a valid acessioned date.";
+                            throw new Exception($output, 1);
+                        }
+                        $asset['dc.date.accessioned'] = $accessioned_date->format("Y-m-d\TH:i:s\Z");
                     }
-                    // date format must be 2006-09-13T23:08:42Z
-                    if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
-                        $output = "Bad date format: " . $asset['dc.date.accessioned'];
-                        throw new Exception($output, 1);
-                    }
+
+                    // if (is_array($asset['dc.date.accessioned'])) {
+                    //     $output = "Multiple dc.date.accessioned fields";
+                    //     throw new Exception($output, 1);
+                    // }
+                    // // date format must be 2006-09-13T23:08:42Z
+                    // if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/',$asset['dc.date.accessioned']) != 1) {
+                    //     $output = "Bad date format: " . $asset['dc.date.accessioned'];
+                    //     throw new Exception($output, 1);
+                    // }
                 }
             }
         }
