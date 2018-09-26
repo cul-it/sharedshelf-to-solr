@@ -141,11 +141,15 @@ class SharedShelfMetadataApplicationProfile {
 
             // lookup solr field name
             if (isset($this->map_fields["$map_field_base"])) {
-                $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
-                $col['solr'] = $solr_field;
-                if ($this->map_fields["$map_field_base"]['multivalued']) {
+                if ($this->map_fields["$map_field_base"]['multivalued'] && $map_field_no > 1) {
                     $col['order'] = $map_field_no;
+                    $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                    $solr_field = preg_replace('/_([^_]+)(_?.?+)/', '_${1}' . $map_field_no . '${2}', $solr_field);
                 }
+                else {
+                    $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                }
+                $col['solr'] = $solr_field;
                 $fields[$column['dataIndex']] = $col;
             }
             else {
