@@ -55,6 +55,9 @@ try {
     
     print_r($asset);
 
+    $ini = $map->get_map_as_ini();
+    echo $ini;
+
 
     // $id = $starting_asset;
     // for ($i = 0; $i < $max_processing_count; $i++) {
