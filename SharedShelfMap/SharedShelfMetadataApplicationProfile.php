@@ -244,5 +244,21 @@ class SharedShelfMetadataApplicationProfile {
         return $solr;
     }
 
+    function get_map_as_ini() {
+        // return the mapping formatted as a .ini file (see ss2solr.example.ini)
+        $lines = array();
+        $lines[] = ';; account configuration for ss2solr';
+        $lines[] = 'solr = "http://jrc88.solr.library.cornell.edu/solr/digitalcollections"';
+        $lines[] = ';; add the project ID from sharedshelf';
+        $lines[] = 'project = "' . $this->project . '"';
+        $lines[] = "";
+        foreach($this->ss2map as $ssField => $info) {
+            $lines[] = '; ' . $info['header'];
+            $lines[] = 'fields[' . $ssField . '] = "' . $info['solr'] . '"';
+            $lines[] = '';
+        }
+        return implode("\n", $lines);
+    }
+
 }
 ?>
