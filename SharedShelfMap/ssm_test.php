@@ -25,7 +25,7 @@ try {
       *
       */
   
-    $collection = 0;
+    $collection = 1;
     if ($collection == 1) {
       $project = 4803; // Seneca Haudenosaunee
       $starting_asset = 22702858;
