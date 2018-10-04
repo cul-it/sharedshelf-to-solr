@@ -160,6 +160,22 @@ class SharedShelfMetadataApplicationProfile {
         $this->ss2map = $fields;
     }
 
+    private function get_solr_extension($solr_base_name) {
+        switch ($solr_base_name) {
+            case 'collection_sequence': $extension = 'isi'; break;
+            case 'created_on':          $extension = 'tsi'; break;
+            case 'id':                  $extension = ''; break;
+            case 'map_agent_role':      $extension = ''; break; 
+            case 'project_id':          $extension = 'ssi'; break;
+            case 'updated_on':          $extension = 'ss'; break;
+            
+            default:
+                $extension = 'tesim'
+                break;
+        }
+        return $extension;
+    }
+
     private function project_fields() {
         // map sharedshelf field names to MAP field names
         //print_r($this->metadata);
