@@ -1,5 +1,6 @@
 <?php
-require_once('../SharedShelfService.php');
+require_once '../SharedShelfService.php' ;
+require_once "readCSV.php";
 
 class SharedShelfMetadataApplicationProfile {
 
