@@ -298,9 +298,32 @@ class SharedShelfMetadataApplicationProfile {
 
     function get_map_as_ini() {
         // return the mapping formatted as a .ini file (see ss2solr.example.ini)
+        $test = array('cat' => 1, 'dog' => 2);
+        var_dump($test);
+
+        // find collection level data in CSV file
+        $collection = false;
+        $csv = readCSV("collection_metadata.csv");
+        foreach ($csv as $vals) {
+            // foreach ($project as $key => $value) {
+            //     echo ".$key.\n";
+            // }
+            //var_dump($project['collection_id']);
+            if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
+                $collection = $vals;
+                break;
+            }
+            else {
+                echo "bad vals: \n";
+                echo $vals['collection_id'];
+            }
+        }
+        if ($collection === false) {
+            return '';
+        }
         $lines = array();
         $lines[] = ';; account configuration for ss2solr';
-        $lines[] = 'solr = "http://jrc88.solr.library.cornell.edu/solr/digitalcollections"';
+        $lines[] = 'solr = "' . $collection->solr_target . '"';
         $lines[] = ';; add the project ID from sharedshelf';
         $lines[] = 'project = "' . $this->project . '"';
         $lines[] = "";
@@ -308,6 +331,10 @@ class SharedShelfMetadataApplicationProfile {
             $lines[] = '; ' . $info['header'];
             $lines[] = 'fields[' . $ssField . '] = "' . $info['solr'] . '"';
             $lines[] = '';
+        }
+
+        foreach ($this->collection_fields as $fld) {
+            $lines[] = 'fields[' . $fld['field_name'] . '] = "'. $fld['solr_name'] . '"';
         }
         return implode("\n", $lines);
     }
