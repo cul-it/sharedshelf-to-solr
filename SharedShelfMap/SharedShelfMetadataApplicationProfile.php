@@ -173,7 +173,7 @@ class SharedShelfMetadataApplicationProfile {
             case 'updated_on':          $extension = 'ss'; break;
             
             default:
-                $extension = 'tesim'
+                $extension = 'tesim';
                 break;
         }
         return $extension;
