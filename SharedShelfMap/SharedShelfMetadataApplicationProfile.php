@@ -108,6 +108,38 @@ class SharedShelfMetadataApplicationProfile {
         "Work Type" => array( 'map_name' => "Work Type", 'solr_name' => "map_work_type", 'multivalued' => TRUE, 'type' => "string" ),
     );
 
+    private $collection_fields = array(
+        "Media URL" => array( 'field_name' => "media_URL_tesim", 'solr_name' => "media_URL_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 0" => array( 'field_name' => "media_URL_size_0_s", 'solr_name' => "media_URL_size_0_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 1" => array( 'field_name' => "media_URL_size_1_s", 'solr_name' => "media_URL_size_1_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 2" => array( 'field_name' => "media_URL_size_2_s", 'solr_name' => "media_URL_size_2_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 3" => array( 'field_name' => "media_URL_size_3_s", 'solr_name' => "media_URL_size_3_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 4" => array( 'field_name' => "media_URL_size_4_s", 'solr_name' => "media_URL_size_4_tesim", 'multivalued' => FALSE, 'type' => "string"),
+    );
+
+    // note: both names are solr field names
+    private $copy_fields = array(
+        "Title" => array( 'source_name' => 'title', 'target_name' => 'full_title'),
+
+    );
+
+    // same value set for each record in collection
+    // target_name is a solr field
+    // source_column is a column in collection_metadata.csv
+    private $set_solr_fields = array(
+        "Collection ID" => array( 'target_name' => 'project', 'source_column' => 'collection_id'),
+        "Collection Name" => array( 'target_name' => 'collection_tesim', 'source_column' => 'collection_name'),
+        "Collection Website URL" => array( 'target_name' => 'collection_website_ss', 'source_column' => 'collection_portal_path'),
+        "Shared Shelf Commons URL" => array( 'target_name' => 'ssc_site_tesim', 'source_column' => 'collection_ssc_url'),
+        "Bib ID" => array( 'target_name' => 'bibid_ssi', 'source_column' => 'bib_id'),
+        "Format" => array( 'target_name' => 'format_tesim', 'source_column' => 'format'),
+        "Max Download" => array( 'target_name' => 'download_link_tesim', 'source_column' => 'max_download_size'),
+        "Location Type" => array( 'source_column' => 'location_type'),
+        "Creator Sort" => array( 'target_name' => 'author_t', 'source_column' => 'creator_sort', 'single_value' => true, ),
+        "Title Sort" => array( 'target_name' => 'title_ssi', 'source_column' => 'title_sort', 'single_value' => true, ),
+        "Publishing Target" => array( 'target_name' => 'publishing_target_id', 'source_column' => 'publishing_target_id'),
+    );
+
     function __construct($ss) {
         $this->sss = $ss; // fully built SharedShelfService object
     }
