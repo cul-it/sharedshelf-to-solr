@@ -119,7 +119,7 @@ class SharedShelfMetadataApplicationProfile {
 
     // note: both names are solr field names
     private $copy_fields = array(
-        "Title" => array( 'source_name' => 'title', 'target_name' => 'full_title'),
+        "Title" => array( 'source_name' => 'title_tesim', 'target_name' => 'full_title_tesim'),
 
     );
 
