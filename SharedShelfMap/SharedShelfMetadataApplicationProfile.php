@@ -138,6 +138,7 @@ class SharedShelfMetadataApplicationProfile {
         "Creator Sort" => array( 'target_name' => 'author_t', 'source_column' => 'creator_sort', 'single_value' => true, ),
         "Title Sort" => array( 'target_name' => 'title_ssi', 'source_column' => 'title_sort', 'single_value' => true, ),
         "Publishing Target" => array( 'target_name' => 'publishing_target_id', 'source_column' => 'publishing_target_id'),
+        "Solr Target" => array( 'target_name' => 'solr', 'source_column' => 'solr_target'),
     );
 
     function __construct($ss) {
