@@ -1,5 +1,6 @@
 <?php
-require_once('../SharedShelfService.php');
+require_once '../SharedShelfService.php' ;
+require_once "readCSV.php";
 
 class SharedShelfMetadataApplicationProfile {
 
@@ -107,6 +108,39 @@ class SharedShelfMetadataApplicationProfile {
         "Work Type" => array( 'map_name' => "Work Type", 'solr_name' => "map_work_type", 'multivalued' => TRUE, 'type' => "string" ),
     );
 
+    private $collection_fields = array(
+        "Media URL" => array( 'field_name' => "media_URL_tesim", 'solr_name' => "media_URL_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 0" => array( 'field_name' => "media_URL_size_0_s", 'solr_name' => "media_URL_size_0_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 1" => array( 'field_name' => "media_URL_size_1_s", 'solr_name' => "media_URL_size_1_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 2" => array( 'field_name' => "media_URL_size_2_s", 'solr_name' => "media_URL_size_2_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 3" => array( 'field_name' => "media_URL_size_3_s", 'solr_name' => "media_URL_size_3_tesim", 'multivalued' => FALSE, 'type' => "string"),
+        "Media URL Size 4" => array( 'field_name' => "media_URL_size_4_s", 'solr_name' => "media_URL_size_4_tesim", 'multivalued' => FALSE, 'type' => "string"),
+    );
+
+    // note: both names are solr field names
+    private $copy_fields = array(
+        "Title" => array( 'source_name' => 'title_tesim', 'target_name' => 'full_title_tesim'),
+
+    );
+
+    // same value set for each record in collection
+    // target_name is a solr field
+    // source_column is a column in collection_metadata.csv
+    private $set_solr_fields = array(
+        "Collection ID" => array( 'target_name' => 'project', 'source_column' => 'collection_id'),
+        "Collection Name" => array( 'target_name' => 'collection_tesim', 'source_column' => 'collection_name'),
+        "Collection Website URL" => array( 'target_name' => 'collection_website_ss', 'source_column' => 'collection_portal_path'),
+        "Shared Shelf Commons URL" => array( 'target_name' => 'ssc_site_tesim', 'source_column' => 'collection_ssc_url'),
+        "Bib ID" => array( 'target_name' => 'bibid_ssi', 'source_column' => 'bib_id'),
+        "Format" => array( 'target_name' => 'format_tesim', 'source_column' => 'format'),
+        "Max Download" => array( 'target_name' => 'download_link_tesim', 'source_column' => 'max_download_size'),
+        "Location Type" => array( 'source_column' => 'location_type'),
+        "Creator Sort" => array( 'target_name' => 'author_t', 'source_column' => 'creator_sort', 'single_value' => true, ),
+        "Title Sort" => array( 'target_name' => 'title_ssi', 'source_column' => 'title_sort', 'single_value' => true, ),
+        "Publishing Target" => array( 'target_name' => 'publishing_target_id', 'source_column' => 'publishing_target_id'),
+        "Solr Target" => array( 'target_name' => 'solr', 'source_column' => 'solr_target'),
+    );
+
     function __construct($ss) {
         $this->sss = $ss; // fully built SharedShelfService object
     }
@@ -149,6 +183,9 @@ class SharedShelfMetadataApplicationProfile {
                 else {
                     $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
                 }
+                $solr_base = $this->map_fields["$map_field_base"]["solr_name"];
+                $ext = $this->get_solr_extension($solr_base);
+                $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
                 $col['solr'] = $solr_field;
                 $fields[$column['dataIndex']] = $col;
             }
@@ -158,6 +195,22 @@ class SharedShelfMetadataApplicationProfile {
 
         }
         $this->ss2map = $fields;
+    }
+
+    private function get_solr_extension($solr_base_name) {
+        switch ($solr_base_name) {
+            case 'collection_sequence': $extension = 'isi'; break;
+            case 'created_on':          $extension = 'tsi'; break;
+            case 'id':                  $extension = ''; break;
+            case 'map_agent_role':      $extension = ''; break; 
+            case 'project_id':          $extension = 'ssi'; break;
+            case 'updated_on':          $extension = 'ss'; break;
+            
+            default:
+                $extension = 'tesim';
+                break;
+        }
+        return $extension;
     }
 
     private function project_fields() {
@@ -246,9 +299,26 @@ class SharedShelfMetadataApplicationProfile {
 
     function get_map_as_ini() {
         // return the mapping formatted as a .ini file (see ss2solr.example.ini)
+ 
+        // find collection level data in CSV file
+        $collection = false;
+        $csv = readCSV("collection_metadata.csv");
+        foreach ($csv as $vals) {
+            if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
+                $collection = $vals;
+                break;
+            }
+            else {
+                echo "bad vals: ";
+                echo $vals['collection_id'] . "\n";
+            }
+        }
+        if ($collection === false) {
+            return '';
+        }
         $lines = array();
         $lines[] = ';; account configuration for ss2solr';
-        $lines[] = 'solr = "http://jrc88.solr.library.cornell.edu/solr/digitalcollections"';
+        $lines[] = 'solr = "' . $collection['solr_target'] . '"';
         $lines[] = ';; add the project ID from sharedshelf';
         $lines[] = 'project = "' . $this->project . '"';
         $lines[] = "";
@@ -257,6 +327,85 @@ class SharedShelfMetadataApplicationProfile {
             $lines[] = 'fields[' . $ssField . '] = "' . $info['solr'] . '"';
             $lines[] = '';
         }
+
+        $lines[] = '; special media field added by us';
+        foreach ($this->collection_fields as $fld) {
+            $lines[] = 'fields[' . $fld['field_name'] . '] = "'. $fld['solr_name'] . '"';
+        }
+        
+        $lines[] = ';; copy ss fields to designated field names';
+        $lines[] = ';; note: the left hand key here should match the right hand key above!!!!';
+        $lines[] = ';; copy_field[source solr field] = "solr target field"';
+        foreach ($this->copy_fields as $key => $value) {
+            $lines[] = 'copy_field[' . $value['source_name'] . '] = "' . $value['target_name'] . "\"";
+        }
+        $lines[] = '';
+
+        // max download size
+        $lines[] = '';
+        $lines[] = ';; if you want users to download full sized images, use media_URL_tesim';
+        $lines[] = ';; otherwise use media_URL_size_4_tesim';
+        $source_column = $this->set_solr_fields['Max Download']['source_column'];
+        $source = $collection["$source_column"];
+        $target = $this->set_solr_fields['Max Download']['target_name'];
+        $lines[] = 'copy_field[' . $source . '] = "' . $target . "\"";
+        $lines[] = '';
+
+        foreach ($this->set_solr_fields as $key => $value) {
+            $source_column = $value['source_column'];
+            if (empty($collection["$source_column"])) {
+                continue;
+            }
+            $source = $collection["$source_column"];
+            $target = empty($value['target_name']) ? '' : $value['target_name'];
+            switch ($key) {
+                case 'Max Download':
+                    continue;   // handled as copyfield
+                    break;
+                case 'Creator Sort':
+                case 'Title Sort':
+                    //single value
+                    $lines[] = 'set_single_value[' . $target . '] = "' . $source . '"';
+                    break;
+                case 'Collection ID':
+                case 'Solr Target':
+                    continue; // special cases
+                    break;
+                case 'Location Type':
+                    if (!empty($source)) {
+                        $locs = explode('|', $source);
+                        foreach ($locs as $location_type) {
+                            switch ($variable) {
+                                case 'geocoordinates':
+                                    $line[] = 'set_location[where_geocoordinates] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                case 'where':
+                                    $line[] = 'set_location[where_ssim] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                case 'geojson':
+                                    $line[] = ';; fields that will end up in the geojson.';
+                                    $line[] = ';; the fields need to be in this order: $lat,$lon,$loc,$id,$thumb';
+                                    $line[] = ';; the third item, $loc, is whatever you want to be used as the placename in the popup';
+                                    $line[] = ';; use whatever SSC image size you want for the last field $thumb, which becomes the thumbnail in the popup';                                    
+                                    $line[] = 'set_geojson[geojson_ssim] = "latitude_tsi,longitude_tsi,title_tesim,id,media_URL_size_1_tesim"';
+                                    break;
+                                case 'located':
+                                    $line[] = 'set_location[located_llsim] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                default:
+                                    throw new Exception("Invalid location type", 1);
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    $lines[] = 'set_solr_field[' . $target . '] = "' . $source . '"';
+                    break;
+            }
+        }
+        $lines[] = '';
+        
         return implode("\n", $lines);
     }
 

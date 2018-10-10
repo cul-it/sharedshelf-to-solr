@@ -1,5 +1,5 @@
-﻿collection_id,collection_name,collection_ssc_url,collection_portal_path,bib_id,max_download_size,format,location_type,publishing_target_id,solr_target
-589,John Reps Collection - Bastides,http://hdl.handle.net/1813.001/9225346,http://hdl.handle.net/1813.001/9225346a,9225346,4,Image,geocoordinates|where|geojson,777,http://jrc88.solr.library.cornell.edu/solr/digitalcollections
-3462,Punk Flyers,http://www.sscommons.org/openlibrary/welcome.html#3|collections|7731317||Cornell3A20Punk20Flyers|||,/collections/punkflyers,10093411,3,Image,located|geocoordinates|where,2166,http://jrc88.solr.library.cornell.edu/solr/digitalcollections
-4547,NYS Historical Dendrochronology,,,,,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections
-4803,"Seneca Haudenosaunee Archaeological Materials, circa 1688-1754",,,,4,Image,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections
+collection_id,nickname,collection_name,collection_ssc_url,collection_portal_path,bib_id,max_download_size,format,location_type,publishing_target_id,solr_target,creator_sort,title_sort
+589,bastides,John Reps Collection - Bastides,http://hdl.handle.net/1813.001/9225346,http://hdl.handle.net/1813.001/9225346a,9225346,media_URL_size_4_tesim,Image,geocoordinates|where|geojson,777,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
+3462,punkflyers,Punk Flyers,http://www.sscommons.org/openlibrary/welcome.html#3|collections|7731317||Cornell3A20Punk20Flyers|||,/collections/punkflyers,10093411,media_URL_size_3_tesim,Image,located|geocoordinates|where,2166,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
+4547,dendro,NYS Historical Dendrochronology,,,,,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
+4803,seneca,"Seneca Haudenosaunee Archaeological Materials, circa 1688-1754",/collections/seneca,https://digital.library.cornell.edu/collections/seneca,,media_URL_size_4_tesim,Image,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,photographer_creator_tesim,title_tesim
