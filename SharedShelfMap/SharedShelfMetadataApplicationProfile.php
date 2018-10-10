@@ -318,7 +318,7 @@ class SharedShelfMetadataApplicationProfile {
         }
         $lines = array();
         $lines[] = ';; account configuration for ss2solr';
-        $lines[] = 'solr = "' . $collection->solr_target . '"';
+        $lines[] = 'solr = "' . $collection['solr_target'] . '"';
         $lines[] = ';; add the project ID from sharedshelf';
         $lines[] = 'project = "' . $this->project . '"';
         $lines[] = "";
