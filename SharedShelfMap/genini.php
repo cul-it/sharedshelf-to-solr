@@ -25,8 +25,11 @@ try {
     $csv = "collection_metadata.csv";
     $lines = readCSV($csv);
     foreach ($lines as $line) {
-        $format = "Project %d nicknamed %s\n";
-        echo sprintf($format, $line['collection_id'], $line['nickname']);
+        if ($line['active'] == 'no') {
+            continue;
+        }
+        $format = "Project: %d - nicknamed: %s - titled: %s\n";
+        echo sprintf($format, $line['collection_id'], $line['nickname'], $line['collection_name']);
         $format = "ini/ss2solr.%s.ini";
         $filename = sprintf($format, $line['nickname']);
 
