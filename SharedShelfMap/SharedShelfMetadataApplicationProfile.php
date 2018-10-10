@@ -299,24 +299,18 @@ class SharedShelfMetadataApplicationProfile {
 
     function get_map_as_ini() {
         // return the mapping formatted as a .ini file (see ss2solr.example.ini)
-        $test = array('cat' => 1, 'dog' => 2);
-        var_dump($test);
-
+ 
         // find collection level data in CSV file
         $collection = false;
         $csv = readCSV("collection_metadata.csv");
         foreach ($csv as $vals) {
-            // foreach ($project as $key => $value) {
-            //     echo ".$key.\n";
-            // }
-            //var_dump($project['collection_id']);
             if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
                 $collection = $vals;
                 break;
             }
             else {
-                echo "bad vals: \n";
-                echo $vals['collection_id'];
+                echo "bad vals: ";
+                echo $vals['collection_id'] . "\n";
             }
         }
         if ($collection === false) {
