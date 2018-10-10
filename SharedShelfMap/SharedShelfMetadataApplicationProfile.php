@@ -153,6 +153,7 @@ class SharedShelfMetadataApplicationProfile {
         }
         catch (Exception $e) {
             echo 'set_project caught exception: ',  $e->getMessage(), "\n";
+            throw $e;
         } 
     }
 
@@ -307,10 +308,6 @@ class SharedShelfMetadataApplicationProfile {
             if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
                 $collection = $vals;
                 break;
-            }
-            else {
-                echo "bad vals: ";
-                echo $vals['collection_id'] . "\n";
             }
         }
         if ($collection === false) {
