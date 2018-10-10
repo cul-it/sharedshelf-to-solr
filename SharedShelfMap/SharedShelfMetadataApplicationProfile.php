@@ -328,9 +328,84 @@ class SharedShelfMetadataApplicationProfile {
             $lines[] = '';
         }
 
+        $lines[] = '; special media field added by us';
         foreach ($this->collection_fields as $fld) {
             $lines[] = 'fields[' . $fld['field_name'] . '] = "'. $fld['solr_name'] . '"';
         }
+        
+        $lines[] = ';; copy ss fields to designated field names';
+        $lines[] = ';; note: the left hand key here should match the right hand key above!!!!';
+        $lines[] = ';; copy_field[source solr field] = "solr target field"';
+        foreach ($this->copy_fields as $key => $value) {
+            $lines[] = 'copy_field[' . $value['source_name'] . '] = "' . $value['target_name'] . "\"";
+        }
+        $lines[] = '';
+
+        // max download size
+        $lines[] = '';
+        $lines[] = ';; if you want users to download full sized images, use media_URL_tesim';
+        $lines[] = ';; otherwise use media_URL_size_4_tesim';
+        $source_column = $this->set_solr_fields['Max Download']['source_column'];
+        $source = $collection["$source_column"];
+        $target = $this->set_solr_fields['Max Download']['target_name'];
+        $lines[] = 'copy_field[' . $source . '] = "' . $target . "\"";
+        $lines[] = '';
+
+        foreach ($this->set_solr_fields as $key => $value) {
+            $source_column = $value['source_column'];
+            if (empty($collection["$source_column"])) {
+                continue;
+            }
+            $source = $collection["$source_column"];
+            $target = empty($value['target_name']) ? '' : $value['target_name'];
+            switch ($key) {
+                case 'Max Download':
+                    continue;   // handled as copyfield
+                    break;
+                case 'Creator Sort':
+                case 'Title Sort':
+                    //single value
+                    $lines[] = 'set_single_value[' . $target . '] = "' . $source . '"';
+                    break;
+                case 'Collection ID':
+                case 'Solr Target':
+                    continue; // special cases
+                    break;
+                case 'Location Type':
+                    if (!empty($source)) {
+                        $locs = explode('|', $source);
+                        foreach ($locs as $location_type) {
+                            switch ($variable) {
+                                case 'geocoordinates':
+                                    $line[] = 'set_location[where_geocoordinates] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                case 'where':
+                                    $line[] = 'set_location[where_ssim] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                case 'geojson':
+                                    $line[] = ';; fields that will end up in the geojson.';
+                                    $line[] = ';; the fields need to be in this order: $lat,$lon,$loc,$id,$thumb';
+                                    $line[] = ';; the third item, $loc, is whatever you want to be used as the placename in the popup';
+                                    $line[] = ';; use whatever SSC image size you want for the last field $thumb, which becomes the thumbnail in the popup';                                    
+                                    $line[] = 'set_geojson[geojson_ssim] = "latitude_tsi,longitude_tsi,title_tesim,id,media_URL_size_1_tesim"';
+                                    break;
+                                case 'located':
+                                    $line[] = 'set_location[located_llsim] = "latitude_tsi,longitude_tsi"';
+                                    break;
+                                default:
+                                    throw new Exception("Invalid location type", 1);
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    $lines[] = 'set_solr_field[' . $target . '] = "' . $source . '"';
+                    break;
+            }
+        }
+        $lines[] = '';
+        
         return implode("\n", $lines);
     }
 
