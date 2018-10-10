@@ -309,10 +309,6 @@ class SharedShelfMetadataApplicationProfile {
                 $collection = $vals;
                 break;
             }
-            else {
-                echo "bad vals: ";
-                echo $vals['collection_id'] . "\n";
-            }
         }
         if ($collection === false) {
             return '';
