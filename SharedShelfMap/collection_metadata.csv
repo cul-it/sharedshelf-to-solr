@@ -2,9 +2,8 @@ active,collection_id,nickname,collection_name,collection_ssc_url,collection_port
 no,589,bastides,John Reps Collection - Bastides,http://hdl.handle.net/1813.001/9225346,http://hdl.handle.net/1813.001/9225346a,9225346,media_URL_size_4_tesim,Image,geocoordinates|where|geojson,777,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,3462,punkflyers,Punk Flyers,http://www.sscommons.org/openlibrary/welcome.html#3|collections|7731317||Cornell3A20Punk20Flyers|||,/collections/punkflyers,10093411,media_URL_size_3_tesim,Image,located|geocoordinates|where,2166,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,4547,dendro,NYS Historical Dendrochronology,,,,,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
-no,4803,seneca,"Seneca Haudenosaunee Archaeological Materials, circa 1688-1754",,https://digital.library.cornell.edu/collections/seneca,,media_URL_size_4_tesim,Image,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,photographer_creator_tesim,title_tesim
 no,,,,,,,,,,,,,
-yes,48,artifacts,"Campus Artifacts, Art & Memorabilia ",http://hdl.handle.net/1813.001/7753376b,https://digital.library.cornell.edu/collections/artifactsandart,7753376,media_URL_size_4_tesim,Image,,157,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,creator_tesim,title_tesim
+no,48,artifacts,"Campus Artifacts, Art & Memorabilia ",http://hdl.handle.net/1813.001/7753376b,https://digital.library.cornell.edu/collections/artifactsandart,7753376,media_URL_size_4_tesim,Image,,157,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,creator_tesim,title_tesim
 no,49,karma,KARMA ,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,50,japantheatre,Japanese Woodblocks - Theatre,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,78,aerial,NYS Aerial Photographs ,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
@@ -80,4 +79,4 @@ no,4409,rudin,Rudin Slavery Collection,,,,media_URL_size_4_tesim,,,,http://jrc88
 no,4411,lindsaycooper,Lindsay Cooper Digital Archive ,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,4497,page,Art 2301 Printmaking Student Portfolios ,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
 no,4547,,NYS Historical Dendrochronology Project,,,,media_URL_size_4_tesim,,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,,
-yes,4803,seneca,Seneca Haudenosaunee Archaeological Materials,/collections/seneca,https://digital.library.cornell.edu/collections/seneca,,media_URL_size_4_tesim,Image,,,http://jrc88.solr.library.cornell.edu/solr/digitalcollections,photographer_creator_tesim,title_tesim
+yes,4803,seneca2,Seneca Haudenosaunee Archaeological Materials,/collections/seneca,https://digital.library.cornell.edu/collections/seneca,,media_URL_size_4_tesim,Image,,,http://digcoll.library.cornell.edu/solr/digitalcollections,photographer_creator_tesim,title_tesim
