@@ -153,6 +153,7 @@ class SharedShelfMetadataApplicationProfile {
         }
         catch (Exception $e) {
             echo 'set_project caught exception: ',  $e->getMessage(), "\n";
+            throw $e;
         } 
     }
 
