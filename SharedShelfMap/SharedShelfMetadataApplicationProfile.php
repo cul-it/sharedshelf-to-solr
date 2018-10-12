@@ -130,7 +130,7 @@ class SharedShelfMetadataApplicationProfile {
         "Collection ID" => array( 'target_name' => 'project', 'source_column' => 'collection_id'),
         "Collection Name" => array( 'target_name' => 'collection_tesim', 'source_column' => 'collection_name'),
         "Collection Website URL" => array( 'target_name' => 'collection_website_ss', 'source_column' => 'collection_portal_path'),
-        "Shared Shelf Commons URL" => array( 'target_name' => 'ssc_site_tesim', 'source_column' => 'collection_ssc_url'),
+        "Shared Shelf Commons URL" => array( 'target_name' => 'forum_website_tesim', 'source_column' => 'collection_ssc_url'),
         "Bib ID" => array( 'target_name' => 'bibid_ssi', 'source_column' => 'bib_id'),
         "Format" => array( 'target_name' => 'format_tesim', 'source_column' => 'format'),
         "Max Download" => array( 'target_name' => 'download_link_tesim', 'source_column' => 'max_download_size'),
@@ -404,6 +404,45 @@ class SharedShelfMetadataApplicationProfile {
         $lines[] = '';
         
         return implode("\n", $lines);
+    }
+
+    public function listFields() {
+        // list all the solr fields
+        $lines = array();
+        foreach ($this->map_fields as $key => $value) {
+            $solr_field = $value['solr_name'];
+            $ext = $this->get_solr_extension($solr_field);
+            $lines[] = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+            if ($value['multivalued']) {
+                for ($i = 2; $i <= 5; $i++) {
+                    if (empty($ext)) {
+                        $lines[] = $solr_field . $i;
+                    }
+                    else {
+                        $lines[] = $solr_field . $i . '_' . $ext;
+                    }
+                }
+            }
+        }
+
+        foreach ($this->collection_fields as $key => $value) {
+            $lines[] = $value['solr_name'];            
+        }
+
+        foreach ($this->copy_fields as $key => $value) {
+            if (isset($value['target_field'])) {
+                $lines[] = $value['target_field'];            
+            }
+        }
+
+        foreach ($this->set_solr_fields as $key => $value) {
+            if (isset($value['target_name'])) {
+                $lines[] = $value['target_name'];            
+            }
+        }
+        
+        sort($lines);
+        return $lines;
     }
 
 }
