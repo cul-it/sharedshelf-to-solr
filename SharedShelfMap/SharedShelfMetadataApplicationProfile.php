@@ -406,5 +406,44 @@ class SharedShelfMetadataApplicationProfile {
         return implode("\n", $lines);
     }
 
+    public function listFields() {
+        // list all the solr fields
+        $lines = array();
+        foreach ($this->map_fields as $key => $value) {
+            $solr_field = $value['solr_name'];
+            $ext = $this->get_solr_extension($solr_field);
+            $lines[] = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+            if ($value['multivalued']) {
+                for ($i = 2; $i <= 5; $i++) {
+                    if (empty($ext)) {
+                        $lines[] = $solr_field . $i;
+                    }
+                    else {
+                        $lines[] = $solr_field . $i . '_' . $ext;
+                    }
+                }
+            }
+        }
+
+        foreach ($this->collection_fields as $key => $value) {
+            $lines[] = $value['solr_name'];            
+        }
+
+        foreach ($this->copy_fields as $key => $value) {
+            if (isset($value['target_field'])) {
+                $lines[] = $value['target_field'];            
+            }
+        }
+
+        foreach ($this->set_solr_fields as $key => $value) {
+            if (isset($value['target_name'])) {
+                $lines[] = $value['target_name'];            
+            }
+        }
+        
+        sort($lines);
+        return $lines;
+    }
+
 }
 ?>
