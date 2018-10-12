@@ -130,7 +130,7 @@ class SharedShelfMetadataApplicationProfile {
         "Collection ID" => array( 'target_name' => 'project', 'source_column' => 'collection_id'),
         "Collection Name" => array( 'target_name' => 'collection_tesim', 'source_column' => 'collection_name'),
         "Collection Website URL" => array( 'target_name' => 'collection_website_ss', 'source_column' => 'collection_portal_path'),
-        "Shared Shelf Commons URL" => array( 'target_name' => 'ssc_site_tesim', 'source_column' => 'collection_ssc_url'),
+        "Shared Shelf Commons URL" => array( 'target_name' => 'forum_website_tesim', 'source_column' => 'collection_ssc_url'),
         "Bib ID" => array( 'target_name' => 'bibid_ssi', 'source_column' => 'bib_id'),
         "Format" => array( 'target_name' => 'format_tesim', 'source_column' => 'format'),
         "Max Download" => array( 'target_name' => 'download_link_tesim', 'source_column' => 'max_download_size'),
