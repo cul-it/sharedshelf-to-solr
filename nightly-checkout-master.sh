@@ -8,5 +8,5 @@ cd "${DIR}"
 GIT=`which git`
 
 # check out the latest master branch
-"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" checkout master
-"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull origin master
+"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" checkout digcoll_nonmap
+"$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull origin digcoll_nonmap
