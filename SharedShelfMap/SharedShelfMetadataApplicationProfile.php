@@ -135,7 +135,7 @@ class SharedShelfMetadataApplicationProfile {
         "Format" => array( 'target_name' => 'format_tesim', 'source_column' => 'format'),
         "Max Download" => array( 'target_name' => 'download_link_tesim', 'source_column' => 'max_download_size'),
         "Location Type" => array( 'source_column' => 'location_type'),
-        "Creator Sort" => array( 'target_name' => 'author_t', 'source_column' => 'creator_sort', 'single_value' => true, ),
+        "Creator Sort" => array( 'target_name' => 'author_t_tesim', 'source_column' => 'creator_sort', 'single_value' => true, ),
         "Title Sort" => array( 'target_name' => 'title_ssi', 'source_column' => 'title_sort', 'single_value' => true, ),
         "Publishing Target" => array( 'target_name' => 'publishing_target_id', 'source_column' => 'publishing_target_id'),
         "Solr Target" => array( 'target_name' => 'solr', 'source_column' => 'solr_target'),
