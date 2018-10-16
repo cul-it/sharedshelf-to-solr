@@ -203,7 +203,6 @@ class SharedShelfMetadataApplicationProfile {
             case 'collection_sequence': $extension = 'isi'; break;
             case 'created_on':          $extension = 'tsi'; break;
             case 'id':                  $extension = ''; break;
-            case 'map_agent_role':      $extension = ''; break; 
             case 'project_id':          $extension = 'ssi'; break;
             case 'updated_on':          $extension = 'ss'; break;
             
