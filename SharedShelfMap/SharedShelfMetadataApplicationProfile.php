@@ -127,7 +127,7 @@ class SharedShelfMetadataApplicationProfile {
     // target_name is a solr field
     // source_column is a column in collection_metadata.csv
     private $set_solr_fields = array(
-        "Collection ID" => array( 'target_name' => 'project', 'source_column' => 'collection_id'),
+        "Collection ID" => array( 'target_name' => 'project_isi', 'source_column' => 'collection_id'),
         "Collection Name" => array( 'target_name' => 'collection_tesim', 'source_column' => 'collection_name'),
         "Collection Website URL" => array( 'target_name' => 'collection_website_ss', 'source_column' => 'collection_portal_path'),
         "Shared Shelf Commons URL" => array( 'target_name' => 'forum_website_tesim', 'source_column' => 'collection_ssc_url'),
