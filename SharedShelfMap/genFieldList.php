@@ -15,8 +15,8 @@ try {
   
     $ss = new SharedShelfService($user['email'], $user['password']);
   
-    if ($ss->logged_in()) {
-      echo "User is logged in\n";
+    if (!$ss->logged_in()) {
+      throw new Exception("Can not log in.", 1);
     }
     
     $map = new SharedShelfMetadataApplicationProfile($ss);
