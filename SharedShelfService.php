@@ -35,7 +35,8 @@ class SharedShelfService {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     // get headers too with this line
     curl_setopt($ch, CURLOPT_HEADER, 1);
-    curl_setopt($ch, CURLOPT_POST, count($params));
+    $count = is_array($params) ? count($params) : 0; // php7+
+    curl_setopt($ch, CURLOPT_POST, $count);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     $result = curl_exec($ch);
     curl_close($ch);
