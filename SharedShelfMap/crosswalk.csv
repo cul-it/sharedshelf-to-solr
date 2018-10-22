@@ -1,0 +1,101 @@
+"ARTstor Id",identifier_tesim,single,recycled
+"Address",address_tesim,multiple,recycled
+"Agent",agent_tesim,multiple,new
+"Agent_Role",agent_role_tesim,multiple,new
+"Alternate Title",alternate_title_tesim,single,recycled
+"Annotation",annotation_tesim,single,recycled
+"Archival Collection",archival_collection_tesim,single,recycled
+"Archival Finding Aid",finding_aid_tesim,single,recycled
+"Artstor Classification Display",artstor_classification_display_tesim,single,new
+"Artstor Classification Facet",artstor_classification_facet_tesim,single,new
+"Artstor Classification Link",artstor_classification_link_tesim,single,new
+"Artstor Collection Digital Publisher",artstor_collection_digital_publisher_tesim,single,new
+"Artstor Collection Name",collection_tesim,single,recycled
+"Artstor Collection Publication Date",artstor_collection_publication_date_tesim,single,new
+"Artstor Collection Status",artstor_collection_status_tesim,single,new
+"Bibliography",bibliography_tesim,multiple,recycled
+"Box",box_box_folder_tesim,single,recycled
+"Cataloger",cataloger_tesim,single,recycled
+"Cite As",cite_as_tesim,single,recycled
+"Collection Level Bib",collection_level_bib_tesim,single,new
+"Collection Sequence",collection_sequence_isi,single,recycled
+"Collection Website",collection_website_ss,single,recycled
+"Condition",condition_tesim,single,recycled
+"Country",country_tesim,multiple,recycled
+"Created By",creator_tesim,multiple,recycled
+"Created On",created_on_tsi,single,recycled
+"Culture",culture_tesim,multiple,recycled
+"DCMI Type",dcmi_type_tesim,single,recycled
+"Date",date_tesim,multiple,recycled
+"Date_Type",date_type_tesim,multiple,new
+"Description",description_tesim,multiple,recycled
+"Disable Download",disable_download_tesim,single,recycled
+"Earliest Date",earliest_date_isi,single,recycled
+"Elevation",elevation_tesim,single,recycled
+"Event",event_name_tesim,multiple,recycled
+"Exhibition",exhibition_tesim,multiple,recycled
+"Filename",filename_tesim,multiple,recycled
+"Folder",folder_box_folder_tesim,single,recycled
+"ID Number",id_number_tesim,single,recycled
+"Identifier",identifier_tesim,multiple,recycled
+"Identifier_Type",identifier_type_tesim,multiple,new
+"Image View Description",image_view_desc_tesim,multiple,recycled
+"Image View Type",image_view_type_tesim,multiple,recycled
+"Inscription",inscription_tesim,multiple,recycled
+"Kaltura ID",kaltura_id_s,multiple,recycled
+"Kaltura Playlist",kaltura_playlist_s,single,recycled
+"Keywords",keywords_subject_tesim,multiple,recycled
+"Language",language_tesim,multiple,recycled
+"Latest Date",latest_date_isi,single,recycled
+"Latitude",latitude_tsi,single,recycled
+"Legacy_Label",legacy_label_tesim,multiple,new
+"Legacy_Value",legacy_value_tesim,multiple,new
+"Linked Data Updated On",linked_data_updated_on_tesim,single,new
+"Location",location_tesim,multiple,recycled
+"Longitude",longitude_tsi,single,recycled
+"Materials/Techniques",mat_tech_tesim,multiple,recycled
+"Measurement",measurement_tesim,multiple,new
+"Measurement_Dimension",measurement_dimension_tesim,multiple,new
+"Measurement_Unit",measurement_units_tesim,multiple,recycled
+"Metadata Update Date",metadata_update_date_tesim,single,new
+"Notes",notes_tesim,multiple,recycled
+"OCR Text",ocr_transcription_tesim,multiple,recycled
+"PreservationCollectionID",preservation_collection__id_tesim,single,recycled
+"PreservationItemID",preservation_item_id_tesim,single,recycled
+"PreservationSystem",preservationsystem_tesim,single,new
+"Provenance",provenance_tesim,multiple,recycled
+"Publish to Portal",publish_to_portal_tesim,single,new
+"References",reference_tesim,multiple,recycled
+"Related Work",related_work_tesim,multiple,new
+"Relationships",relationships_tesim,multiple,new
+"Repository",repository_tesim,single,recycled
+"Rights",rights_tesim,single,recycled
+"SSID",ssid_tesim,single,new
+"Series",series_tesim,multiple,new
+"Set Title",set_title_tesim,single,recycled
+"Shared Shelf Collection Digital Publisher",shared_shelf_collection_digital_publisher_tesim,single,new
+"Shared Shelf Collection Publication Date",shared_shelf_collection_publication_date_tesim,single,new
+"Shared Shelf Collection Status",shared_shelf_collection_status_tesim,single,new
+"Site",site_tesim,multiple,new
+"Source",source_tesim,multiple,recycled
+"Species",species_tesim,multiple,new
+"Style/Period",style_period_tesim,multiple,recycled
+"Subject",subject_tesim,multiple,recycled
+"Thumbnail",thumbnail_tesim,multiple,new
+"Title",title_tesim,multiple,recycled
+"Title_Language",title_language_tesim,multiple,new
+"Transcription",transcription_tesim,single,recycled
+"Translation",translation_tesim,single,recycled
+"Updated By",updated_by_tesim,multiple,new
+"Updated On",updated_on_ss,multiple,recycled
+"Venue",venue_tesim,multiple,new
+"Volume/Issue",vol_issue_no_tesim,single,recycled
+"Work Sequence",sequence_number_tsi,single,recycled
+"Work Type",work_type_tesim,multiple,recycled
+"isTranslatedAs",translation_as_tesim,multiple,recycled
+"isTranslationOf",translation_of_tesim,multiple,recycled
+"media_count",media_count_ssi,single,new
+"primary_image",primary_image_tesim,single,new
+"project_id",project_id_ssi,single,recycled
+"publishing_status",publishing_status_tesim,single,new
+"sequence_number",sequence_number_tsi,single,recycled

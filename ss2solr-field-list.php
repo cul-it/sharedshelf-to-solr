@@ -10,46 +10,48 @@ function addName($solr, $config, &$solrNames) {
     }
 }
 
-try {
-
-    // batch process information
-    $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
-    if ($task === FALSE) {
-      echo "Need sharedshelf-to-solr.ini\n";
-      exit (1);
-    }
+function getSolrFieldList() {
 
     // unique names and where defined
     $solrNames = array();
-    
-    foreach($task['configuration_files']['config'] as $config) {
-        $project = parse_ini_file($config);
-        if ($project === FALSE) {
-          throw new Exception("Missing configuration file: $config", 1);
+
+    try {
+
+        // batch process information
+        $task = parse_ini_file("sharedshelf-to-solr.ini", TRUE);
+        if ($task === FALSE) {
+        echo "Need sharedshelf-to-solr.ini\n";
+        exit (1);
         }
-        //print_r ($project);
-        foreach ($project['fields'] as $ss => $solr) {
-            addName($solr, $config, $solrNames);
-        }
-        foreach ($project['set_solr_field'] as $solr => $text) {
-            addName($solr, $config, $solrNames);
-        }
-        if (isset($project['set_single_value'])) {
-            foreach ($project['set_single_value'] as $solr => $text) {
+        
+        foreach($task['configuration_files']['config'] as $config) {
+            $project = parse_ini_file($config);
+            if ($project === FALSE) {
+            throw new Exception("Missing configuration file: $config", 1);
+            }
+            //print_r ($project);
+            foreach ($project['fields'] as $ss => $solr) {
                 addName($solr, $config, $solrNames);
             }
+            foreach ($project['set_solr_field'] as $solr => $text) {
+                addName($solr, $config, $solrNames);
+            }
+            if (isset($project['set_single_value'])) {
+                foreach ($project['set_single_value'] as $solr => $text) {
+                    addName($solr, $config, $solrNames);
+                }
+            }
         }
+        ksort($solrNames);
+        // foreach ($solrNames as $solr => $iniFiles) {
+        //     $unique = count(array_unique($iniFiles));
+        //     echo "$solr,$unique\n";
+        // }
+        //print_r($solrNames);
+     }
+    catch (Exception $e) {
+        $error = 'Caught exception: ' . $e->getMessage() . "\n";
+        echo $error;
     }
-    ksort($solrNames);
-    foreach ($solrNames as $solr => $iniFiles) {
-        $unique = count(array_unique($iniFiles));
-        echo "$solr,$unique\n";
-    }
-    //print_r($solrNames);
+    return $solrNames;
 }
-catch (Exception $e) {
-    $error = 'Caught exception: ' . $e->getMessage() . "\n";
-    echo $error;
-    exit (1);
-}
-exit (0);
