@@ -36,6 +36,7 @@
 "Exhibition",exhibition_tesim,multiple,recycled
 "Filename",filename_tesim,multiple,recycled
 "Folder",folder_box_folder_tesim,single,recycled
+"ID Number",id_number_tesim,single,recycled
 "Identifier",identifier_tesim,multiple,recycled
 "Identifier_Type",identifier_type_tesim,multiple,new
 "Image View Description",image_view_desc_tesim,multiple,recycled
@@ -70,6 +71,7 @@
 "Repository",repository_tesim,single,recycled
 "Rights",rights_tesim,single,recycled
 "SSID",ssid_tesim,single,new
+"Series",series_tesim,multiple,new
 "Set Title",set_title_tesim,single,recycled
 "Shared Shelf Collection Digital Publisher",shared_shelf_collection_digital_publisher_tesim,single,new
 "Shared Shelf Collection Publication Date",shared_shelf_collection_publication_date_tesim,single,new
@@ -92,3 +94,8 @@
 "Work Type",work_type_tesim,multiple,recycled
 "isTranslatedAs",translation_as_tesim,multiple,recycled
 "isTranslationOf",translation_of_tesim,multiple,recycled
+"media_count",media_count_ssi,single,new
+"primary_image",primary_image_tesim,single,new
+"project_id",project_id_ssi,single,recycled
+"publishing_status",publishing_status_tesim,single,new
+"sequence_number",sequence_number_tsi,single,recycled
