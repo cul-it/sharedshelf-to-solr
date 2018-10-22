@@ -107,6 +107,110 @@ class SharedShelfMetadataApplicationProfile {
         "Work Sequence" => array( 'map_name' => "Work Sequence", 'solr_name' => "map_work_sequence", 'multivalued' => FALSE, 'type' => "string" ),
         "Work Type" => array( 'map_name' => "Work Type", 'solr_name' => "map_work_type", 'multivalued' => TRUE, 'type' => "string" ),
     );
+    
+    private $map_fields2 = array(
+        "Address" => array( 'map_name' => "Address", 'solr_name' => "address_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Agent_Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Agent" => array( 'map_name' => "Agent", 'solr_name' => "agent_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Alternate Title" => array( 'map_name' => "Alternate Title", 'solr_name' => "alternate_title_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Annotation" => array( 'map_name' => "Annotation", 'solr_name' => "annotation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Archival Collection" => array( 'map_name' => "Archival Collection", 'solr_name' => "archival_collection_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Archival Finding Aid" => array( 'map_name' => "Archival Finding Aid", 'solr_name' => "finding_aid_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Classification Display" => array( 'map_name' => "Artstor Classification Display", 'solr_name' => "artstor_classification_display_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Classification Facet" => array( 'map_name' => "Artstor Classification Facet", 'solr_name' => "artstor_classification_facet_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Classification Link" => array( 'map_name' => "Artstor Classification Link", 'solr_name' => "artstor_classification_link_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Collection Digital Publisher" => array( 'map_name' => "Artstor Collection Digital Publisher", 'solr_name' => "artstor_collection_digital_publisher_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Collection Name" => array( 'map_name' => "Artstor Collection Name", 'solr_name' => "collection_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Artstor Collection Publication Date" => array( 'map_name' => "Artstor Collection Publication Date", 'solr_name' => "artstor_collection_publication_date_tesim", 'multivalued' => FALSE, 'type' => "date" ),
+        "Artstor Collection Status" => array( 'map_name' => "Artstor Collection Status", 'solr_name' => "artstor_collection_status_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "ARTstor Id" => array( 'map_name' => "ARTstor Id", 'solr_name' => "identifier_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Bibliography" => array( 'map_name' => "Bibliography", 'solr_name' => "bibliography_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Box" => array( 'map_name' => "Box", 'solr_name' => "box_box_folder_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Cataloger" => array( 'map_name' => "Cataloger", 'solr_name' => "cataloger_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Cite As" => array( 'map_name' => "Cite As", 'solr_name' => "cite_as_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Collection Level Bib" => array( 'map_name' => "Collection Level Bib", 'solr_name' => "collection_level_bib_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Collection Sequence" => array( 'map_name' => "Collection Sequence", 'solr_name' => "collection_sequence_isi", 'multivalued' => FALSE, 'type' => "string" ),
+        "Collection Website" => array( 'map_name' => "Collection Website", 'solr_name' => "collection_website_ss", 'multivalued' => FALSE, 'type' => "string" ),
+        "Condition" => array( 'map_name' => "Condition", 'solr_name' => "condition_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Country" => array( 'map_name' => "Country", 'solr_name' => "country_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Created By" => array( 'map_name' => "Created By", 'solr_name' => "creator_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Created On" => array( 'map_name' => "Created On", 'solr_name' => "created_on_tsi", 'multivalued' => FALSE, 'type' => "date" ),
+        "Culture" => array( 'map_name' => "Culture", 'solr_name' => "culture_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Date_Type" => array( 'map_name' => "Date_Type", 'solr_name' => "date_type_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Date" => array( 'map_name' => "Date", 'solr_name' => "date_tesim", 'multivalued' => TRUE, 'type' => "tdate" ),
+        "DCMI Type" => array( 'map_name' => "DCMI Type", 'solr_name' => "dcmi_type_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Description" => array( 'map_name' => "Description", 'solr_name' => "description_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Disable Download" => array( 'map_name' => "Disable Download", 'solr_name' => "disable_download_tesim", 'multivalued' => FALSE, 'type' => "int" ),
+        "Earliest Date" => array( 'map_name' => "Earliest Date", 'solr_name' => "earliest_date_isi", 'multivalued' => FALSE, 'type' => "int" ),
+        "Elevation" => array( 'map_name' => "Elevation", 'solr_name' => "elevation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Event" => array( 'map_name' => "Event", 'solr_name' => "event_name_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Exhibition" => array( 'map_name' => "Exhibition", 'solr_name' => "exhibition_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Filename" => array( 'map_name' => "Filename", 'solr_name' => "filename_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Folder" => array( 'map_name' => "Folder", 'solr_name' => "folder_box_folder_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "ID Number" => array( 'map_name' => "ID Number", 'solr_name' => "id_number_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Identifier_Type" => array( 'map_name' => "Identifier_Type", 'solr_name' => "identifier_type_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Identifier" => array( 'map_name' => "Identifier", 'solr_name' => "identifier_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Image View Description" => array( 'map_name' => "Image View Description", 'solr_name' => "image_view_desc_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Image View Type" => array( 'map_name' => "Image View Type", 'solr_name' => "image_view_type_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Inscription" => array( 'map_name' => "Inscription", 'solr_name' => "inscription_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "isTranslatedAs" => array( 'map_name' => "isTranslatedAs", 'solr_name' => "translation_as_tesim", 'multivalued' => TRUE, 'type' => "int" ),
+        "isTranslationOf" => array( 'map_name' => "isTranslationOf", 'solr_name' => "translation_of_tesim", 'multivalued' => TRUE, 'type' => "int" ),
+        "Kaltura ID" => array( 'map_name' => "Kaltura ID", 'solr_name' => "kaltura_id_s", 'multivalued' => TRUE, 'type' => "string" ),
+        "Kaltura Playlist" => array( 'map_name' => "Kaltura Playlist", 'solr_name' => "kaltura_playlist_s", 'multivalued' => FALSE, 'type' => "string" ),
+        "Keywords" => array( 'map_name' => "Keywords", 'solr_name' => "keywords_subject_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Language" => array( 'map_name' => "Language", 'solr_name' => "language_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Latest Date" => array( 'map_name' => "Latest Date", 'solr_name' => "latest_date_isi", 'multivalued' => FALSE, 'type' => "int" ),
+        "Latitude" => array( 'map_name' => "Latitude", 'solr_name' => "latitude_tsi", 'multivalued' => FALSE, 'type' => "location" ),
+        "Legacy_Label" => array( 'map_name' => "Legacy_Label", 'solr_name' => "legacy_label_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Legacy_Value" => array( 'map_name' => "Legacy_Value", 'solr_name' => "legacy_value_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Linked Data Updated On" => array( 'map_name' => "Linked Data Updated On", 'solr_name' => "linked_data_updated_on_tesim", 'multivalued' => FALSE, 'type' => "date" ),
+        "Location" => array( 'map_name' => "Location", 'solr_name' => "location_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Longitude" => array( 'map_name' => "Longitude", 'solr_name' => "longitude_tsi", 'multivalued' => FALSE, 'type' => "location" ),
+        "Materials/Techniques" => array( 'map_name' => "Materials/Techniques", 'solr_name' => "mat_tech_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Measurement_Dimension" => array( 'map_name' => "Measurement_Dimension", 'solr_name' => "measurement_dimension_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Measurement_Unit" => array( 'map_name' => "Measurement_Unit", 'solr_name' => "measurement_units_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Measurement" => array( 'map_name' => "Measurement", 'solr_name' => "measurement_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "media_count" => array( 'map_name' => "media_count", 'solr_name' => "media_count_ssi", 'multivalued' => FALSE, 'type' => "int" ),
+        "Metadata Update Date" => array( 'map_name' => "Metadata Update Date", 'solr_name' => "metadata_update_date_tesim", 'multivalued' => FALSE, 'type' => "date" ),
+        "Notes" => array( 'map_name' => "Notes", 'solr_name' => "notes_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "OCR Text" => array( 'map_name' => "OCR Text", 'solr_name' => "ocr_transcription_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "PreservationCollectionID" => array( 'map_name' => "PreservationCollectionID", 'solr_name' => "preservation_collection__id_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "PreservationItemID" => array( 'map_name' => "PreservationItemID", 'solr_name' => "preservation_item_id_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "PreservationSystem" => array( 'map_name' => "PreservationSystem", 'solr_name' => "preservationsystem_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "primary_image" => array( 'map_name' => "primary_image", 'solr_name' => "primary_image_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "project_id" => array( 'map_name' => "project_id", 'solr_name' => "project_id_ssi", 'multivalued' => FALSE, 'type' => "int" ),
+        "Provenance" => array( 'map_name' => "Provenance", 'solr_name' => "provenance_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Publish to Portal" => array( 'map_name' => "Publish to Portal", 'solr_name' => "publish_to_portal_tesim", 'multivalued' => FALSE, 'type' => "boolean" ),
+        "publishing_status" => array( 'map_name' => "publishing_status", 'solr_name' => "publishing_status_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "References" => array( 'map_name' => "References", 'solr_name' => "reference_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Related Work" => array( 'map_name' => "Related Work", 'solr_name' => "related_work_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Relationships" => array( 'map_name' => "Relationships", 'solr_name' => "relationships_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Repository" => array( 'map_name' => "Repository", 'solr_name' => "repository_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Rights" => array( 'map_name' => "Rights", 'solr_name' => "rights_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "sequence_number" => array( 'map_name' => "sequence_number", 'solr_name' => "sequence_number_tsi", 'multivalued' => FALSE, 'type' => "int" ),
+        "Series" => array( 'map_name' => "Series", 'solr_name' => "series_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Set Title" => array( 'map_name' => "Set Title", 'solr_name' => "set_title_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Shared Shelf Collection Digital Publisher" => array( 'map_name' => "Shared Shelf Collection Digital Publisher", 'solr_name' => "shared_shelf_collection_digital_publisher_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Shared Shelf Collection Publication Date" => array( 'map_name' => "Shared Shelf Collection Publication Date", 'solr_name' => "shared_shelf_collection_publication_date_tesim", 'multivalued' => FALSE, 'type' => "date" ),
+        "Shared Shelf Collection Status" => array( 'map_name' => "Shared Shelf Collection Status", 'solr_name' => "shared_shelf_collection_status_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Site" => array( 'map_name' => "Site", 'solr_name' => "site_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Source" => array( 'map_name' => "Source", 'solr_name' => "source_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Species" => array( 'map_name' => "Species", 'solr_name' => "species_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "SSID" => array( 'map_name' => "SSID", 'solr_name' => "ssid_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Style/Period" => array( 'map_name' => "Style/Period", 'solr_name' => "style_period_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Subject" => array( 'map_name' => "Subject", 'solr_name' => "subject_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Thumbnail" => array( 'map_name' => "Thumbnail", 'solr_name' => "thumbnail_tesim", 'multivalued' => TRUE, 'type' => "int" ),
+        "Title_Language" => array( 'map_name' => "Title_Language", 'solr_name' => "title_language_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Title" => array( 'map_name' => "Title", 'solr_name' => "title_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Transcription" => array( 'map_name' => "Transcription", 'solr_name' => "transcription_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Translation" => array( 'map_name' => "Translation", 'solr_name' => "translation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Updated By" => array( 'map_name' => "Updated By", 'solr_name' => "updated_by_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Updated On" => array( 'map_name' => "Updated On", 'solr_name' => "updated_on_ss", 'multivalued' => TRUE, 'type' => "date" ),
+        "Venue" => array( 'map_name' => "Venue", 'solr_name' => "venue_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Volume/Issue" => array( 'map_name' => "Volume/Issue", 'solr_name' => "vol_issue_no_tesim", 'multivalued' => FALSE, 'type' => "string" ),
+        "Work Sequence" => array( 'map_name' => "Work Sequence", 'solr_name' => "sequence_number_tsi", 'multivalued' => FALSE, 'type' => "string" ),
+        "Work Type" => array( 'map_name' => "Work Type", 'solr_name' => "work_type_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+    );
 
     private $collection_fields = array(
         "Media URL" => array( 'field_name' => "media_URL_tesim", 'solr_name' => "media_URL_tesim", 'multivalued' => FALSE, 'type' => "string"),
@@ -175,16 +279,16 @@ class SharedShelfMetadataApplicationProfile {
             }
 
             // lookup solr field name
-            if (isset($this->map_fields["$map_field_base"])) {
-                if ($this->map_fields["$map_field_base"]['multivalued'] && $map_field_no > 1) {
+            if (isset($this->map_fields2["$map_field_base"])) {
+                if ($this->map_fields2["$map_field_base"]['multivalued'] && $map_field_no > 1) {
                     $col['order'] = $map_field_no;
-                    $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                    $solr_field = $this->map_fields2["$map_field_base"]["solr_name"];
                     $solr_field = preg_replace('/_([^_]+)(_?.?+)/', '_${1}' . $map_field_no . '${2}', $solr_field);
                 }
                 else {
-                    $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
+                    $solr_field = $this->map_fields2["$map_field_base"]["solr_name"];
                 }
-                $solr_base = $this->map_fields["$map_field_base"]["solr_name"];
+                $solr_base = $this->map_fields2["$map_field_base"]["solr_name"];
                 $ext = $this->get_solr_extension($solr_base);
                 $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
                 $col['solr'] = $solr_field;
@@ -227,9 +331,9 @@ class SharedShelfMetadataApplicationProfile {
                 $map_field_no = preg_replace('/^.+([0-9]+).*/', '$1', $map_field);
             }
             $ss_field = $column['dataIndex'];
-            if (isset($this->map_fields["$map_field_base"])) {
-                $solr_field = $this->map_fields["$map_field_base"]["solr_name"];
-                if ($this->map_fields["$map_field_base"]['multivalued']) {
+            if (isset($this->map_fields2["$map_field_base"])) {
+                $solr_field = $this->map_fields2["$map_field_base"]["solr_name"];
+                if ($this->map_fields2["$map_field_base"]['multivalued']) {
                     $this->ss2map["$ss_field"] = array('solr' => "$solr_field", 'order' => $map_field_no);
                 }
                 else if (isset($this->project_fields["$map_field_base"])) {
@@ -408,17 +512,22 @@ class SharedShelfMetadataApplicationProfile {
     public function listFields() {
         // list all the solr fields
         $lines = array();
-        foreach ($this->map_fields as $key => $value) {
+        foreach ($this->map_fields2 as $key => $value) {
             $solr_field = $value['solr_name'];
-            $ext = $this->get_solr_extension($solr_field);
-            $lines[] = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+            $lines[] = $solr_field;
+            $count = preg_match('/\_[a-z]+$/', $solr_field, $matches);
+            $ext = $matches[0];
+            $lines[] = $ext;
+            $solr_prefix = substr($solr_field, 0, strlen($solr_field) - strlen($ext));
+            //$ext = $this->get_solr_extension($solr_field);
+            //$lines[] = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
             if ($value['multivalued']) {
                 for ($i = 2; $i <= 5; $i++) {
                     if (empty($ext)) {
                         $lines[] = $solr_field . $i;
                     }
                     else {
-                        $lines[] = $solr_field . $i . '_' . $ext;
+                        $lines[] = $solr_prefix . $i  . $ext;
                     }
                 }
             }
@@ -440,6 +549,23 @@ class SharedShelfMetadataApplicationProfile {
             }
         }
         
+        sort($lines);
+        return $lines;
+    }
+
+    public function mapSolrFields() {
+        $lines = array();
+        foreach ($this->map_fields2 as $key => $value) {
+            $parts = array();
+            //$solr_field = preg_replace('/^map_/','',$value['solr_name']);
+            $map_field = $value['map_name'];
+            $ext = $this->get_solr_extension($value['solr_name']);
+            $parts[] = '"' . $map_field . '"';
+            //$parts['solr'] = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+            $parts[] = $value['solr_name'];
+            $parts[] = $value['multivalued'] ? 'multiple' : 'single';
+            $lines[] = implode(',', $parts) . "\n";
+        }      
         sort($lines);
         return $lines;
     }
