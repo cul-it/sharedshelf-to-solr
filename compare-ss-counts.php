@@ -50,10 +50,11 @@ try {
         if ($count1 != $count2) {
             echo implode(',', array($id, '"' . $name .'"', $count1, $count2)) . "\n";
             $difs = array_diff($ids1, $ids2);
+            $max = 3;
             foreach ($difs as $dif) {
-                echo "$dif \n";
+                echo "       $dif \n";
+                if (--$max < 1) break;
             }
-            break;
         }
 
     }
