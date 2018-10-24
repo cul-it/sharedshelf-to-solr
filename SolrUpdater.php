@@ -156,7 +156,8 @@ class SolrUpdater {
         if (isset($asset["$lat"]) && isset($asset["$lon"])) {
           // set the value of the field to the two field values separated by a comma
           $value = $asset["$lat"] . ',' . $asset["$lon"];
-          $value = str_replace('"', '', $value);  // negative lat lon are quoted
+          $cleanup = array('"', ' '); // remove double quotes and blanks
+          $value = str_replace($cleanup, '', $value);
           $asset["$solr_key"] = $value;
         }
       }
