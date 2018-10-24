@@ -52,7 +52,8 @@ class SolrUpdater {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, count($params));
+    $count = is_array($params) ? count($params) : 0;
+    curl_setopt($ch, CURLOPT_POST, $count);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     $result = curl_exec($ch);
     curl_close($ch);
