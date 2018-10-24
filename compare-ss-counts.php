@@ -41,14 +41,19 @@ try {
         $id = $project['id'];
         $name = $project['name'];
 
-        $ids = $solr1->get_all_ids($id);
-        $count1 = count($ids);
+        $ids1 = $solr1->get_all_ids($id);
+        $count1 = count($ids1);
 
-        $ids = $solr2->get_all_ids($id);
-        $count2 = count($ids);
+        $ids2 = $solr2->get_all_ids($id);
+        $count2 = count($ids2);
 
         if ($count1 != $count2) {
             echo implode(',', array($id, '"' . $name .'"', $count1, $count2)) . "\n";
+            $difs = array_diff($ids1, $ids2);
+            foreach ($difs as $dif) {
+                echo "$dif \n";
+            }
+            break;
         }
 
     }
