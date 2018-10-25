@@ -187,7 +187,9 @@ class SolrUpdater {
         list($lat,$lon,$loc,$id,$thumb) = explode(',', $value);
         if (isset($asset["$lat"]) && isset($asset["$lon"]) && isset($asset["$loc"]) && isset($asset["$thumb"])) {
           // set the value of the field to the two field values separated by a comma
-          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $asset["$lon"] . ',' . $asset["$lat"] . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
+          $latlon = $asset["$lon"] . ',' . $asset["$lat"];
+          $latlon = str_replace($cleanup, '', $latlon);
+          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $latlon . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
           $asset["$solr_key"] = $value;
         }
       }
