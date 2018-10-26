@@ -518,7 +518,8 @@ class SharedShelfService {
     }
     $details = $this->get_response("/assets/$asset_id/representation/details");
     if (empty($details['name'])) {
-      throw new Exception("Missing original filename in media_file_extension().", 1);
+      return '';
+      //throw new Exception("Missing original filename in media_file_extension().", 1);
     }
     // filename of original file
     $filename = $details['name'];
@@ -535,7 +536,8 @@ class SharedShelfService {
     }
     $details = $this->get_response("/assets/$asset_id/representation/details");
     if (empty($details['name'])) {
-      throw new Exception("Missing original filename in media_file_extension().", 1);
+      return '';
+      //throw new Exception("Missing original filename in media_file_extension().", 1);
     }
     // filename of original file
     $filename = $details['name'];
