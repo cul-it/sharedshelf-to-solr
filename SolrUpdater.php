@@ -110,6 +110,13 @@ class SolrUpdater {
     return json_encode($data2);
   }
 
+  function remove_quotes_spaces($str) {
+    //https://stackoverflow.com/questions/40724543/how-to-replace-decoded-non-breakable-space-nbsp
+    $cleanup = array('"', ' ', "\xc2\xa0", "\t");
+    $result = str_replace($cleanup, '', $str);
+    return $result;
+  }
+
 /**
  * the place to handle fields that we want to add to solr, that are not in the original sharedshelf
  * field set.
@@ -135,7 +142,6 @@ class SolrUpdater {
  * and store them in new $asset fields
  */
   function add_custom_fields(&$asset) {
-    $cleanup = array('"', ' '); // remove double quotes and blanks
     if (isset($this->ini['copy_field'])) {
       foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
         /* copy_field - dupicate of the values stored under
@@ -157,8 +163,7 @@ class SolrUpdater {
         if (isset($asset["$lat"]) && isset($asset["$lon"])) {
           // set the value of the field to the two field values separated by a comma
           $value = $asset["$lat"] . ',' . $asset["$lon"];
-          $value = str_replace($cleanup, '', $value);
-          $asset["$solr_key"] = $value;
+          $asset["$solr_key"] = $this->remove_quotes_spaces($value);
         }
       }
     }
@@ -187,9 +192,9 @@ class SolrUpdater {
         list($lat,$lon,$loc,$id,$thumb) = explode(',', $value);
         if (isset($asset["$lat"]) && isset($asset["$lon"]) && isset($asset["$loc"]) && isset($asset["$thumb"])) {
           // set the value of the field to the two field values separated by a comma
-          $latlon = $asset["$lon"] . ',' . $asset["$lat"];
-          $latlon = str_replace($cleanup, '', $latlon);
-          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $latlon . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
+          $lonlat = $asset["$lon"] . ',' . $asset["$lat"]; // this is the correct order https://macwright.org/lonlat/
+          $lonlat = $this->remove_quotes_spaces($lonlat);
+          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $lonlat . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
           $asset["$solr_key"] = $value;
         }
       }
