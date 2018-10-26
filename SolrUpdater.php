@@ -110,6 +110,13 @@ class SolrUpdater {
     return json_encode($data2);
   }
 
+  function remove_quotes_spaces($str) {
+    //https://stackoverflow.com/questions/40724543/how-to-replace-decoded-non-breakable-space-nbsp
+    $cleanup = array('"', ' ', "\xc2\xa0", "\t");
+    $result = str_replace($cleanup, '', $str);
+    return $result;
+  }
+
 /**
  * the place to handle fields that we want to add to solr, that are not in the original sharedshelf
  * field set.
