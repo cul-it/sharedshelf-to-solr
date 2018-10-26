@@ -135,7 +135,7 @@ class SolrUpdater {
  * and store them in new $asset fields
  */
   function add_custom_fields(&$asset) {
-    $cleanup = array('"', ' '); // remove double quotes and blanks
+    $cleanup = array('"', ' ', "\t"); // remove double quotes and blanks & tabs
     if (isset($this->ini['copy_field'])) {
       foreach($this->ini['copy_field'] as $ss_solr_key => $solr_key) {
         /* copy_field - dupicate of the values stored under
