@@ -110,7 +110,7 @@ class SharedShelfMetadataApplicationProfile {
     
     private $map_fields2 = array(
         "Address" => array( 'map_name' => "Address", 'solr_name' => "address_tesim", 'multivalued' => TRUE, 'type' => "string" ),
-        "Agent_Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Agent Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Agent" => array( 'map_name' => "Agent", 'solr_name' => "agent_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Alternate Title" => array( 'map_name' => "Alternate Title", 'solr_name' => "alternate_title_tesim", 'multivalued' => FALSE, 'type' => "string" ),
         "Annotation" => array( 'map_name' => "Annotation", 'solr_name' => "annotation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
@@ -289,8 +289,9 @@ class SharedShelfMetadataApplicationProfile {
                     $solr_field = $this->map_fields2["$map_field_base"]["solr_name"];
                 }
                 $solr_base = $this->map_fields2["$map_field_base"]["solr_name"];
-                $ext = $this->get_solr_extension($solr_base);
-                $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+                // solr fields now have extensions already
+                // $ext = $this->get_solr_extension($solr_base);
+                // $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
                 $col['solr'] = $solr_field;
                 $fields[$column['dataIndex']] = $col;
             }
