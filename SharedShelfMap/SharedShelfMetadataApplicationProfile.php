@@ -289,8 +289,9 @@ class SharedShelfMetadataApplicationProfile {
                     $solr_field = $this->map_fields2["$map_field_base"]["solr_name"];
                 }
                 $solr_base = $this->map_fields2["$map_field_base"]["solr_name"];
-                $ext = $this->get_solr_extension($solr_base);
-                $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
+                // solr fields now have extensions already
+                // $ext = $this->get_solr_extension($solr_base);
+                // $solr_field = empty($ext) ? $solr_field : $solr_field . '_' . $ext;
                 $col['solr'] = $solr_field;
                 $fields[$column['dataIndex']] = $col;
             }
