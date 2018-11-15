@@ -420,6 +420,30 @@ class SharedShelfMetadataApplicationProfile {
         if ($collection === false) {
             return '';
         }
+
+        // be sure required fields are specified
+        foreach ($collection as $key => $value) {
+            switch ($key) {
+                case 'active':
+                case 'collection_id':
+                case 'nickname':
+                case 'collection_name':
+                case 'collection_portal_path':
+                case 'max_download_size':
+                case 'format':
+                case 'solr_target':
+                case 'creator_sort':
+                case 'title_sort':
+                    if (empty($value)) {
+                        throw new Exception("Missing value for $key", 1);                       
+                    }
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }
         $lines = array();
         $lines[] = ';; account configuration for ss2solr';
         $lines[] = 'solr = "' . $collection['solr_target'] . '"';
