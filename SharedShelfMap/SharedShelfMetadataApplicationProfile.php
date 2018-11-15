@@ -485,7 +485,17 @@ class SharedShelfMetadataApplicationProfile {
                 continue;
             }
             $source = $collection["$source_column"];
-            $target = empty($value['target_name']) ? '' : $value['target_name'];
+            if (empty($value['target_name'])) {
+                if (empty($this->collection['$key'])) {
+                    throw new Exception("Missing target for $key", 1);
+                }
+                else {
+                    $target = $collection['$key'];
+                }
+            }
+            else {
+                $target = $value['target_name'];
+            }
             switch ($key) {
                 case 'Max Download':
                     continue;   // handled as copyfield
