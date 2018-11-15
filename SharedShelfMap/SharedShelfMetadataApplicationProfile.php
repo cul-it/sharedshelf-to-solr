@@ -110,7 +110,7 @@ class SharedShelfMetadataApplicationProfile {
     
     private $map_fields2 = array(
         "Address" => array( 'map_name' => "Address", 'solr_name' => "address_tesim", 'multivalued' => TRUE, 'type' => "string" ),
-        "Agent Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Agent_Role" => array( 'map_name' => "Agent Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Agent" => array( 'map_name' => "Agent", 'solr_name' => "agent_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Alternate Title" => array( 'map_name' => "Alternate Title", 'solr_name' => "alternate_title_tesim", 'multivalued' => FALSE, 'type' => "string" ),
         "Annotation" => array( 'map_name' => "Annotation", 'solr_name' => "annotation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
@@ -409,6 +409,9 @@ class SharedShelfMetadataApplicationProfile {
         $collection = false;
         $csv = readCSV("collection_metadata.csv");
         foreach ($csv as $vals) {
+            if (!(isset($vals['active']) && $vals['active'] == 'yes')) {
+                continue;
+            }
             if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
                 $collection = $vals;
                 break;
@@ -416,6 +419,30 @@ class SharedShelfMetadataApplicationProfile {
         }
         if ($collection === false) {
             return '';
+        }
+
+        // be sure required fields are specified
+        foreach ($collection as $key => $value) {
+            switch ($key) {
+                case 'active':
+                case 'collection_id':
+                case 'nickname':
+                case 'collection_name':
+                case 'collection_portal_path':
+                case 'max_download_size':
+                case 'format':
+                case 'solr_target':
+                case 'creator_sort':
+                case 'title_sort':
+                    if (empty($value)) {
+                        throw new Exception("Missing value for $key", 1);                       
+                    }
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
         $lines = array();
         $lines[] = ';; account configuration for ss2solr';
@@ -458,7 +485,17 @@ class SharedShelfMetadataApplicationProfile {
                 continue;
             }
             $source = $collection["$source_column"];
-            $target = empty($value['target_name']) ? '' : $value['target_name'];
+            if (empty($value['target_name'])) {
+                if (empty($this->collection['$key'])) {
+                    throw new Exception("Missing target for $key", 1);
+                }
+                else {
+                    $target = $collection['$key'];
+                }
+            }
+            else {
+                $target = $value['target_name'];
+            }
             switch ($key) {
                 case 'Max Download':
                     continue;   // handled as copyfield
