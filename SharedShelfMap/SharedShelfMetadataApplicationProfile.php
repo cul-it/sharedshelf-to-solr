@@ -409,6 +409,9 @@ class SharedShelfMetadataApplicationProfile {
         $collection = false;
         $csv = readCSV("collection_metadata.csv");
         foreach ($csv as $vals) {
+            if (!(isset($vals['active']) && $vals['active'] == 'yes')) {
+                continue;
+            }
             if (isset($vals['collection_id']) && $vals['collection_id'] == $this->project) {
                 $collection = $vals;
                 break;
