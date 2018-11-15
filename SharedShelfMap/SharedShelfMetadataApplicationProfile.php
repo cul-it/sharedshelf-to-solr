@@ -110,7 +110,7 @@ class SharedShelfMetadataApplicationProfile {
     
     private $map_fields2 = array(
         "Address" => array( 'map_name' => "Address", 'solr_name' => "address_tesim", 'multivalued' => TRUE, 'type' => "string" ),
-        "Agent Role" => array( 'map_name' => "Agent_Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
+        "Agent_Role" => array( 'map_name' => "Agent Role", 'solr_name' => "agent_role_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Agent" => array( 'map_name' => "Agent", 'solr_name' => "agent_tesim", 'multivalued' => TRUE, 'type' => "string" ),
         "Alternate Title" => array( 'map_name' => "Alternate Title", 'solr_name' => "alternate_title_tesim", 'multivalued' => FALSE, 'type' => "string" ),
         "Annotation" => array( 'map_name' => "Annotation", 'solr_name' => "annotation_tesim", 'multivalued' => FALSE, 'type' => "string" ),
