@@ -357,6 +357,10 @@ class SharedShelfMetadataApplicationProfile {
         return $this->ss2map;
     }
 
+    function getMAPFields() {
+        return $this->map_fields2;
+    }
+
     function get_raw_fields() {
         return $this->raw_fields;
     }
