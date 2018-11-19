@@ -163,7 +163,8 @@ class SolrUpdater {
         if (isset($asset["$lat"]) && isset($asset["$lon"])) {
           // set the value of the field to the two field values separated by a comma
           $value = $asset["$lat"] . ',' . $asset["$lon"];
-          $asset["$solr_key"] = $this->remove_quotes_spaces($value);
+          $value = $this->remove_quotes_spaces($value);
+          $asset["$solr_key"] = $value;
         }
       }
     }
@@ -196,6 +197,8 @@ class SolrUpdater {
           $lonlat = $this->remove_quotes_spaces($lonlat);
           $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $lonlat . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
           $asset["$solr_key"] = $value;
+          $latlon = $asset["$lat"] . ',' . $asset["$lon"] ; // order for location_rpt if comma is used (see https://github.com/projectblacklight/blacklight-maps)
+          $asset['where_geocoordinates'] = $latlon;
         }
       }
     }
