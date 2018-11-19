@@ -32,7 +32,7 @@ try {
 
             // multiple MAP names seem to have underscores instead of blanks
             $map = str_replace(' ', '_', $map);
-            $map_fields["$map"] = $solr_field;
+            $map_fields["$solr_field"] = $map;
 
             $count = preg_match('/\_[a-z]+$/', $solr_field, $matches);
             $solr_ext = $matches[0] ?? '';
@@ -43,11 +43,11 @@ try {
             for ($i = 2; $i <= $max_numbered_field; $i++) {
                 $solr_num = $solr_prefix . $i . $solr_ext;
                 $map_num = $map_prefix . $i . $map_ext;
-                $map_fields["$map_num"] = $solr_num;
+                $map_fields["$solr_num"] = $map_num;
             }
         }
         else {
-            $map_fields["$map"] = $solr_field;
+            $map_fields["$solr_field"] = $map;
         }
     }
 
