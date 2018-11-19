@@ -249,6 +249,18 @@ class SharedShelfMetadataApplicationProfile {
         $this->sss = $ss; // fully built SharedShelfService object
     }
 
+    function getSetSolrFields() {
+        return $this->set_solr_fields;
+    }
+
+    function getCopyFields() {
+        return $this->copy_fields;
+    }
+
+    function getCollectionFields() {
+        return $this->collection_fields;
+    }
+
     function set_project($project_id) {
         try {
             $this->project = $project_id;
