@@ -198,6 +198,7 @@ class SolrUpdater {
           $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $lonlat . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
           $asset["$solr_key"] = $value;
           $latlon = $asset["$lat"] . ',' . $asset["$lon"] ; // order for location_rpt if comma is used (see https://github.com/projectblacklight/blacklight-maps)
+          $latlon = $this->remove_quotes_spaces($latlon);
           $asset['where_geocoordinates'] = $latlon;
         }
       }
