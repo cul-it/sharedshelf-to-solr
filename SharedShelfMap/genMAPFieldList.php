@@ -50,6 +50,7 @@ try {
             $map_fields["$solr_field"] = $map;
         }
     }
+    $map_fields['id'] = "id";
 
     $calculated_fields = [];
     $fields = $ssmap->getCopyFields();
@@ -96,11 +97,15 @@ try {
     foreach ($map_fields as $solr => $jf) {
         $out[] = sprintf("    %s = \"%s\"", $solr, $jf);
     }
+    
+    /* generating calculated fields elsewhere
     $out[] = '';
     $out[] = '[calculated_fields]';
     foreach ($calculated_fields as $solr => $jf) {
         $out[] = sprintf("    %s = \"%s\"", $solr, $jf);
     }
+    */
+    
     $out[] = '';
     echo implode("\n", $out);
 }
