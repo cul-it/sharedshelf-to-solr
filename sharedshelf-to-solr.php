@@ -231,7 +231,7 @@ try {
         // skip any collection with the --skip flag
         continue;
       }
-      found_project = TRUE;
+      $found_project = TRUE;
     }
 
     $project_id = $project['project'];
