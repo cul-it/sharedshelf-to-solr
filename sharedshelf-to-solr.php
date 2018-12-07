@@ -232,6 +232,10 @@ try {
       }
     }
 
+    if ($single_collection !== FALSE && $project['project'] != single_collection) {
+      throw new Exception("Collection $single_collection is missing from sharedshelf-to-solr.ini", 1);
+    }
+
     $project_id = $project['project'];
 
     // check valid values for flags
