@@ -36,6 +36,7 @@
 # 4411 - Lindsay Cooper Digital Archive - asset count: 589
 # 4497 - Art 2301 Printmaking Student Portfolios - asset count: 29
 # 452 - Cornell Gems Collection - asset count: 3794
+# 4547 - NYS Historical Dendrochronology Project - asset count: 1139
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 4803 - Seneca Haudenosaunee Archaeological Materials, circa 1688-1754 - asset count: 1183
 # 49 - Kroch Asia Rare Materials Archive - asset count: 3782
@@ -101,6 +102,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4547 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49 &
