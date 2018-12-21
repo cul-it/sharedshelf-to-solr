@@ -224,6 +224,36 @@ class SolrUpdater {
         }
       }
     }
+
+    /*
+    hack to remove " from titles - not properly json encoded/decoded in singlecore
+    784: unexpected token at '{"type":"Feature","geometry":{"type":"Point","coordinates":[-118.238044,34.098711]},"properties":{"placename":"Looking Across the Top of the "C" Yard","id":"ss:20988468","thumb":"https://stor.artstor.org/stor/bed5e980-a0db-43cc-805f-2cc1b1bbdcf2_size1"}}'
+    */
+    /*
+    if (isset($asset['title_ssi']) && strpos($asset['title_ssi'],'"') !== FALSE) {
+      $title = $asset['title_ssi'];
+      // $open = TRUE;
+      // $out = '';
+      // $len = strlen($title);
+      // for ($i = 0; $i < $len; $i++) {
+      //   $c = $title[$i];
+      //   if ($c == '"') {
+      //     $c = $open ? '&ldquo;' : "&rdquo;";
+      //     $open = !$open;
+      //   }
+      //   $out .= $c;
+      // }
+      $out = str_replace('"', "", $title);
+      $asset['title_ssi'] = $out;  
+      if (is_array($asset['title_tesim'])) {
+        $asset['title_tesim'][0] = $out;
+      }
+      else {
+        $asset['title_tesim'] = $out;
+      }
+    }
+    */
+
   }
 
   function update($assets) {
