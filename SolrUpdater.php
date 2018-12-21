@@ -117,6 +117,22 @@ class SolrUpdater {
     return $result;
   }
 
+  function remove_quotes($title) {
+    // smarten quotes
+    $open = TRUE;
+    $out = '';
+    $len = strlen($title);
+    for ($i = 0; $i < $len; $i++) {
+      $c = $title[$i];
+      if ($c == '"') {
+        $c = $open ? '&ldquo;' : "&rdquo;";
+        $open = !$open;
+      }
+      $out .= $c;
+    }
+    return $out;
+    }
+
 /**
  * the place to handle fields that we want to add to solr, that are not in the original sharedshelf
  * field set.
