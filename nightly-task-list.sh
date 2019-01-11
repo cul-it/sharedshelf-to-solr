@@ -36,6 +36,7 @@
 # 4411 - Lindsay Cooper Digital Archive - asset count: 589
 # 4497 - Art 2301 Printmaking Student Portfolios - asset count: 29
 # 452 - Cornell Gems Collection - asset count: 3794
+# 4547 - NYS Historical Dendrochronology Project - asset count: 1139
 # 48 - Campus Artifacts, Art &amp; Memorabilia - asset count: 1673
 # 4803 - Seneca Haudenosaunee Archaeological Materials, circa 1688-1754 - asset count: 1183
 # 49 - Kroch Asia Rare Materials Archive - asset count: 3782
@@ -67,66 +68,67 @@ PHP=`which php`
 # find the directory this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 141
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 143
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 155
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3262
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3450
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3596
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4210
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4406
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 686
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88 
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 954
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97
-"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 108 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 111 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 112 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 134 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 135 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 139 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 141 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 143 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 155 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 166 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 167 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3262 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3450 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3462 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3596 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4210 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4406 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4409 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4411 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4497 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 452 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4547 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 48 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4803 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 49 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 50 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 522 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 531 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 559 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 589 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 616 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 657 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 659 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 685 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 686 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 687 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 746 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 757 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 78 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 88 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 89 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 893 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 954 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98 &
 
 
 # example of creating or updating the IIIF images for a Collection
-#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4803
+#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4803 &
