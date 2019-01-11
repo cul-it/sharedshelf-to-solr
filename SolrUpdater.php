@@ -117,6 +117,22 @@ class SolrUpdater {
     return $result;
   }
 
+  function remove_quotes($title) {
+    // smarten quotes
+    $open = TRUE;
+    $out = '';
+    $len = strlen($title);
+    for ($i = 0; $i < $len; $i++) {
+      $c = $title[$i];
+      if ($c == '"') {
+        $c = $open ? '&ldquo;' : "&rdquo;";
+        $open = !$open;
+      }
+      $out .= $c;
+    }
+    return $out;
+    }
+
 /**
  * the place to handle fields that we want to add to solr, that are not in the original sharedshelf
  * field set.
@@ -194,11 +210,34 @@ class SolrUpdater {
           // set the value of the field to the two field values separated by a comma
           $lonlat = $asset["$lon"] . ',' . $asset["$lat"]; // this is the correct order https://macwright.org/lonlat/
           $lonlat = $this->remove_quotes_spaces($lonlat);
-          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $lonlat . ']},"properties":{"placename":"' . $asset["$loc"] . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
+          /*
+          hack to remove " from titles - not properly json encoded/decoded in singlecore
+          784: unexpected token at '{"type":"Feature","geometry":{"type":"Point","coordinates":[-118.238044,34.098711]},"properties":{"placename":"Looking Across the Top of the "C" Yard","id":"ss:20988468","thumb":"https://stor.artstor.org/stor/bed5e980-a0db-43cc-805f-2cc1b1bbdcf2_size1"}}'
+          */
+          $title = $this->remove_quotes($asset["$loc"]);
+          $value = '{"type":"Feature","geometry":{"type":"Point","coordinates":[' . $lonlat . ']},"properties":{"placename":"' . $title . '","id":"' . $asset["$id"] . '","thumb":"' .$asset["$thumb"] . '"}}';
           $asset["$solr_key"] = $value;
+          $latlon = $asset["$lat"] . ',' . $asset["$lon"] ; // order for location_rpt if comma is used (see https://github.com/projectblacklight/blacklight-maps)
+          $latlon = $this->remove_quotes_spaces($latlon);
+          $asset['where_geocoordinates'] = $latlon;
         }
       }
     }
+
+    if (FALSE) {
+      // smarten quotes in the first title
+      if (isset($asset['title_ssi']) && strpos($asset['title_ssi'],'"') !== FALSE) {
+        $title = $this->remove_quotes($asset['title_ssi']);
+        $asset['title_ssi'] = $title;  
+        if (is_array($asset['title_tesim'])) {
+          $asset['title_tesim'][0] = $title;
+        }
+        else {
+          $asset['title_tesim'] = $title;
+        }
+      }
+    }
+
   }
 
   function update($assets) {

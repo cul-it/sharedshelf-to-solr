@@ -216,6 +216,7 @@ try {
 
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
+  $found_project = FALSE;
   foreach($task['configuration_files']['config'] as $config) {
     $project = parse_ini_file($config);
     if ($project === FALSE) {
@@ -230,6 +231,7 @@ try {
         // skip any collection with the --skip flag
         continue;
       }
+      $found_project = TRUE;
     }
 
     $project_id = $project['project'];
@@ -391,9 +393,13 @@ try {
               }
               $jsondetails = $ss->media_iiif_info($ss_id);
               if (!empty($jsondetails)) {
-                $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
-                $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
-                $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
+                $iiif_url = $jsondetails['info_url'];
+                if (parse_url($iiif_url, PHP_URL_SCHEME) == 'http') {
+                  $iiif_url = 'https' . substr($iiif_url, 4);
+                }
+                $solr_out ['content_metadata_image_iiif_info_ssm'] = $iiif_url;
+                $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];
+                $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];
                 }
               
               if(!empty($project['copy_pdf_to_s3'])) {
@@ -509,6 +515,12 @@ try {
     //print_r($task);
     $log->task('Done.');
   }
+
+
+  if ($single_collection !== FALSE && !$found_project) {
+    throw new Exception("Collection $single_collection is missing from sharedshelf-to-solr.ini", 1);
+  }
+
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
