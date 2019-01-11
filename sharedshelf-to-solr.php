@@ -391,9 +391,13 @@ try {
               }
               $jsondetails = $ss->media_iiif_info($ss_id);
               if (!empty($jsondetails)) {
-                $solr_out ['content_metadata_image_iiif_info_ssm'] = $jsondetails['info_url'];;
-                $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];;
-                $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];;
+                $iiif_url = $jsondetails['info_url'];
+                if (parse_url($iiif_url, PHP_URL_SCHEME) == 'http') {
+                  $iiif_url = 'https' . substr($iiif_url, 4);
+                }
+                $solr_out ['content_metadata_image_iiif_info_ssm'] = $iiif_url;
+                $solr_out ['content_metadata_first_image_width_ssm'] = $jsondetails['width'];
+                $solr_out ['content_metadata_first_image_height_ssm'] = $jsondetails['height'];
                 }
               
               if(!empty($project['copy_pdf_to_s3'])) {
