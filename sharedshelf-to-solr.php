@@ -216,6 +216,7 @@ try {
 
   $ss = new SharedShelfService($user['email'], $user['password'], $task['process']['cookie_jar_path']);
 
+  $found_project = FALSE;
   foreach($task['configuration_files']['config'] as $config) {
     $project = parse_ini_file($config);
     if ($project === FALSE) {
@@ -230,6 +231,7 @@ try {
         // skip any collection with the --skip flag
         continue;
       }
+      $found_project = TRUE;
     }
 
     $project_id = $project['project'];
@@ -513,6 +515,12 @@ try {
     //print_r($task);
     $log->task('Done.');
   }
+
+
+  if ($single_collection !== FALSE && !$found_project) {
+    throw new Exception("Collection $single_collection is missing from sharedshelf-to-solr.ini", 1);
+  }
+
 }
 catch (Exception $e) {
   $error = 'Caught exception: ' . $e->getMessage() . "\n";
