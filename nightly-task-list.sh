@@ -8,6 +8,7 @@
 # 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
+# 14054 - Fallout Pamphlet Collection - asset count: 15
 # 141 - CUL Map Collection - asset count: 1531
 # 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
 # 155 - Reuleaux Kinematic Mechanisms Collection - asset count: 223
@@ -82,6 +83,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 14054 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849 &
