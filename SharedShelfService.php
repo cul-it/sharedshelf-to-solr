@@ -4,7 +4,7 @@ class SharedShelfService {
   private $sharedshelf_user = '';
   private $sharedshelf_password = '';
   private $cookie_jar_path = '';
-  private $sharedshelf_url = 'https://catalog.sharedshelf.artstor.org';
+  private $sharedshelf_url = 'https://forum.jstor.org';
 
   function __construct($user, $password, $cookiejar = '/tmp/SharedShelfService_cookies.txt') {
     $this->cookie_jar_path = $cookiejar;
