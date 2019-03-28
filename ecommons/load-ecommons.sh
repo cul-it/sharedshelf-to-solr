@@ -9,5 +9,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # read each collection name and load the collection into solr
 while read col; do
-    "$PHP" "${DIR}/ecommons-to-solr.php" -c "$col" --force &
+    "$PHP" "${DIR}/ecommons-to-solr.php" -c "$col" --force
 done <"${DIR}/collection-list.txt"
