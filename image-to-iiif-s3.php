@@ -56,6 +56,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   $tmp_iiif = "/tmp/image-to-iiif-s3";
   image_to_iiif_s3_mkdir($tmp_iiif, $developer_group);
   chgrp($tmp_iiif, $developer_group);
+  chmod($tmp_iiif, 02775); // setgid group sticky, all perms for owner and group, read and execute for others
   clearstatcache();
 
   // create temporary directories
