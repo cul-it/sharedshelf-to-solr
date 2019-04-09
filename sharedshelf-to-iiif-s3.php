@@ -139,7 +139,13 @@ try {
 
           $s3_path = "$project_id/$ss_id";
 
-          image_to_iiif_s3($url, $ext, $s3_path, $force_replacement);
+          try {
+            image_to_iiif_s3($url, $ext, $s3_path, $force_replacement);
+          }
+          catch (\Exception $e) {
+            // just log the error and continue
+            $log->error("Asset $s3_path conversion to iiif failed: " . $e->getMessage());
+          }
 
           if (FALSE) throw new Exception("shortcut to exit", 1);
         }
