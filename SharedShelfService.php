@@ -554,12 +554,8 @@ class SharedShelfService {
     if (empty($asset_id)) {
       throw new Exception("Error Processing media_derivative_url Request", 1);
     }
-    // note: the urls for derivatives do not include an extension!! -> FALSE arg to get_url
-    $url = $this->get_url("/assets/$asset_id/representation/size/$size", FALSE);
-    $file_headers = @get_headers($url);
-    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
-      throw new Exception("URL Not Found: $url", 1);
-      }
+    $size_name = '_size' . $size;
+    $url = $this->media_filename($asset_id) . $size_name;
     return $url;
   }
 
