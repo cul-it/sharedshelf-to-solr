@@ -99,6 +99,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   //$command = "python $script -d $local_iiif_dir --tilesize 800 $local_image";
   //$command = "python $script -d $local_iiif_dir $local_image";
   $command = "/cul/share/miniconda/bin/python $script --api-version 2.0 --quiet --tilesize 512 -d $local_iiif_dir -p $s3path $local_image";
+  $command .= " --max-image-pixels=1000000000"; // see https://github.com/zimeon/iiif/issues/11
   $output = '';
   $return_var = 0;
   $lastline = exec($command, $output, $return_var);
