@@ -505,7 +505,8 @@ class SharedShelfService {
     if (empty($asset_id)) {
       throw new Exception("Error Processing media_url Request", 1);
     }
-    $url = $this->get_url("/assets/$asset_id/representation");
+    // note: forum now needs dynamic redirects at run time
+    $url = $this->get_url("/assets/$asset_id/representation", FALSE);
     $file_headers = @get_headers($url);
     if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
       throw new Exception("URL Not Found: $url", 1);
