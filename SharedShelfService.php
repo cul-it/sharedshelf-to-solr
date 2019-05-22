@@ -506,11 +506,11 @@ class SharedShelfService {
       throw new Exception("Error Processing media_url Request", 1);
     }
     // note: forum now needs dynamic redirects at run time
-    $url = $this->get_url("/assets/$asset_id/representation", FALSE);
-    $file_headers = @get_headers($url);
-    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
-      throw new Exception("URL Not Found: $url", 1);
+    $details = $this->get_response("/assets/$asset_id/representation/details");
+    if (!isset($details['url'])) {
+      throw new Exception("media_url URL Not Found: $asset_id", 1);
       }
+    $url = $details['url'];
     return $url;
   }
 
