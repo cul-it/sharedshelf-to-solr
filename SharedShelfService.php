@@ -555,7 +555,7 @@ class SharedShelfService {
       throw new Exception("Error Processing media_derivative_url Request", 1);
     }
     $size_name = '_size' . $size;
-    $url = $this->media_filename($asset_id) . $size_name;
+    $url = $this->media_url($asset_id) . $size_name;
     return $url;
   }
 
