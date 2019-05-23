@@ -50,6 +50,9 @@ class SharedShelfService {
     }
     if (!isset($cookies['sharedshelf'])) {
       throw new Exception("No sharedshelf cookie", 1);
+class ForumRequestException extends Exception
+{
+}
     }
   }
 
