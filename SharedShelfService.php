@@ -97,6 +97,11 @@ class ForumRequestException extends Exception
     if ($ch === FALSE) {
       curl_close($ch);
       throw new Exception("Bad request url in get_url: $url", 1);
+        if ($check_success) {
+            if (!(isset($output['success']) && (true === $output['success']))) {
+                throw new ForumRequestException('Error Processing Request - no success: '.$url, 1);
+            }
+        }
     }
 
     for ($redirects = 0; $this->follow_redirects($ch, $url_list); $redirects++) ;
