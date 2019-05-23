@@ -414,6 +414,10 @@ try {
                   if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
                     throw new Exception("Failed to copy pdf to s3", 1);
                   }
+                    } catch (ForumRequestException $e) {
+                        // problem reading from JStor Forum
+                        // try again
+                        continue;
                 }
                 else {
                   $log->note("not a pdf: $extension");
