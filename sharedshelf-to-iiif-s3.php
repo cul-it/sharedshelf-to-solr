@@ -173,5 +173,11 @@ catch (Exception $e) {
     echo $error;
   }
   exit (1);
+                    try {
+                        image_to_iiif_s3($url, $ext, $s3_path, $force_replacement);
+                    } catch (\Exception $e2) {
+                        // just log the error and continue
+                        $log->error("Asset $s3_path conversion to iiif failed: ".$e2->getMessage());
+                    }
 }
 exit (0);
