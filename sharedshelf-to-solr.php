@@ -1,187 +1,190 @@
 <?php
+
 // sharedshelf-to-solr - update all sharedshelf collections in solr
 
 ini_set('memory_limit', '512M');
 
-require_once('SharedShelfService.php');
-require_once('SolrUpdater.php');
-require_once('SharedShelfToSolrLogger.php');
+require_once 'SharedShelfService.php';
+require_once 'SolrUpdater.php';
+require_once 'SharedShelfToSolrLogger.php';
 
-class DatesMatchException extends Exception {}
-
-define("TESTING_VERSION_CONFLICT", FALSE);
-
-function debug($item, $description = '', $die = TRUE) {
-  if (!empty($description)) {
-    print PHP_EOL . 'DEBUG: ' . $description . PHP_EOL;
-  }
-  print_r($item);
-  if ($die) {
-    die('debugging' . PHP_EOL);
-  }
+class DatesMatchException extends Exception
+{
 }
 
-function usage() {
-  global $argv;
-  echo PHP_EOL;
-  echo "Usage: php " . $argv[0] . " [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [--extract] [-p NNN] [-s NNN] [-n NNN]" . PHP_EOL;
-  echo "--help - show this info" . PHP_EOL;
-  echo "--force - ignore timestamps and rewrite all solr records" . PHP_EOL;
-  echo "--no-write - do everything EXCEPT writing the solr records" . PHP_EOL;
-  echo "--use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" . PHP_EOL;
-  echo "--skip - do not process this collection (only when -p is specified)" . PHP_EOL;
-  echo "--extract - index the contents of any pdf files" . PHP_EOL;
-  echo "-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php" . PHP_EOL;
-  echo "-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)" . PHP_EOL;
-  echo "-n - process only this many (integer) assets" . PHP_EOL;
-  exit (0);
+define('TESTING_VERSION_CONFLICT', false);
+
+function debug($item, $description = '', $die = true)
+{
+    if (!empty($description)) {
+        echo PHP_EOL.'DEBUG: '.$description.PHP_EOL;
+    }
+    print_r($item);
+    if ($die) {
+        die('debugging'.PHP_EOL);
+    }
 }
 
-function split_delimited_fields(&$flattened_asset, $delimited_fields = array()) {
-  foreach ($delimited_fields as $key => $delimiter) {
-    if (!empty($flattened_asset["$key"])) {
-      $value = $flattened_asset["$key"];
-      if (strpos($value, $delimiter) === FALSE) {
-        $trimmed = trim($value);
-        if (!empty($trimmed)) {
-          $flattened_asset["$key"] = $trimmed;
+function usage()
+{
+    global $argv;
+    echo PHP_EOL;
+    echo 'Usage: php '.$argv[0].' [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [--extract] [-p NNN] [-s NNN] [-n NNN]'.PHP_EOL;
+    echo '--help - show this info'.PHP_EOL;
+    echo '--force - ignore timestamps and rewrite all solr records'.PHP_EOL;
+    echo '--no-write - do everything EXCEPT writing the solr records'.PHP_EOL;
+    echo '--use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev'.PHP_EOL;
+    echo '--skip - do not process this collection (only when -p is specified)'.PHP_EOL;
+    echo '--extract - index the contents of any pdf files'.PHP_EOL;
+    echo '-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php'.PHP_EOL;
+    echo '-s - start processing at the given SharedShelf asset number NNN (NNN must be numeric) (asset numbers ascend during processing)'.PHP_EOL;
+    echo '-n - process only this many (integer) assets'.PHP_EOL;
+    exit(0);
+}
+
+function split_delimited_fields(&$flattened_asset, $delimited_fields = array())
+{
+    foreach ($delimited_fields as $key => $delimiter) {
+        if (!empty($flattened_asset["$key"])) {
+            $value = $flattened_asset["$key"];
+            if (false === strpos($value, $delimiter)) {
+                $trimmed = trim($value);
+                if (!empty($trimmed)) {
+                    $flattened_asset["$key"] = $trimmed;
+                }
+            } else {
+                $items = explode($delimiter, $value);
+                $items_trim = array();
+                foreach ($items as $item) {
+                    $trimmed = trim($item);
+                    if (!empty($trimmed)) {
+                        $items_trim[] = $trimmed;
+                    }
+                }
+                if (!empty($items_trim)) {
+                    $flattened_asset["$key"] = $items_trim;
+                }
+            }
         }
-      }
-      else {
-        $items = explode($delimiter, $value);
-        $items_trim = array();
-        foreach ($items as $item) {
-          $trimmed = trim($item);
-          if (!empty($trimmed)) {
-            $items_trim[] = $trimmed;
-          }
+    }
+}
+
+function get_ss_asset_list(&$ss, $project_id, $date_field)
+{
+    $assets = $ss->project_asset_list_values($project_id, $date_field);
+    $count = count($assets);
+    $asset_count = $ss->project_assets_count($project_id);
+    if ($count != $asset_count) {
+        throw new Exception("get_ss_asset_list got the wrong number of assets: $count counted, $asset_count expected.", 1);
+    }
+
+    return $assets;
+}
+
+function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log)
+{
+    try {
+        $s3_bucket = 's3://digital-assets.library.cornell.edu';
+        $s3_path = "$projectid/$filename.pdf";
+        $s3_target = "$s3_bucket/$s3_path";
+        $s3cmd = '/cul/share/miniconda/bin/s3cmd';
+        //$s3cmd = '/usr/local/bin/s3cmd';  // local testing version
+        //$log->note("method: $method");
+        if ('update' == $method) {
+            // check if it already exists on S3
+            $command = "$s3cmd ls $s3_target";
+            $output = '';
+            $return_var = 0;
+            //$log->note("list: $command");
+            $lastline = exec($command, $output, $return_var);
+            if (0 != $return_var) {
+                $output[] = 'Command failed: '.$command;
+                $out = implode('PHP_EOL', $output);
+                throw new Exception("Error Processing checking for pdf on s3: $out", 1);
+            }
+            if (false !== strpos($lastline, $s3_path)) {
+                // assume this image has already been processed
+                return true;
+            }
         }
-        if (!empty($items_trim)) {
-          $flattened_asset["$key"] = $items_trim;
+
+        // make a local copy of the file
+        if (false === ($img = file_get_contents($source_url))) {
+            throw new Exception("Unable to read file $source_url", 1);
         }
-      }
+        $tmpfname = '/tmp/'.md5($projectid.$filename).'.pdf';
+        if (false === ($fd = fopen($tmpfname, 'x+'))) {
+            throw new Exception("Cannot create temp file $tmpfname", 1);
+        }
+        $bytes = fwrite($fd, $img);
+        fclose($fd);
+        if (false === $bytes) {
+            throw new Exception('Cannot write to temp file', 1);
+        }
+
+        // copy the file
+        $command = "$s3cmd put $tmpfname $s3_target";
+        $output = '';
+        $return_var = 0;
+        //$log->note("put: $command");
+        $lastline = exec($command, $output, $return_var);
+        // delete temp file
+        unlink($tmpfname);
+
+        if (0 != $return_var) {
+            $output[] = 'Command failed: '.$command;
+            $out = implode('PHP_EOL', $output);
+            throw new Exception("Error Processing putting pdf on s3: $out", 1);
+        }
+    } catch (Exception $e) {
+        $error = 'Caught exception: '.$e->getMessage()."\n";
+        $log->note($error);
+
+        return false;
     }
-  }
+
+    return true;
 }
 
-function get_ss_asset_list(&$ss, $project_id, $date_field) {
-  $assets = $ss->project_asset_list_values($project_id, $date_field);
-  $count = count($assets);
-  $asset_count = $ss->project_assets_count($project_id);
-  if ($count != $asset_count) {
-    throw new Exception("get_ss_asset_list got the wrong number of assets: $count counted, $asset_count expected.", 1);
-  }
-  return $assets;
-}
+$log = false;
 
-function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log) {
-  try {
-    $s3_bucket = "s3://digital-assets.library.cornell.edu";
-    $s3_path = "$projectid/$filename.pdf";
-    $s3_target = "$s3_bucket/$s3_path";
-    $s3cmd = '/cul/share/miniconda/bin/s3cmd';
-    //$s3cmd = '/usr/local/bin/s3cmd';  // local testing version
-    //$log->note("method: $method");
-    if ($method == 'update') {
-      // check if it already exists on S3
-      $command = "$s3cmd ls $s3_target";
-      $output = '';
-      $return_var = 0;
-      //$log->note("list: $command");
-      $lastline = exec($command, $output, $return_var);
-      if ($return_var != 0) {
-        $output[] = 'Command failed: ' .  $command;
-        $out = implode("PHP_EOL", $output);
-        throw new Exception("Error Processing checking for pdf on s3: $out", 1);
-      }
-      if (strpos($lastline, $s3_path) !== FALSE) {
-        // assume this image has already been processed
-        return TRUE;
-      }
-    }
+$options = getopt('p:s:n:', array('help', 'force', 'no-write', 'use-dev-solr', 'skip', 'extract'));
 
-    // make a local copy of the file
-    if (($img = file_get_contents($source_url)) === FALSE) {
-      throw new Exception("Unable to read file $source_url", 1);     
-    }
-    $tmpfname = '/tmp/' . md5($projectid . $filename) . '.pdf';
-    if (($fd = fopen($tmpfname, "x+")) === FALSE) {
-      throw new Exception("Cannot create temp file $tmpfname", 1);
-    }
-    $bytes = fwrite($fd, $img);
-    fclose($fd);
-    if ($bytes === FALSE) {
-      throw new Exception("Cannot write to temp file", 1);
-    }
-  
-    // copy the file
-    $command = "$s3cmd put $tmpfname $s3_target";
-    $output = '';
-    $return_var = 0;
-    //$log->note("put: $command");
-    $lastline = exec($command, $output, $return_var);
-    // delete temp file
-    unlink($tmpfname);
-
-    if ($return_var != 0) {
-      $output[] = 'Command failed: ' .  $command;
-      $out = implode("PHP_EOL", $output);
-      throw new Exception("Error Processing putting pdf on s3: $out", 1);
-    }
-  }
-  catch (Exception $e) {
-    $error = 'Caught exception: ' . $e->getMessage() . "\n";
-    $log->note($error);
-    return FALSE;
-  }
-  return TRUE;
-}
-
-$log = FALSE;
-
-$options = getopt("p:s:n:",array("help", "force", "no-write", "use-dev-solr", "skip", "extract"));
-
-if ($options === false || isset($options['help'])) {
-  usage();
-}
-$force_replacement = isset($options["force"]);
-$skip_this_collection = isset($options["skip"]);
-$extract_files = isset($options["extract"]);
-$do_not_write_to_solr = isset($options["no-write"]);
-$solr_collection_override = isset($options["use-dev-solr"]) ?
-  "http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev" : false;
-if (isset($options['p'])) {
-  if (is_numeric($options['p'])) {
-    $single_collection = $options['p'];
-  }
-  else {
+if (false === $options || isset($options['help'])) {
     usage();
-  }
 }
-else {
-  $single_collection = FALSE;
+$force_replacement = isset($options['force']);
+$skip_this_collection = isset($options['skip']);
+$extract_files = isset($options['extract']);
+$do_not_write_to_solr = isset($options['no-write']);
+$solr_collection_override = isset($options['use-dev-solr']) ?
+  'http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev' : false;
+if (isset($options['p'])) {
+    if (is_numeric($options['p'])) {
+        $single_collection = $options['p'];
+    } else {
+        usage();
+    }
+} else {
+    $single_collection = false;
 }
 if (isset($options['s'])) {
-  if (is_numeric($options['s'])) {
-    $starting_asset = $options['s'];
-  }
-  else {
-    usage();
-  }
-}
-else {
-  $starting_asset = 0;
+    if (is_numeric($options['s'])) {
+        $starting_asset = $options['s'];
+    } else {
+        usage();
+    }
+} else {
+    $starting_asset = 0;
 }
 if (isset($options['n'])) {
-  if (is_numeric($options['n'])) {
-    $max_processing_count = $options['n'];
-  }
-  else {
-    usage();
-  }
-}
-else {
-  $max_processing_count = false; // this means process them all
+    if (is_numeric($options['n'])) {
+        $max_processing_count = $options['n'];
+    } else {
+        usage();
+    }
+} else {
+    $max_processing_count = false; // this means process them all
 }
 
 $option_text = $single_collection ? "project $single_collection " : 'all ';
