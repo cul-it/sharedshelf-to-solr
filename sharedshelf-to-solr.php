@@ -376,7 +376,8 @@ try {
                             $log->note('get media');
                             $url = $ss->media_url($ss_id);
                             $solr_out['media_URL_tesim'] = $url;
-                            $solr_out['filename_s'] = $ss->media_filename($ss_id);
+                            $filename = $ss->media_filename($ss_id) . $ss->media_file_extension($ss_id);
+                            $solr_out['filename_s'] = $filename;
                             $log->note('get derivatives');
                             for ($size = 0; $size <= 4; ++$size) {
                                 $fld = 'media_URL_size_'.$size.'_tesim';
