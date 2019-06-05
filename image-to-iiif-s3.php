@@ -4,6 +4,70 @@
 
 define('OUTPUT', true);
 
+function get_url_redirected($url)
+{
+    // sometimes the first time gets the url without an extension
+    $url_list = array();
+    $url_list[] = $url;
+
+    $ch = curl_init();
+    if (false === $ch) {
+        curl_close($ch);
+        throw new Exception("Bad request url in get_url: $url", 1);
+    }
+
+    for ($redirects = 0; follow_redirects($ch, $url_list); ++$redirects) {}
+    $url = end($url_list);
+
+    curl_close($ch);
+
+    return $url;
+}
+
+/**
+ * take the last url in the array, if it redirects, add new url to array.
+ *
+ * @param array $url_array urls
+ *
+ * @return bool return TRUE if last url redirects
+ */
+function follow_redirects(&$ch, &$url_array)
+{
+    if (!is_array($url_array)) {
+        throw new Exception('follow_redirects array required', 1);
+    }
+    $last_url = end($url_array);
+    if (false === $last_url) {
+        throw new Exception('follow_redirects empty array', 1);
+    }
+
+    $options = array(
+      CURLOPT_URL => $last_url,
+      CURLOPT_CONNECTTIMEOUT => 120,
+      CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
+      CURLOPT_FOLLOWLOCATION => false,  // We want to just get redirect url but not to follow it.
+      CURLOPT_HEADER => true,    // We'll parse redirect url from header.
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_TIMEOUT => 120,
+      CURLOPT_NOBODY => true, //exclude the body from the output
+      );
+    $allswell = curl_setopt_array($ch, $options);
+    if (false === $allswell) {
+        throw new Exception('follow_redirects failed to set curl options', 1);
+    }
+    $response = curl_exec($ch);
+
+    preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+    if (empty($matches[1])) {
+        $redirected = false;
+    } else {
+        $redirected = true;
+        $url_array[] = trim($matches[1][0]); // append the url redirected to to the array
+    }
+
+    return $redirected;
+}
+
 function image_to_iiif_s3_mkdir($path, $group)
 {
     // make a directory at the given path
