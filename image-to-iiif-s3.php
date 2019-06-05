@@ -80,10 +80,14 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     if (OUTPUT) {
         echo "Local copy of image.\n";
     }
-
+  
     // make a local copy of the image
-    if (!copy($image_url, $local_image)) {
-        throw new Exception("Can't copy $image_url to local", 1);
+    $image = file_get_contents($image_url);
+    if ($image === false) {
+        throw new Exception("Can not load remote image $image_url");
+    }
+    if (file_put_contents($local_image, $image) === false) {
+        throw new Exception("Can make local copy of image $image_url in $local_image");
     }
 
     $standard_format = 'jpg';
