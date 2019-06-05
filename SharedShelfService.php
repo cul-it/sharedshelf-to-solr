@@ -558,9 +558,13 @@ class SharedShelfService
         // note: forum now needs dynamic redirects at run time
         $details = $this->get_response("/assets/$asset_id/representation/details");
         if (!isset($details['url'])) {
-            throw new Exception("media_url URL Not Found: $asset_id", 1);
+            // allow empty media url (For partial collections, etc.)
+            //throw new Exception("media_url URL Not Found: $asset_id", 1);
+            $url = '';
         }
-        $url = $details['url'];
+        else {
+            $url = $details['url'];
+        }
 
         return $url;
     }
