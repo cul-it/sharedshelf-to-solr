@@ -83,7 +83,7 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
   
     // make a local copy of the image
     $image = file_get_contents($image_url);
-    if ($image === false) {
+    if ($image === false || empty($image)) {
         throw new Exception("Can not load remote image $image_url");
     }
     if (file_put_contents($local_image, $image) === false) {
