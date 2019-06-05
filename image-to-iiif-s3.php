@@ -44,7 +44,7 @@ function follow_redirects(&$ch, &$url_array)
     $options = array(
       CURLOPT_URL => $last_url,
       CURLOPT_CONNECTTIMEOUT => 120,
-      CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
+      //CURLOPT_COOKIEFILE => $this->cookie_jar_path, /* make sure you provide FULL PATH to cookie files*/
       CURLOPT_FOLLOWLOCATION => false,  // We want to just get redirect url but not to follow it.
       CURLOPT_HEADER => true,    // We'll parse redirect url from header.
       CURLOPT_RETURNTRANSFER => true,
