@@ -22,6 +22,7 @@
 # 2849 - Cornell Costume and Textile Collection - asset count: 12213
 # 2895 - The J. R. Sitlington Sterrett Collection of Archaeological Photographs - asset count: 545
 # 20019 - Impersonator Cards - asset count: 884
+# 28160 - Tom Harrisson Photographs - asset count: 277
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3262 - Charlie Ahearn Archive - asset count: 909
 # 3321 - Test Project - asset count: 12
@@ -91,6 +92,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 20019 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 28160 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3262 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321 &
