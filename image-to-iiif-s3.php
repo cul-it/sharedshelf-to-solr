@@ -80,10 +80,15 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     if (OUTPUT) {
         echo "Local copy of image.\n";
     }
-  
+
     // make a local copy of the image
-    $image = file_get_contents($image_url);
-    if ($image === false || empty($image)) {
+    $opts = array('http' => array(
+        'follow_location' => 1,
+        ),
+    );
+    $context = stream_context_create($opts);
+    $image = file_get_contents($image_url, false, $context);
+    if (false === $image || empty($image)) {
         throw new Exception("Can not load remote image $image_url");
     }
     if (OUTPUT) {
@@ -91,12 +96,12 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
         echo "image length: $ilen\n";
         echo "local image: $local_image\n";
     }
-    if (file_put_contents($local_image, $image) === false) {
+    if (false === file_put_contents($local_image, $image)) {
         throw new Exception("Can make local copy of image $image_url in $local_image");
     }
     if (OUTPUT) {
-        if (file_exists($local_image) === false) {
-          echo "Failed to make $local_image\n";
+        if (false === file_exists($local_image)) {
+            echo "Failed to make $local_image\n";
         }
     }
 
