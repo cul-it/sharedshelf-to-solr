@@ -146,12 +146,12 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     }
 
     // make a local copy of the image
-    $opts = array('http' => array(
-        'follow_location' => 1,
-        ),
-    );
-    $context = stream_context_create($opts);
-    $image = file_get_contents($image_url, false, $context);
+    $true_url = get_url_redirected($image_url);
+    if (OUTPUT) {
+        echo "original url: $image_url\n";
+        echo "real url: $true_url\n";
+    }
+    $image = file_get_contents($true_url);
     if (false === $image || empty($image)) {
         throw new Exception("Can not load remote image $image_url");
     }
