@@ -86,8 +86,18 @@ function image_to_iiif_s3($image_url, $extension, $s3_path, $force_replacement =
     if ($image === false || empty($image)) {
         throw new Exception("Can not load remote image $image_url");
     }
+    if (OUTPUT) {
+        $ilen = strlen($image);
+        echo "image length: $ilen\n";
+        echo "local image: $local_image\n";
+    }
     if (file_put_contents($local_image, $image) === false) {
         throw new Exception("Can make local copy of image $image_url in $local_image");
+    }
+    if (OUTPUT) {
+        if (file_exists($local_image) === false) {
+          echo "Failed to make $local_image\n";
+        }
     }
 
     $standard_format = 'jpg';
