@@ -2,7 +2,7 @@
 
 // image-to-iiif-s3.php - convert an image to static iiif tiles and move tiles to Amazon s3
 
-define('OUTPUT', false);
+define('OUTPUT', true);
 
 function image_to_iiif_s3_mkdir($path, $group)
 {
