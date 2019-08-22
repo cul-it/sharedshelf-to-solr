@@ -2,7 +2,7 @@
 
 // image-to-iiif-s3.php - convert an image to static iiif tiles and move tiles to Amazon s3
 
-ini_set('memory_limit', '128M');
+ini_set('memory_limit', '512M');
 
 define('OUTPUT', false);
 
