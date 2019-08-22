@@ -330,6 +330,16 @@ try {
                             }
                         }
 
+                        // grab the record from sharedshelf
+                        $asset_full = $ss->asset($asset_id);
+
+                        // determine publishing status - status_ssi
+                        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+                            $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
+                        } else {
+                            $cul_publishing_status = 'Unpublished';
+                        }
+
                         if ($force_replacement) {
                             $log->note('Job:Replace');
                         } else {
@@ -351,16 +361,6 @@ try {
                                     $log->note('Job:Update');
                                 }
                             }
-                        }
-
-                        // grab the record from sharedshelf
-                        $asset_full = $ss->asset($asset_id);
-
-                        // determine publishing status - status_ssi
-                        if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
-                            $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
-                        } else {
-                            $cul_publishing_status = 'Unpublished';
                         }
                         $log->note(print_r($cul_publishing_status, true));
 
