@@ -340,25 +340,29 @@ try {
                             $cul_publishing_status = 'Unpublished';
                         }
 
+                        // decide if we need to deal with this asset at all
                         if ($force_replacement) {
                             $log->note('Job:Replace');
                         } else {
                             if (empty($solr_in)) {
                                 $log->note('Job:AddNew');
                             } else {
-                                // compare the dates
-                                if (empty($solr_in['updated_on_ss'])) {
-                                    $log->note('solr missing updated_on');
-                                    $solr_date = '';
+                                // compare publishing status
+                                if (0 != strcmp($solr_in['status_ssi'], $cul_publishing_status)) {
+                                    $log->note('Job:Publishing-status-change');
                                 } else {
-                                    $solr_date = trim($solr_in['updated_on_ss']);
-                                }
-                                if (0 == strcmp($ss_date, $solr_date)) {
-                                    // dates match - skip this record
-                                    $log->note('Job:Skip-DatesMatch');
-                                    throw new DatesMatchException('Skip-DatesMatch', 1);
-                                } else {
-                                    $log->note('Job:Update');
+                                    // compare the dates
+                                    if (empty($solr_in['updated_on_ss'])) {
+                                        $log->note('Job:solr-missing-updated_on');
+                                    } else {
+                                        $solr_date = trim($solr_in['updated_on_ss']);
+                                        if (0 == strcmp($ss_date, $solr_date)) {
+                                            // dates match - skip this record
+                                            $log->note('Job:Skip-DatesMatch');
+                                            throw new DatesMatchException('Skip-DatesMatch', 1);
+                                        }
+                                        $log->note('Job:Update');
+                                    }
                                 }
                             }
                         }
