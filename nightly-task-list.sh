@@ -19,7 +19,6 @@
 # 1146 - Sri Lankan Vernacular - asset count: 537
 # 256 - Obama Visual Iconography - asset count: 200
 # 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
-# 2849 - Cornell Costume and Textile Collection - asset count: 12213
 # 2895 - The J. R. Sitlington Sterrett Collection of Archaeological Photographs - asset count: 545
 # 20019 - Impersonator Cards - asset count: 884
 # 28160 - Tom Harrisson Photographs - asset count: 277
