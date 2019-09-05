@@ -502,8 +502,13 @@ try {
         if (false === $do_not_write_to_solr) {
             if (!empty($solr_asset_ids_to_delete)) {
                 $ids = array_flip($solr_asset_ids_to_delete);
-                $log->note('Deleting solr ids: '.implode(', ', $ids));
-                $solr->delete_items($ids);
+                $id_count = count($ids);
+                $batch_size = 20;
+                for ($batch = 0; $batch < $id_count; $batch += $batch_size) {
+                    $id_set = array_chunk($ids, $batch_size);
+                    $log->note('Deleting solr ids: ' . implode(', ', $id_set));
+                    $solr->delete_items($id_set);
+                }
             } else {
                 $log->note("No solr asssets to delete for project $project_id.");
             }
