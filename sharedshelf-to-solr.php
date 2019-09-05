@@ -505,7 +505,7 @@ try {
                 $id_count = count($ids);
                 $batch_size = 20;
                 for ($batch = 0; $batch < $id_count; $batch += $batch_size) {
-                    $id_set = array_chunk($ids, $batch_size);
+                    $id_set = array_slice($ids, $batch, $batch_size);
                     $log->note('Deleting solr ids: ' . implode(', ', $id_set));
                     $solr->delete_items($id_set);
                 }
