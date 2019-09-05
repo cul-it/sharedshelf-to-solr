@@ -506,7 +506,7 @@ try {
                 $batch_size = 20;
                 for ($batch = 0; $batch < $id_count; $batch += $batch_size) {
                     $id_set = array_slice($ids, $batch, $batch_size);
-                    $log->note('Deleting solr ids: ' . implode(', ', $id_set));
+                    $log->note('Deleting solr ids: ' . implode(', ', $id_set) . "\n");
                     $solr->delete_items($id_set);
                 }
             } else {
