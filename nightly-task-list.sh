@@ -31,6 +31,7 @@
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
+# 37250 - Afrika Bambaataa Hip Hop Archive - asset count: 2108
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
 # 4210 - Eugene B. Dynkin Collection of Mathematics Interviews - asset count: 916
 # 4406 - 19th Century Prison Reform Collection - asset count: 487
@@ -101,6 +102,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 37250 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4210 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4406 &
