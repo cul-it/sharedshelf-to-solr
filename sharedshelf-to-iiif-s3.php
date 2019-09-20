@@ -103,27 +103,28 @@ try {
             $assets = $ss->project_assets($project_id, $start, $per_page);
             $counter = $start;
             foreach ($assets as $asset) {
-                $ss_id = $asset['id'];
-                if ($single_item && $ss_id != $single_item) {
-                    continue;
-                }
-                $log->item("asset $ss_id");
-                $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
-                $log->note("Completed:$pct");
-
-                // determine publishing status - status_ssi
-                $asset_full = $ss->asset($ss_id);
-                if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
-                    $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
-                } else {
-                    $cul_publishing_status = 'Unpublished';
-                }
-
-                if (0 != strcmp($cul_publishing_status, 'Published')) {
-                    $log->note("Publishing status: $cul_publishing_status");
-                }
 
                 try {
+                    $ss_id = $asset['id'];
+                    if ($single_item && $ss_id != $single_item) {
+                        continue;
+                    }
+                    $log->item("asset $ss_id");
+                    $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
+                    $log->note("Completed:$pct");
+
+                    // determine publishing status - status_ssi
+                    $asset_full = $ss->asset($ss_id);
+                    if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
+                        $cul_publishing_status = $asset_full['publishing_status']["$publishing_target_id"]['status'];
+                    } else {
+                        $cul_publishing_status = 'Unpublished';
+                    }
+
+                    if (0 != strcmp($cul_publishing_status, 'Published')) {
+                        $log->note("Publishing status: $cul_publishing_status");
+                    }
+
                     $url = $ss->media_url($ss_id);
 
                     $ext = $ss->media_file_extension($ss_id);
