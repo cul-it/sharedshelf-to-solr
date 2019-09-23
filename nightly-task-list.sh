@@ -8,6 +8,7 @@
 # 134 - Vicos Collection - asset count: 2246
 # 135 - Billie Jean Isbell - asset count: 1190
 # 139 - Knowledge of the World in Early Modern Japan - asset count: 4231
+# 14054 - Fallout Pamphlet Collection - asset count: 15
 # 141 - CUL Map Collection - asset count: 1531
 # 143 - Bernard Kassoy Teachers News Cartoons - asset count: 1190
 # 155 - Reuleaux Kinematic Mechanisms Collection - asset count: 223
@@ -18,8 +19,9 @@
 # 1146 - Sri Lankan Vernacular - asset count: 537
 # 256 - Obama Visual Iconography - asset count: 200
 # 273 - Selections from the Cornell Anthropology Collections - asset count: 2392
-# 2849 - Cornell Costume and Textile Collection - asset count: 12213
 # 2895 - The J. R. Sitlington Sterrett Collection of Archaeological Photographs - asset count: 545
+# 20019 - Impersonator Cards - asset count: 884
+# 28160 - Tom Harrisson Photographs - asset count: 277
 # 319 - Loewentheil African American Photographs - asset count: 1482
 # 3262 - Charlie Ahearn Archive - asset count: 909
 # 3321 - Test Project - asset count: 12
@@ -29,6 +31,7 @@
 # 3609 - John Clair Miller - Contemporary Icelandic Architecture - asset count: 615
 # 3686 - Digitizing Tell en-Naṣbeh, Biblical Mizpah of Benjamin - asset count: 50
 # 370 - John Reps Slides - asset count: 1357
+# 37250 - Afrika Bambaataa Hip Hop Archive - asset count: 2108
 # 3786 - Blaschka Glass Invertibrate Models - asset count: 50
 # 4210 - Eugene B. Dynkin Collection of Mathematics Interviews - asset count: 916
 # 4406 - 19th Century Prison Reform Collection - asset count: 487
@@ -60,6 +63,7 @@
 # 920 - Efraim Racker Art Albums - asset count: 81
 # 922 - Political Americana - asset count: 3899
 # 954 - Leuenberger Map Collection - asset count: 230
+# 962 - Icelandic Stereoscopes - asset count: 234
 # 97 - Cornell Cast Collection - asset count: 897
 # 98 - Claire Holt Papers - asset count: 1785
 
@@ -82,10 +86,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 174 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 190 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 1146 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 14054 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 256 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 273 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2849 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 2895 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 20019 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 28160 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 319 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3262 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3321 &
@@ -95,6 +102,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3609 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3686 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 370 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 37250 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 3786 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4210 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 4406 &
@@ -126,9 +134,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 920 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 922 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 954 &
+"$PHP" "${DIR}/sharedshelf-to-solr.php" -p 962 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 97 &
 "$PHP" "${DIR}/sharedshelf-to-solr.php" -p 98 &
 
 
 # example of creating or updating the IIIF images for a Collection
-#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 4803 &
+#"$PHP" "${DIR}/sharedshelf-to-iiif-s3.php" -p 962 &
