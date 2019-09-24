@@ -7,6 +7,7 @@ ini_set('memory_limit', '512M');
 require_once 'SharedShelfService.php';
 require_once 'SolrUpdater.php';
 require_once 'SharedShelfToSolrLogger.php';
+require_once 'image-to-iiif-s3.php';
 
 class DatesMatchException extends Exception
 {
@@ -109,7 +110,8 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log)
         }
 
         // make a local copy of the file
-        if (false === ($img = file_get_contents($source_url))) {
+        $real_url = get_url_redirected($source_url);
+        if (false === ($img = file_get_contents($real_url))) {
             throw new Exception("Unable to read file $source_url", 1);
         }
         $tmpfname = '/tmp/'.md5($projectid.$filename).'.pdf';
