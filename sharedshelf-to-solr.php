@@ -33,6 +33,7 @@ function usage()
     echo 'Usage: php '.$argv[0].' [--help] [--force] [--no-write] [--use-dev-solr] [--skip] [--extract] [-p NNN] [-s NNN] [-n NNN]'.PHP_EOL;
     echo '--help - show this info'.PHP_EOL;
     echo '--force - ignore timestamps and rewrite all solr records'.PHP_EOL;
+    echo '          note: if the collection .ini file has copy_pdf_to_s3, --force will also replace any .pdf files'.PHP_EOL;
     echo '--no-write - do everything EXCEPT writing the solr records'.PHP_EOL;
     echo '--use-dev-solr - override the solr core specified in .ini file using http://jrc88.solr.library.cornell.edu/solr/digitalcollections_dev'.PHP_EOL;
     echo '--skip - do not process this collection (only when -p is specified)'.PHP_EOL;
@@ -410,7 +411,7 @@ try {
                                 $extension = $ss->media_file_extension($ss_id);
                                 if ('pdf' == $extension) {
                                     $log->note('copying pdf to s3');
-                                    $method = $project['copy_pdf_to_s3'];
+                                    $method = $force_replacement ? 'overwrite' : $project['copy_pdf_to_s3'];
                                     $filename = $ss->media_filename($ss_id);
                                     if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
                                         throw new Exception('Failed to copy pdf to s3', 1);
