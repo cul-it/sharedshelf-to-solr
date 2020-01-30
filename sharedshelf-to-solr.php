@@ -389,7 +389,7 @@ try {
                             $log->note('get derivatives');
                             for ($size = 0; $size <= 4; ++$size) {
                                 $fld = 'media_URL_size_'.$size.'_tesim';
-                                $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+                                $solr_out["$fld"] = $ss->media_derivative_url($url, $size);
                             }
 
                             $log->note('get dimensions');

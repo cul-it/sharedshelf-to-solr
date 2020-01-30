@@ -609,13 +609,13 @@ class SharedShelfService
         return $file;
     }
 
-    public function media_derivative_url($asset_id, $size)
+    public function media_derivative_url($media_url, $size)
     {
-        if (empty($asset_id)) {
+        if (empty($media_url)) {
             throw new Exception('Error Processing media_derivative_url Request', 1);
         }
         $size_name = '_size'.$size;
-        $url = $this->media_url($asset_id).$size_name;
+        $url = $media_url.$size_name;
 
         return $url;
     }
