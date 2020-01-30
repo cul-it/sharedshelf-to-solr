@@ -16,6 +16,7 @@
         "pdepend/pdepend": "2.0.*",
         "phploc/phploc": "2.0.*",
         "phpunit/phpunit": "4.3.*",
+        "ralouphie/mimey": "^2.1",
         "theseer/phpdox": "0.7.*"
     }
 }
