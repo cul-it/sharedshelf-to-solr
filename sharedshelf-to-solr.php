@@ -496,6 +496,10 @@ try {
                         throw $e;
                     }
                 }
+
+                if ($attempt >= $max_attempt) {
+                    throw new Exception("Unable to process asset $solr_id after $max_attempt attempts.", 1);
+                }
             } catch (Exception $e) {
                 $error = 'Caught exception: '.$e->getMessage()." - skipping this asset\n";
                 if (false !== $log) {
