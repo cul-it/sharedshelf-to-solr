@@ -169,6 +169,9 @@ class SolrUpdater {
     }
     if (isset($this->ini['set_solr_field'])) {
       foreach($this->ini['set_solr_field'] as $solr_key => $value) {
+        if ($solr_key == 'format_tesim' && isset($asset["$solr_key"])) {
+          continue; // allow override of individual asset format_tesim
+        }
         $asset["$solr_key"] = $value;
       }
     }
@@ -228,7 +231,7 @@ class SolrUpdater {
       // smarten quotes in the first title
       if (isset($asset['title_ssi']) && strpos($asset['title_ssi'],'"') !== FALSE) {
         $title = $this->remove_quotes($asset['title_ssi']);
-        $asset['title_ssi'] = $title;  
+        $asset['title_ssi'] = $title;
         if (is_array($asset['title_tesim'])) {
           $asset['title_tesim'][0] = $title;
         }
@@ -357,7 +360,7 @@ class SolrUpdater {
     }
     return $status;
   }
-  
+
   function get_count($query_override = FALSE) {
     $query = ($query_override === FALSE) ? '*:*' : $query_override;
     $q = "q=$query&wt=json&fl=id";
