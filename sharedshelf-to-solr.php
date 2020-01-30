@@ -1,5 +1,10 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
+use Ralouphie\Mimey;
+use Smalot\Pdfparser;
+
 // sharedshelf-to-solr - update all sharedshelf collections in solr
 
 ini_set('memory_limit', '512M');
@@ -147,6 +152,54 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log)
     }
 
     return true;
+}
+
+function extension_to_format($media_url, $file_extension) {
+    // return an asset format suitable for format_tesim
+    $mimes = new \Mimey\MimeTypes;
+    $type = $mimes->getMimeType($file_extension);
+    $parts = \explode('/', $type);
+
+    switch ($parts[0]) {
+    case 'image':
+        $format = 'Image';
+        break;
+    case 'text':
+        $format = 'Text';
+        break;
+    case 'audio':
+        $format = 'Audio';
+        break;
+    case 'application':
+        switch ($parts[1]) {
+        case 'pdf':
+            try {
+                $parser = new \PdfParser\Parser();
+                $pdf = $parser->parseFile($media_url);
+                $text = $pdf->getText();
+                if (true === empty($text)) {
+                    $format = 'Image';
+                } else {
+                    $format = 'Text';
+                }
+            } catch (\Throwable $th) {
+                //$this->logger->warning('Problem pdf: ', [$th->getMessage(), $asset_id]);
+                $format = 'Image';
+            }
+        break;
+
+        default:
+            $format = 'Other';
+            break;
+        }
+        break;
+
+    default:
+        $format = 'Other';
+        break;
+    }
+
+    return $format;
 }
 
 $log = false;
