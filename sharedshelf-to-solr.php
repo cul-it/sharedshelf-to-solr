@@ -482,10 +482,14 @@ try {
                     } catch (VersionConflictException $e) {
                         // someone else changed the solr record while
                         // we were processing it - try again
+                        $log->note('Version conflict.');
+                        sleep(2);
                         continue;
                     } catch (ForumRequestException $e) {
                         // problem reading from JStor Forum
                         // try again
+                        $log->note('Could not read from Forum.');
+                        sleep(3);
                         continue;
                     } catch (Exception $e) {
                         // just pass on other exceptions
