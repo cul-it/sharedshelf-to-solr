@@ -1,5 +1,10 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
+use Ralouphie\Mimey;
+use Smalot\Pdfparser;
+
 // sharedshelf-to-solr - update all sharedshelf collections in solr
 
 ini_set('memory_limit', '512M');
@@ -147,6 +152,54 @@ function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log)
     }
 
     return true;
+}
+
+function extension_to_format($media_url, $file_extension) {
+    // return an asset format suitable for format_tesim
+    $mimes = new \Mimey\MimeTypes;
+    $type = $mimes->getMimeType($file_extension);
+    $parts = \explode('/', $type);
+
+    switch ($parts[0]) {
+    case 'image':
+        $format = 'Image';
+        break;
+    case 'text':
+        $format = 'Text';
+        break;
+    case 'audio':
+        $format = 'Audio';
+        break;
+    case 'application':
+        switch ($parts[1]) {
+        case 'pdf':
+            try {
+                $parser = new \PdfParser\Parser();
+                $pdf = $parser->parseFile($media_url);
+                $text = $pdf->getText();
+                if (true === empty($text)) {
+                    $format = 'Image';
+                } else {
+                    $format = 'Text';
+                }
+            } catch (\Throwable $th) {
+                //$this->logger->warning('Problem pdf: ', [$th->getMessage(), $asset_id]);
+                $format = 'Image';
+            }
+        break;
+
+        default:
+            $format = 'Other';
+            break;
+        }
+        break;
+
+    default:
+        $format = 'Other';
+        break;
+    }
+
+    return $format;
 }
 
 $log = false;
@@ -312,7 +365,8 @@ try {
                 $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
                 $log->note("Completed:$pct");
 
-                for ($attempt = 1; $attempt < 3; ++$attempt) {
+                $max_attempt = 4;
+                for ($attempt = 1; $attempt <= $max_attempt; ++$attempt) {
                     $log->note("Attempt:$attempt");
                     try {
                         /**
@@ -377,18 +431,23 @@ try {
                         split_delimited_fields($asset, $delimited_fields);
                         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
+                        // store the mime type for the individual asset,
+                        // overriding collection-wide format_tesim from .ini file
+                        $log->note('get media');
+                        $media_url = $ss->media_url($ss_id);
+                        $media_file_extension = $ss->media_file_extension($ss_id);
+                        $solr_out['format_tesim'] = extension_to_format($media_url, $media_file_extension);
+
                         // check if we need images and their derivatives
                         $need_images = (isset($project['has_images']) && (0 == strcmp($project['has_images'], 'no'))) ? false : true;
                         if ($need_images) {
-                            $log->note('get media');
-                            $url = $ss->media_url($ss_id);
-                            $solr_out['media_URL_tesim'] = $url;
-                            $filename = $ss->media_filename($ss_id) . '.' . $ss->media_file_extension($ss_id);
+                            $solr_out['media_URL_tesim'] = $media_url;
+                            $filename = $ss->media_filename($ss_id) . '.' . $media_file_extension;
                             $solr_out['filename_s'] = $filename;
                             $log->note('get derivatives');
                             for ($size = 0; $size <= 4; ++$size) {
                                 $fld = 'media_URL_size_'.$size.'_tesim';
-                                $solr_out["$fld"] = $ss->media_derivative_url($ss_id, $size);
+                                $solr_out["$fld"] = $ss->media_derivative_url($media_url, $size);
                             }
 
                             $log->note('get dimensions');
@@ -408,12 +467,11 @@ try {
                             }
 
                             if (!empty($project['copy_pdf_to_s3'])) {
-                                $extension = $ss->media_file_extension($ss_id);
-                                if ('pdf' == $extension) {
+                                if ('pdf' == $media_file_extension) {
                                     $log->note('copying pdf to s3');
                                     $method = $force_replacement ? 'overwrite' : $project['copy_pdf_to_s3'];
                                     $filename = $ss->media_filename($ss_id);
-                                    if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
+                                    if (!copy_pdf_to_s3($project_id, $filename, $media_url, $method, $log)) {
                                         throw new Exception('Failed to copy pdf to s3', 1);
                                     }
                                 } else {
@@ -452,8 +510,7 @@ try {
                                 $extension = $ss->media_file_extension($ss_id);
                                 if ('pdf' == $extension) {
                                     $log->note('extracting file content');
-                                    $url = $ss->media_url($ss_id);
-                                    $extracted_text = $solr->extract_only($url);
+                                    $extracted_text = $solr->extract_only($media_url);
                                     $solr_out_full['text_tsimv'] = $extracted_text;
                                 } else {
                                     $log->note("No extract for $extension");
@@ -465,6 +522,7 @@ try {
                             // ignore current contents of solr document ($solr_in)
                             $merged = $solr_out_full;
                             $solr_assets = array($merged);
+
                             $result = $solr->add($solr_assets);
                         }
 
@@ -481,15 +539,23 @@ try {
                     } catch (VersionConflictException $e) {
                         // someone else changed the solr record while
                         // we were processing it - try again
+                        $log->note('Version conflict.');
+                        sleep(2);
                         continue;
                     } catch (ForumRequestException $e) {
                         // problem reading from JStor Forum
                         // try again
+                        $log->note('Could not read from Forum.');
+                        sleep(3);
                         continue;
                     } catch (Exception $e) {
                         // just pass on other exceptions
                         throw $e;
                     }
+                }
+
+                if ($attempt >= $max_attempt) {
+                    throw new Exception("Unable to process asset $solr_id after $max_attempt attempts.", 1);
                 }
             } catch (Exception $e) {
                 $error = 'Caught exception: '.$e->getMessage()." - skipping this asset\n";
