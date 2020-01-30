@@ -312,7 +312,8 @@ try {
                 $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
                 $log->note("Completed:$pct");
 
-                for ($attempt = 1; $attempt < 3; ++$attempt) {
+                $max_attempt = 4;
+                for ($attempt = 1; $attempt <= $max_attempt; ++$attempt) {
                     $log->note("Attempt:$attempt");
                     try {
                         /**
