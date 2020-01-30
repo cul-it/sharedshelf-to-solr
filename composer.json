@@ -8,7 +8,10 @@
             "email": "jreidy@cornell.edu"
         }
     ],
-    "require": {},
+    "require": {
+        "ralouphie/mimey": "^2.1",
+        "smalot/pdfparser": "^0.14"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.5.*",
         "phpmd/phpmd": "2.1.*",
@@ -16,7 +19,6 @@
         "pdepend/pdepend": "2.0.*",
         "phploc/phploc": "2.0.*",
         "phpunit/phpunit": "4.3.*",
-        "ralouphie/mimey": "^2.1",
         "theseer/phpdox": "0.7.*"
     }
 }
