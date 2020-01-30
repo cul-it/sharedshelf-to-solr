@@ -431,6 +431,13 @@ try {
                         split_delimited_fields($asset, $delimited_fields);
                         $solr_out = $solr->convert_ss_names_to_solr($asset);
 
+                        // store the mime type for the individual asset,
+                        // overriding collection-wide format_tesim from .ini file
+                        $log->note('get media');
+                        $media_url = $ss->media_url($ss_id);
+                        $media_file_extension = $ss->media_file_extension($ss_id);
+                        $solr_out['format_tesim'] = extension_to_format($media_url, $media_file_extension);
+
                         // check if we need images and their derivatives
                         $need_images = (isset($project['has_images']) && (0 == strcmp($project['has_images'], 'no'))) ? false : true;
                         if ($need_images) {

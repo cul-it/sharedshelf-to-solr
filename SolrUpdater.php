@@ -169,6 +169,9 @@ class SolrUpdater {
     }
     if (isset($this->ini['set_solr_field'])) {
       foreach($this->ini['set_solr_field'] as $solr_key => $value) {
+        if ($solr_key == 'format_tesim' && isset($asset["$solr_key"])) {
+          continue; // allow override of individual asset format_tesim
+        }
         $asset["$solr_key"] = $value;
       }
     }
