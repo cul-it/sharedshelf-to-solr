@@ -441,15 +441,13 @@ try {
                         // check if we need images and their derivatives
                         $need_images = (isset($project['has_images']) && (0 == strcmp($project['has_images'], 'no'))) ? false : true;
                         if ($need_images) {
-                            $log->note('get media');
-                            $url = $ss->media_url($ss_id);
-                            $solr_out['media_URL_tesim'] = $url;
-                            $filename = $ss->media_filename($ss_id) . '.' . $ss->media_file_extension($ss_id);
+                            $solr_out['media_URL_tesim'] = $media_url;
+                            $filename = $ss->media_filename($ss_id) . '.' . $media_file_extension;
                             $solr_out['filename_s'] = $filename;
                             $log->note('get derivatives');
                             for ($size = 0; $size <= 4; ++$size) {
                                 $fld = 'media_URL_size_'.$size.'_tesim';
-                                $solr_out["$fld"] = $ss->media_derivative_url($url, $size);
+                                $solr_out["$fld"] = $ss->media_derivative_url($media_url, $size);
                             }
 
                             $log->note('get dimensions');
@@ -469,12 +467,11 @@ try {
                             }
 
                             if (!empty($project['copy_pdf_to_s3'])) {
-                                $extension = $ss->media_file_extension($ss_id);
-                                if ('pdf' == $extension) {
+                                if ('pdf' == $media_file_extension) {
                                     $log->note('copying pdf to s3');
                                     $method = $force_replacement ? 'overwrite' : $project['copy_pdf_to_s3'];
                                     $filename = $ss->media_filename($ss_id);
-                                    if (!copy_pdf_to_s3($project_id, $filename, $url, $method, $log)) {
+                                    if (!copy_pdf_to_s3($project_id, $filename, $media_url, $method, $log)) {
                                         throw new Exception('Failed to copy pdf to s3', 1);
                                     }
                                 } else {
@@ -513,8 +510,7 @@ try {
                                 $extension = $ss->media_file_extension($ss_id);
                                 if ('pdf' == $extension) {
                                     $log->note('extracting file content');
-                                    $url = $ss->media_url($ss_id);
-                                    $extracted_text = $solr->extract_only($url);
+                                    $extracted_text = $solr->extract_only($media_url);
                                     $solr_out_full['text_tsimv'] = $extracted_text;
                                 } else {
                                     $log->note("No extract for $extension");
@@ -526,6 +522,7 @@ try {
                             // ignore current contents of solr document ($solr_in)
                             $merged = $solr_out_full;
                             $solr_assets = array($merged);
+
                             $result = $solr->add($solr_assets);
                         }
 
