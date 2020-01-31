@@ -12,5 +12,5 @@ GIT=`which git`
 "$GIT" --git-dir="${DIR}/.git" --work-tree="${DIR}" pull origin master
 
 # run composer install
-COMPOSER=`which composer`
-"$COMPOSER" install
+PHP=`which php`
+"$PHP" "${DIR}/composer.phar" install
