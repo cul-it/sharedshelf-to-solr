@@ -174,7 +174,7 @@ function extension_to_format($media_url, $file_extension) {
         switch ($parts[1]) {
         case 'pdf':
             try {
-                $parser = new \PdfParser\Parser();
+                $parser = new \PdfParser\Parser;
                 $pdf = $parser->parseFile($media_url);
                 $text = $pdf->getText();
                 if (true === empty($text)) {
@@ -475,7 +475,7 @@ try {
                                         throw new Exception('Failed to copy pdf to s3', 1);
                                     }
                                 } else {
-                                    $log->note("not a pdf: $extension");
+                                    $log->note("not a pdf: $media_file_extension");
                                 }
                             }
                         }
@@ -507,13 +507,12 @@ try {
                         }
                         if (false === $do_not_write_to_solr) {
                             if ($extract_files) {
-                                $extension = $ss->media_file_extension($ss_id);
-                                if ('pdf' == $extension) {
+                                if ('pdf' == $media_file_extension) {
                                     $log->note('extracting file content');
                                     $extracted_text = $solr->extract_only($media_url);
                                     $solr_out_full['text_tsimv'] = $extracted_text;
                                 } else {
-                                    $log->note("No extract for $extension");
+                                    $log->note("No extract for $media_file_extension");
                                 }
                             }
 
