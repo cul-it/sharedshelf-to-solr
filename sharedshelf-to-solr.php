@@ -185,8 +185,10 @@ function extension_to_format($media_url, $file_extension) {
             } catch (\Throwable $th) {
                 //$this->logger->warning('Problem pdf: ', [$th->getMessage(), $asset_id]);
                 $format = 'Image';
+            } catch (exception $th) {
+                $format = 'Image';
             }
-        break;
+    break;
 
         default:
             $format = 'Other';
