@@ -475,7 +475,7 @@ try {
                                         throw new Exception('Failed to copy pdf to s3', 1);
                                     }
                                 } else {
-                                    $log->note("not a pdf: $extension");
+                                    $log->note("not a pdf: $media_file_extension");
                                 }
                             }
                         }
