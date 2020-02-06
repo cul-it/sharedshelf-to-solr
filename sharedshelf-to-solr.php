@@ -174,7 +174,7 @@ function extension_to_format($media_url, $file_extension) {
         switch ($parts[1]) {
         case 'pdf':
             try {
-                $parser = new \PdfParser\Parser;
+                $parser = new \Smalot\PdfParser\Parser();
                 $pdf = $parser->parseFile($media_url);
                 $text = $pdf->getText();
                 if (true === empty($text)) {
