@@ -507,13 +507,12 @@ try {
                         }
                         if (false === $do_not_write_to_solr) {
                             if ($extract_files) {
-                                $extension = $ss->media_file_extension($ss_id);
-                                if ('pdf' == $extension) {
+                                if ('pdf' == $media_file_extension) {
                                     $log->note('extracting file content');
                                     $extracted_text = $solr->extract_only($media_url);
                                     $solr_out_full['text_tsimv'] = $extracted_text;
                                 } else {
-                                    $log->note("No extract for $extension");
+                                    $log->note("No extract for $media_file_extension");
                                 }
                             }
 
