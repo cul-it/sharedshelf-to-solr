@@ -15,12 +15,14 @@ function usage()
     echo '--force - ignore timestamps and rewrite all solr records' . PHP_EOL;
     echo '-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php'.PHP_EOL;
     echo '-s - only process one of the images in the collection - id NNN' . PHP_EOL;
+    echo '--startdate yyyy-mm-dd - process only Forum assets with updated_on this date or later' . PHP_EOL;
+    echo '--enddate yyyy-mm-dd - process only Forum assets with updated_on this date or earlier' . PHP_EOL;
     exit(0);
 }
 
 $log = false;
 
-$options = getopt('p:s:', array('help', 'force', 'one'));
+$options = getopt('p:s:', array('help', 'force', 'startdate:', 'enddate:'));
 
 if (isset($options['help'])) {
     usage();
@@ -43,6 +45,20 @@ if (isset($options['s'])) {
     }
 } else {
     $single_item = false;
+}
+$startdate = false;
+if (isset($options['startdate'])) {
+    $match = preg_match('/\d{4}-\d{2}-\d{2}/', $options['startdate']);
+    if ($match === 1) {
+        $startdate = $options['startdate'];
+    }
+}
+$enddate = false;
+if (isset($options['enddate'])) {
+    $match = preg_match('/\d{4}-\d{2}-\d{2}/', $options['enddate']);
+    if ($match === 1) {
+        $enddate = $options['enddate'];
+    }
 }
 
 try {
@@ -112,6 +128,19 @@ try {
                     $log->item("asset $ss_id");
                     $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
                     $log->note("Completed:$pct");
+
+                    if (false !== $startdate) {
+                        if (strncmp($asset['updated_on'], $startdate, strlen($startdate)) < 0) {
+                            $log->note("skipping : before startdate : " . $asset['updated_on']);
+                            continue;
+                        }
+                    }
+                    if (false !== $enddate) {
+                        if (strncmp($asset['updated_on'], $enddate, strlen($enddate)) > 0) {
+                            $log->note("skipping : after enddate : " . $asset['updated_on']);
+                            continue;
+                        }
+                    }
 
                     // determine publishing status - status_ssi
                     $asset_full = $ss->asset($ss_id);
