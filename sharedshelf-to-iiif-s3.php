@@ -129,6 +129,19 @@ try {
                     $pct = sprintf('%01.2f', $counter++ * 100.0 / (float) $asset_count);
                     $log->note("Completed:$pct");
 
+                    if (false !== $startdate) {
+                        if (strncmp($asset['updated_on'], $startdate, strlen($startdate)) < 0) {
+                            $log->note("skipping : before startdate : " . $asset['updated_on']);
+                            continue;
+                        }
+                    }
+                    if (false !== $enddate) {
+                        if (strncmp($asset['updated_on'], $enddate, strlen($enddate)) > 0) {
+                            $log->note("skipping : after enddate : " . $asset['updated_on']);
+                            continue;
+                        }
+                    }
+
                     // determine publishing status - status_ssi
                     $asset_full = $ss->asset($ss_id);
                     if (isset($asset_full['publishing_status']["$publishing_target_id"]['status'])) {
