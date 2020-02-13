@@ -10,14 +10,17 @@
 - converts images stored in sharedshelf into images in IIIF format stored in Amazon S3
  - see shareshelf-to-iiif-s3.php
 - helper scripts
+  - iiif-check.sh - see if the file has already been converted to iiif
   - listFields.php - writes out a list of fields for use in collection .ini file
   - listProjects.php - writes out projects and project ids
-  - iiif-check.sh - see if the file has already been converted to iiif
   - listPublicationTargets.php - list the id of the publication targets for each project
-  - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif
-  - ssGeoTagExtract.php - Grab Geotags from sharedshelf image
-  - nightly.sh - cron job that runs the commands in nightly-task-list.sh
   - nightly-checkout-master.sh - cron job that runs BEFORE nightly.sh to pull down the latest master branch
+  - nightly.sh - cron job that runs the commands in nightly-task-list.sh
+  - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif
+  - sharedshelf-status.php - not working
+  - spot-check.sh - check the timestamps for an asset in Forum, solr, and IIIF or PHP on AWS S3
+  - ssAssetTest.php - list all the fields returned from Forum's API for an asset
+  - ssGeoTagExtract.php - Grab Geotags from sharedshelf image
 
 ## Run:
 - php sharedshelf-to-solr.php --help
