@@ -16,8 +16,7 @@
   - listPublicationTargets.php - list the id of the publication targets for each project
   - nightly-checkout-master.sh - cron job that runs BEFORE nightly.sh to pull down the latest master branch
   - nightly.sh - cron job that runs the commands in nightly-task-list.sh
-  - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif
-  - sharedshelf-status.php - not working
+  - sharedshelf-status.php - determine if sharedshelf items have been converted to solr and iiif (not working)
   - spot-check.sh - check the timestamps for an asset in Forum, solr, and IIIF or PHP on AWS S3
   - ssAssetTest.php - list all the fields returned from Forum's API for an asset
   - ssGeoTagExtract.php - Grab Geotags from sharedshelf image
