@@ -42,6 +42,21 @@ sharedshelf-to-solr.php without arguments:
 - checks the timestamps of the assets already in solr and only moves the ones that have been updated in sharedshelf since
 - we run it this way nightly to keep the solr index fresh
 
+- php sharedshelf-to-iiif-s3.php --help
+
+  <pre>
+    Usage: php sharedshelf-to-iiif-s3.php [--help] [--force] [-p NNN] [-s NNN]
+    --help - show this info
+    --force - ignore timestamps and rewrite all solr records
+    -p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php
+    -s - only process one of the images in the collection - id NNN
+    --startdate yyyy-mm-dd - process only Forum assets with updated_on this date or later
+    --enddate yyyy-mm-dd - process only Forum assets with updated_on this date or earlier
+  </pre>
+
+- sharedshelf-to-iiif-s3.php creates a static IIIF file for each image, stored on AWS S3
+- use --startdate and --enddate in combination to select a range - or use just one
+
 ## Installation:
 - check out from git
 - install s3cmd for using Amazon S3 - http://s3tools.org/s3cmd
