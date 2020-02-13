@@ -4,6 +4,15 @@ then
  echo "useage: $0 <Forum asset id number>"
  exit 1
 fi
+
+# have to use internal. if running on vpn instead of lamp-legacy
+HOST=`hostname`
+if [[ "$HOST" == *"serverfarm"* ]]; then
+  INTERNAL=""
+else
+  INTERNAL="internal."
+fi
+
 ASSET=$1
 FORUM=`php ssAssetTest.php -s $ASSET`
 PROJECT=`echo $FORUM | grep -E "\[project_id[^\[]+" -o | grep -E "[0-9]+" -o`
