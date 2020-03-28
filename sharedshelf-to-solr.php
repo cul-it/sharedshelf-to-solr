@@ -265,11 +265,15 @@ try {
     }
 
     // sharedshelf user
-    $user = parse_ini_file('ssUser.ini');
+
+   $user = parse_ini_file('ssUser.ini');
     if (false === $user) {
-        $env = getenv();
-        var_dump($env);
-        throw new Exception('Need to create ssUser.ini. See README.md', 1);
+        if (empty(getenv('JSTOR_USER')) && !empty(getenv('JSTOR_PASSWORD'))) {
+            $user['email'] = getenv('JSTOR_USER');
+            $user['password'] = getenv('JSTOR_PASSWORD');
+        } else {
+            throw new Exception('Need to create ssUser.ini. See README.md', 1);
+        }
     }
 
     if (!isset($task['process']['cookie_jar_path'])) {
