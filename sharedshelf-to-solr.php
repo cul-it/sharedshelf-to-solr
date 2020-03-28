@@ -267,6 +267,8 @@ try {
     // sharedshelf user
     $user = parse_ini_file('ssUser.ini');
     if (false === $user) {
+        $env = getenv();
+        var_dump($env);
         throw new Exception('Need to create ssUser.ini. See README.md', 1);
     }
 
