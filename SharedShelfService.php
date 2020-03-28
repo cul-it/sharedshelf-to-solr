@@ -636,6 +636,27 @@ class SharedShelfService
         return $output;
     }
 
+    public function find_compound_objects($asset_id)
+    {
+        if (empty($asset_id)) {
+            throw new Exception('Error Processing find_compound_objects Request', 1);
+        }
+        $details = $this->get_response("/assets/$asset_id/media-objects");
+        print_r($details);
+        $compound = [];
+        if (!empty($details['items'])) {
+            foreach ($details['items'] as $item) {
+                $compound[] = $item['id'];
+            }
+        }
+        foreach ($compound as $obj_id) {
+            $obj = $this->get_response("/media-objects/$obj_id/representation/details");
+            print_r([$obj_id . ' compound details', $obj]);
+            die("here\n");
+        }
+        return $compound;
+    }
+
     public function find_publishing_target_id($project_id, $publish_to = 'Shared Shelf Commons')
     {
         $meta = $this->project_metadata($project_id);
