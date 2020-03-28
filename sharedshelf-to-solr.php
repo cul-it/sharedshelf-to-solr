@@ -265,7 +265,7 @@ try {
     }
 
     // sharedshelf user
-    if (empty(getenv('JSTOR_USER')) && !empty(getenv('JSTOR_PASSWORD'))) {
+    if (!empty(getenv('JSTOR_USER')) && !empty(getenv('JSTOR_PASSWORD'))) {
         $user['email'] = getenv('JSTOR_USER');
         $user['password'] = getenv('JSTOR_PASSWORD');
     } else {
