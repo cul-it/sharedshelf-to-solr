@@ -58,11 +58,13 @@ try {
     $url = $ss->media_url($id);
     $extension = $ss->media_file_extension($id);
     $iiif = $ss->media_iiif_info($id);
+    $compound = $ss->find_compound_objects($id);
      echo "\n\n************************** Asset: $id *********************************\n";
     print_r($asset);
     print_r(array('media url', $url));
     print_r(array('extension', $extension));
     print_r(array('iiif', $iiif));
+    print_r(array('compound objects', $compound));
     if ($include_metadata) {
       $metadata = $ss->project_metadata($asset['project_id']);
       print_r(array('metadata', $metadata));
