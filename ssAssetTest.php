@@ -2,6 +2,7 @@
 // ssAssetTest.php - test sharedshelf object
 require_once('SharedShelfService.php');
 require_once('SolrUpdater.php');
+require_once 'ssUser.php';
 
 function usage() {
   global $argv;
@@ -41,10 +42,7 @@ else {
 $include_metadata = isset($options['meta']);
 
 try {
-  $user = parse_ini_file('ssUser.ini');
-  if ($user === FALSE) {
-    throw new Exception("Need to create ssUser.ini. See README.md", 1);
-  }
+  $user = ssUser();
 
   $ss = new SharedShelfService($user['email'], $user['password']);
 

@@ -13,6 +13,7 @@ require_once 'SharedShelfService.php';
 require_once 'SolrUpdater.php';
 require_once 'SharedShelfToSolrLogger.php';
 require_once 'image-to-iiif-s3.php';
+require_once 'ssUser.php';
 
 class DatesMatchException extends Exception
 {
@@ -265,15 +266,7 @@ try {
     }
 
     // sharedshelf user
-    if (!empty(getenv('JSTOR_USER')) && !empty(getenv('JSTOR_PASSWORD'))) {
-        $user['email'] = getenv('JSTOR_USER');
-        $user['password'] = getenv('JSTOR_PASSWORD');
-    } else {
-        $user = parse_ini_file('ssUser.ini');
-        if ($user === false) {
-            throw new Exception('Need to create ssUser.ini. See README.md', 1);
-        }
-    }
+    $user = ssUser();
 
     if (!isset($task['process']['cookie_jar_path'])) {
         throw new Exception('Expecting cookie_jar_path in .ini file', 1);
