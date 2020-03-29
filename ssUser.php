@@ -2,7 +2,9 @@
 
 function ssUser() {
     // sharedshelf user
-    if (!empty(getenv('JSTOR_USER')) && !empty(getenv('JSTOR_PASSWORD'))) {
+    $email = getenv('JSTOR_USER');
+    $pass = getenv('JSTOR_PASSWORD');
+    if (!empty($email) && !empty($pass)) {
         $user['email'] = getenv('JSTOR_USER');
         $user['password'] = getenv('JSTOR_PASSWORD');
     } else {
@@ -11,4 +13,5 @@ function ssUser() {
             throw new Exception('Need to create ssUser.ini. See README.md', 1);
         }
     }
+    return $user;
 }
