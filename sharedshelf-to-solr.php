@@ -14,6 +14,7 @@ require_once 'SolrUpdater.php';
 require_once 'SharedShelfToSolrLogger.php';
 require_once 'image-to-iiif-s3.php';
 require_once 'ssUser.php';
+require_once 'dd.php';
 
 class DatesMatchException extends Exception
 {
@@ -298,15 +299,15 @@ try {
         if (!empty($project['copy_pdf_to_s3'])) {
             $value = $project['copy_pdf_to_s3'];
             switch ($value) {
-        case 'update':
-        case 'overwrite':
-          // good options
-          break;
+                case 'update':
+                case 'overwrite':
+                // good options
+                break;
 
-        default:
-          throw new Exception("invalid copy_pdf_to_s3 value for project  $project_id: $value", 1);
-          break;
-      }
+                default:
+                throw new Exception("invalid copy_pdf_to_s3 value for project  $project_id: $value", 1);
+                break;
+            }
         }
 
         // create a log file for this collection
