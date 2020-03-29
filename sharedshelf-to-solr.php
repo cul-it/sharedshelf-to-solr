@@ -14,6 +14,7 @@ require_once 'SolrUpdater.php';
 require_once 'SharedShelfToSolrLogger.php';
 require_once 'image-to-iiif-s3.php';
 require_once 'ssUser.php';
+require_once 'dd.php';
 
 class DatesMatchException extends Exception
 {
