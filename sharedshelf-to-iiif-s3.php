@@ -10,19 +10,19 @@ function usage()
 {
     global $argv;
     echo PHP_EOL;
-    echo 'Usage: php ' . $argv[0] . ' [--help] [--force] [-p NNN] [-s NNN]' . PHP_EOL;
-    echo '--help - show this info' . PHP_EOL;
-    echo '--force - ignore timestamps and rewrite all solr records' . PHP_EOL;
+    echo 'Usage: php '.$argv[0].' [--help] [--force] [-p NNN] [-s NNN]'.PHP_EOL;
+    echo '--help - show this info'.PHP_EOL;
+    echo '--force - ignore timestamps and rewrite all solr records'.PHP_EOL;
     echo '-p - only process SharedShelf collection (project number) NNN (NNN must be numeric) - see listProjects.php'.PHP_EOL;
-    echo '-s - only process one of the images in the collection - id NNN' . PHP_EOL;
-    echo '--startdate yyyy-mm-dd - process only Forum assets with updated_on this date or later' . PHP_EOL;
-    echo '--enddate yyyy-mm-dd - process only Forum assets with updated_on this date or earlier' . PHP_EOL;
+    echo '-s - only process one of the images in the collection - id NNN'.PHP_EOL;
+    echo '--startdate yyyy-mm-dd - process only Forum assets with updated_on this date or later'.PHP_EOL;
+    echo '--enddate yyyy-mm-dd - process only Forum assets with updated_on this date or earlier'.PHP_EOL;
     exit(0);
 }
 
 $log = false;
 
-$options = getopt('p:s:', array('help', 'force', 'startdate:', 'enddate:'));
+$options = getopt('p:s:', ['help', 'force', 'startdate:', 'enddate:']);
 
 if (isset($options['help'])) {
     usage();
@@ -49,20 +49,20 @@ if (isset($options['s'])) {
 $startdate = false;
 if (isset($options['startdate'])) {
     $match = preg_match('/\d{4}-\d{2}-\d{2}/', $options['startdate']);
-    if ($match === 1) {
+    if (1 === $match) {
         $startdate = $options['startdate'];
     }
 }
 $enddate = false;
 if (isset($options['enddate'])) {
     $match = preg_match('/\d{4}-\d{2}-\d{2}/', $options['enddate']);
-    if ($match === 1) {
+    if (1 === $match) {
         $enddate = $options['enddate'];
     }
 }
 
 try {
-    $supported_image_formats = array('png', 'jpg', 'gif', 'tif');
+    $supported_image_formats = ['png', 'jpg', 'gif', 'tif'];
 
     // batch process information
     $task = parse_ini_file('sharedshelf-to-iiif-s3.ini', true);
@@ -106,20 +106,19 @@ try {
         $publishing_target_id = $ss->find_publishing_target_id($project_id);
 
         // create a log file for this collection
-        $log_file_prefix = $task['process']['log_file_prefix'] . '-' . $project_id;
+        $log_file_prefix = $task['process']['log_file_prefix'].'-'.$project_id;
         $log = new SharedShelfToSolrLogger($log_file_prefix);
         $log->task("$config-$project_id-iiif");
 
         $log->note('project_asset_ids');
         $asset_count = $ss->project_assets_count($project_id);
         $log->note("asset_count:$asset_count");
-        echo "IIIF: $config asset count: $asset_count " . $log->log_file_name() . PHP_EOL;
+        echo "IIIF: $config asset count: $asset_count ".$log->log_file_name().PHP_EOL;
         $per_page = 25;
         for ($start = 0; $start < $asset_count; $start += $per_page) {
             $assets = $ss->project_assets($project_id, $start, $per_page);
             $counter = $start;
             foreach ($assets as $asset) {
-
                 try {
                     $ss_id = $asset['id'];
                     if ($single_item && $ss_id != $single_item) {
@@ -131,13 +130,13 @@ try {
 
                     if (false !== $startdate) {
                         if (strncmp($asset['updated_on'], $startdate, strlen($startdate)) < 0) {
-                            $log->note("skipping : before startdate : " . $asset['updated_on']);
+                            $log->note('skipping : before startdate : '.$asset['updated_on']);
                             continue;
                         }
                     }
                     if (false !== $enddate) {
                         if (strncmp($asset['updated_on'], $enddate, strlen($enddate)) > 0) {
-                            $log->note("skipping : after enddate : " . $asset['updated_on']);
+                            $log->note('skipping : after enddate : '.$asset['updated_on']);
                             continue;
                         }
                     }
@@ -174,7 +173,7 @@ try {
                         throw new Exception('shortcut to exit', 1);
                     }
                 } catch (\Exception $e) {
-                    $error = 'Caught exception: ' . $e->getMessage() . " - skipping this asset\n";
+                    $error = 'Caught exception: '.$e->getMessage()." - skipping this asset\n";
                     if (false !== $log) {
                         $log->error($error);
                     } else {
@@ -187,7 +186,7 @@ try {
         $log->task("Done. Project $project_id.");
     }
 } catch (Exception $e) {
-    $error = 'Caught exception: ' . $e->getMessage() . "\n";
+    $error = 'Caught exception: '.$e->getMessage()."\n";
     if (false !== $log) {
         $log->error($error);
     } else {
