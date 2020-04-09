@@ -653,7 +653,7 @@ class SharedShelfService
         foreach ($compound as $obj_id) {
             $obj = $this->get_response("/media-objects/$obj_id/representation/details");
             print_r([$obj_id . ' compound details', $obj]);
-            die("here\n");
+            // jgr25 debugging die("here find_compound_objects\n");
         }
         return $compound;
     }

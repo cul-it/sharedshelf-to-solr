@@ -357,7 +357,8 @@ try {
                 continue;
             }
             if ((false !== $max_processing_count) && ($assets_processed++ >= $max_processing_count)) {
-                throw new Exception('Reached the maximum count specified on the -n argument', 1);
+                $log->note('Reached the maximum count specified on the -n argument');
+                break;
             }
             try {
                 $ss_date = trim($updated_date);
