@@ -228,9 +228,11 @@ if (isset($options['p'])) {
 } else {
     $single_collection = false;
 }
+$process_entire_collection = true;
 if (isset($options['s'])) {
     if (is_numeric($options['s'])) {
         $starting_asset = $options['s'];
+        $process_entire_collection = false;
     } else {
         usage();
     }
@@ -570,7 +572,7 @@ try {
 
         // delete assets from solr that are no longer in sharedshelf
         if (false === $do_not_write_to_solr) {
-            if (!empty($solr_asset_ids_to_delete)) {
+            if ($process_entire_collection === true && !empty($solr_asset_ids_to_delete)) {
                 $ids = array_flip($solr_asset_ids_to_delete);
                 $id_count = count($ids);
                 $batch_size = 20;
