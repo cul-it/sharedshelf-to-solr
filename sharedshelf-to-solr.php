@@ -332,6 +332,13 @@ $option_text .= $do_not_write_to_solr ? 'no-write ' : '';
 $option_text .= $solr_collection_override ? 'use-dev-solr ' : '';
 
 try {
+
+    if (file_exists(__DIR__.'/.env')) {
+        // load .env file
+        $dotenv = Dotenv::create(__DIR__);
+        $dotenv->load();
+    }
+
     // batch process information
     $task = parse_ini_file('sharedshelf-to-solr.ini', true);
     if (false === $task) {
