@@ -533,9 +533,13 @@ try {
                             $filename = $ss->media_filename($ss_id) . '.' . $media_file_extension;
                             $solr_out['filename_s'] = $filename;
                             $log->note('get derivatives');
-                            for ($size = 0; $size <= 4; ++$size) {
-                                $fld = 'media_URL_size_'.$size.'_tesim';
-                                $solr_out["$fld"] = $ss->media_derivative_url($media_url, $size);
+                            try {
+                                for ($size = 0; $size <= 4; ++$size) {
+                                    $fld = 'media_URL_size_'.$size.'_tesim';
+                                    $solr_out["$fld"] = $ss->media_derivative_url($media_url, $size);
+                                }
+                            } catch (\Exception $e) {
+                                $log->error($e->getMessage());
                             }
 
                             $log->note('get dimensions');
