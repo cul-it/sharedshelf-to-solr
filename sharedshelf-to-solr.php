@@ -2,6 +2,9 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+use Dotenv\Dotenv;
 use Ralouphie\Mimey;
 use Smalot\Pdfparser;
 
@@ -88,6 +91,80 @@ function get_ss_asset_list(&$ss, $project_id, $date_field)
     }
 
     return $assets;
+}
+
+function copy_pdf_to_s3_aws($projectid, $filename, $source_url, $method, $log) {
+    try {
+        $s3_bucket = 'digital-assets.library.cornell.edu';
+        $s3_path = "$projectid/$filename.pdf";
+        $s3_target = "$s3_bucket/$s3_path";
+
+        // aws credentials
+        $key = getenv('DIGCOLL_IMAGES_S3');
+        $secret = getenv('DIGCOLL_IMAGES_S3_SECRET');
+        if ($key === false || $secret === false) {
+            throw new Exception("Missing s3 credentials", 1);
+        }
+
+        $client = S3Client::factory(
+            [
+             'credentials' => [
+                               'key' => trim($key),
+                               'secret' => trim($secret),
+                              ],
+             'region' => 'us-east-1',
+             'version' => 'latest',
+            ]
+        );
+
+        // check if already exists
+        if ('update' == $method) {
+            $iterator = $client->getIterator('ListObjects', [
+                'Bucket' => $s3_bucket,
+                'Prefix' => $s3_path,
+                ]);
+            foreach ($iterator as $object) {
+                // $s3_path already exists
+                return true;
+            }
+        }
+
+        // make a local copy of the file
+        $real_url = get_url_redirected($source_url);
+        if (false === ($img = file_get_contents($real_url))) {
+            throw new Exception("Unable to read file $source_url", 1);
+        }
+        $tmpfname = '/tmp/'.md5($projectid.$filename).'.pdf';
+        if (false === ($fd = fopen($tmpfname, 'x+'))) {
+            throw new Exception("Cannot create temp file $tmpfname", 1);
+        }
+        $bytes = fwrite($fd, $img);
+        fclose($fd);
+        if (false === $bytes) {
+            throw new Exception('Cannot write to temp file', 1);
+        }
+
+        $result = $client->putObject([
+            'Bucket' => $s3_bucket,
+            'Key' => $s3_target,
+            'SourceFile' => $tmpfname,
+        ]);
+
+        // delete temp file
+        unlink($tmpfname);
+
+    } catch (S3Exception $e) {
+        $error = 'Caught S3 exception: '.$e->getMessage()."\n";
+        $log->note($error);
+
+        return false;
+    } catch (Exception $e) {
+        $error = 'Caught exception: '.$e->getMessage()."\n";
+        $log->note($error);
+
+        return false;
+    }
+    return true;
 }
 
 function copy_pdf_to_s3($projectid, $filename, $source_url, $method, $log)
@@ -475,7 +552,7 @@ try {
                                     $log->note('copying pdf to s3');
                                     $method = $force_replacement ? 'overwrite' : $project['copy_pdf_to_s3'];
                                     $filename = $ss->media_filename($ss_id);
-                                    if (!copy_pdf_to_s3($project_id, $filename, $media_url, $method, $log)) {
+                                    if (!copy_pdf_to_s3_aws($project_id, $filename, $media_url, $method, $log)) {
                                         throw new Exception('Failed to copy pdf to s3', 1);
                                     }
                                 } else {
