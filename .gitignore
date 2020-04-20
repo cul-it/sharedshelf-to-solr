@@ -14,3 +14,6 @@ vendor
 build/*
 
 .DS_Store
+
+.env
+.env-file
