@@ -557,6 +557,10 @@ try {
                                 $solr_out['content_metadata_first_image_width_ssm'] = $jsondetails['width'];
                                 $solr_out['content_metadata_first_image_height_ssm'] = $jsondetails['height'];
                             }
+                            $compound = $ss->find_compound_objects($ss_id);
+                            if (count($compound) > 1) {
+                                $solr_out['compound_object_ssm'] = $compound;
+                            }
 
                             if (!empty($project['copy_pdf_to_s3'])) {
                                 if ('pdf' == $media_file_extension) {
