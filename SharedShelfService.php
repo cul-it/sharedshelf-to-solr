@@ -643,19 +643,27 @@ class SharedShelfService
             throw new Exception('Error Processing find_compound_objects Request', 1);
         }
         $details = $this->get_response("/assets/$asset_id/media-objects");
-        print_r($details);
         $compound = [];
         if (!empty($details['items'])) {
             foreach ($details['items'] as $item) {
                 $compound[] = $item['id'];
             }
         }
+        $tileSources = [];
         foreach ($compound as $obj_id) {
             $obj = $this->get_response("/media-objects/$obj_id/representation/details");
-            print_r([$obj_id . ' compound details', $obj]);
-            // jgr25 debugging die("here find_compound_objects\n");
+            if (!empty($obj['media_object'])) {
+                $source = [];
+                $fields = ['name', 'sequenceNumber', 'url', 'iiif_url', 'height', 'width'];
+                foreach ($obj['media_object'] as $key => $value) {
+                    if (in_array($key, $fields) && !empty($value)) {
+                        $source["$key"] = $value;
+                    }
+                }
+                $tileSources[] = json_encode($source);
+            }
         }
-        return $compound;
+        return $tileSources;
     }
 
     public function find_publishing_target_id($project_id, $publish_to = 'Shared Shelf Commons')
