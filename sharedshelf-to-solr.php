@@ -559,6 +559,7 @@ try {
                             }
                             $compound = $ss->find_compound_objects($ss_id);
                             if (count($compound) > 1) {
+                                $solr_out['compound_object_count_isi'] = count($compound);
                                 $solr_out['compound_object_ssm'] = $compound;
                             }
 
