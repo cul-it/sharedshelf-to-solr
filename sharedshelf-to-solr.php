@@ -98,6 +98,7 @@ function copy_pdf_to_s3_aws($projectid, $filename, $source_url, $method, $log) {
         $s3_bucket = 'digital-assets.library.cornell.edu';
         $s3_path = "$projectid/$filename.pdf";
         $s3_target = "$s3_bucket/$s3_path";
+        $log->note("copy_pdf_to_s3_aws $method $s3_target");
 
         // aws credentials
         $key = getenv('DIGCOLL_IMAGES_S3');
@@ -125,16 +126,19 @@ function copy_pdf_to_s3_aws($projectid, $filename, $source_url, $method, $log) {
                 ]);
             foreach ($iterator as $object) {
                 // $s3_path already exists
+                $log->note("$s3_path already exists");
                 return true;
             }
         }
 
         // make a local copy of the file
         $real_url = get_url_redirected($source_url);
+        $log->note("url of file: $real_url");
         if (false === ($img = file_get_contents($real_url))) {
             throw new Exception("Unable to read file $source_url", 1);
         }
         $tmpfname = '/tmp/'.md5($projectid.$filename).'.pdf';
+        $log->note("temp file: $tmpfname");
         if (false === ($fd = fopen($tmpfname, 'x+'))) {
             throw new Exception("Cannot create temp file $tmpfname", 1);
         }
@@ -151,6 +155,7 @@ function copy_pdf_to_s3_aws($projectid, $filename, $source_url, $method, $log) {
         ]);
 
         // delete temp file
+        $log->note('deleting temp file');
         unlink($tmpfname);
 
     } catch (S3Exception $e) {
