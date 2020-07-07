@@ -146,7 +146,7 @@ function copy_pdf_to_s3_aws($projectid, $filename, $source_url, $method, $log) {
 
         $result = $client->putObject([
             'Bucket' => $s3_bucket,
-            'Key' => $s3_target,
+            'Key' => $s3_path,
             'SourceFile' => $tmpfname,
         ]);
 
