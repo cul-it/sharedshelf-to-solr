@@ -15,7 +15,7 @@
         "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "1.5.*",
+        "squizlabs/php_codesniffer": "2.8.*",
         "phpmd/phpmd": "2.1.*",
         "sebastian/phpcpd": "2.0.*",
         "pdepend/pdepend": "2.0.*",
