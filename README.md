@@ -1,5 +1,8 @@
 # ss2solr - migrate metadata from sharedshelf to solr
 
+## Obsolete
+- replaced by digcoll-solr-ingest
+
 ## What it does:
 - moves metadata from sharedshelf into a solr index
 - provides a mechanism for using a sharedshelf user's credentials to access the sharedshelf API
